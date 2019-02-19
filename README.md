@@ -6,7 +6,7 @@ This repository contains 2 projects:
 2. [UI](UI/README.md) - this is the UI (front end) component of the application
 
 
-In order to run this application, you need to have the following running:
+In order to run this application, you need to launch the following:
 1. MongoDB
 2. API component
 3. UI component
