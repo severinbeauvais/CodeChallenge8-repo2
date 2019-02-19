@@ -29,7 +29,7 @@ Includes npm... Just use default settings.
 1. Install [Angular CLI](https://angular.io/): `npm i -g @angular/cli@6.2.1`
 1. Install [Yarn](https://yarnpkg.com/): `npm i -g yarn`
 1. Install [TSLint](https://palantir.github.io/tslint/): `npm i -g tslint`
-1. Install [TypeScript](https://www.npmjs.com/package/typescript) (needed for Webpack): `npm i -g typescript@'>=2.1.0 <2.4.0'`
+1. Install [TypeScript](https://www.npmjs.com/package/typescript) (needed for Webpack): `npm i -g typescript@2.3.4`
 
 
 ### Verify the Installation
