@@ -11,4 +11,6 @@ In order to run this application, you need to launch the following:
 2. API component
 3. UI component
 
-Instructions for running each component can be found **provide links**.
+TODO
+Instructions for running each component can be found **provide links**. * *
+Add Kirsten's user flow diagram * *
