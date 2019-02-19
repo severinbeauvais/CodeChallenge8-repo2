@@ -17,6 +17,6 @@
 1. Change to folder to import the files from, eg
 ``cd /c/Users/severin/Desktop/``
 1. Import the 'species' collection:
-``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d nrts-dev --drop --collection species species.json``
+``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d seism --drop --collection species species.json``
 1. Import the 'users' collection:
-``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d nrts-dev --drop --collection users users.json``
+``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d seism --drop --collection users users.json``
