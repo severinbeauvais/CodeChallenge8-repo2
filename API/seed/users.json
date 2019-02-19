@@ -1,1 +1,9 @@
-{"_id":{"$oid":"5c6c62c8f0570d03c4af04a0"},"username":"admin","password":"admin123","created":"ISODate(\"2018-06-14T21:29:16.913Z\")","isAdmin":false}
+{
+  "_id": {
+    "$oid": "5c6c62c8f0570d03c4af04a0"
+  },
+  "username": "admin",
+  "password": "admin123",
+  "created": "ISODate(\"2018-06-14T21:29:16.913Z\")",
+  "isAdmin": false
+}
