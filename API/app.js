@@ -65,11 +65,11 @@ swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
   // TODO: Fix this
   // app.use(middleware.swaggerValidator({ validateResponse: false}));
 
-  app.use(
-    middleware.swaggerSecurity({
-      Bearer: auth.verifyToken
-    })
-  );
+  // app.use(
+  //   middleware.swaggerSecurity({
+  //     Bearer: auth.verifyToken
+  //   })
+  // );
   
   var routerConfig = {
     controllers: "./api/controllers",

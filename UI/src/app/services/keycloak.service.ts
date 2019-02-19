@@ -15,6 +15,9 @@ export class KeycloakService {
   constructor() {
     switch (window.location.origin) {
       case 'http://localhost:4200':
+        this.keycloakEnabled = false;
+        break;
+
       case 'https://nrts-prc-demo.pathfinder.gov.bc.ca':
       case 'https://nrts-prc-scale.pathfinder.gov.bc.ca':
       case 'https://nrts-prc-beta.pathfinder.gov.bc.ca':

@@ -45,42 +45,14 @@ export class HeaderComponent implements OnInit {
     public router: Router
   ) {
     this._api = api;
-    router.events.subscribe(val => {
-      const token = this.keycloakService.getToken();
-      // TODO: Change this to observe the change in the _api.token
-      if (token) {
-        // console.log("token:", token);
-        const jwt = new JwtUtil().decodeToken(token);
-        // console.log('jwt:', jwt);
-        this.welcomeMsg = jwt ? ('Hello ' + jwt.displayName) : 'Login';
-        // console.log("this:", this.welcomeMsg);
-        this.jwt = jwt;
-      } else {
-        this.welcomeMsg = 'Login';
-        this.jwt = null;
-      }
-      // console.log('val:', val instanceof NavigationEnd);
-    });
   }
 
   ngOnInit() {
-    // Make sure they have the right role.
-    if (!this.keycloakService.isValidForSite()) {
-      this.router.navigate(['/not-authorized']);
-    }
-  }
-
-  renderMenu(route: String) {
-    // Sysadmin's get administration.
-    if (route === 'administration') {
-      return (this.jwt && this.jwt.realm_access && this.jwt.realm_access.roles.find(x => x === 'sysadmin') && this.jwt.username === 'admin');
-    }
   }
 
   navigateToLogout() {
     // reset login status
     this.api.logout();
-    window.location.href = this.keycloakService.getLogoutURL();
   }
 
   toggleNav() {
