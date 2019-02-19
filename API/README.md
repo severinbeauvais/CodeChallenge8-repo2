@@ -5,11 +5,21 @@ This project is the API (back end server) component of the applications.
 ## Pre-requisites
 
 - MongoDB 3.4
+- Robo3T 1.2 (optionally) - to manage database
+
 - Node.js 8.12.0 (run `node -v` to verify)
 - npm 6.4.1 (run `npm -v` to verify)
 - Yarn 1.10.1 or greater (run `yarn -v` to verify)
 
-- Robo3T (optionally) - to manage database
+## How to set up the database components
+
+Download MongoDB 3.4
+
+Download Robo3T 1.2
+
+Run MongoDB from the shell by executing mongod.exe (default installation folder: c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe)
+
+Launch Robo3T, setting up a local connection with address localhost : 27017. Press Connect.
 
 ## How to run this
  
