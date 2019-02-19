@@ -1,0 +1,51 @@
+SEISM
+=====
+
+To provide
+----------
+- front end project (UI) - WILL PR FROM DEVELOP BRANCH TO MASTER BRANCH
+- back end project (API) - WILL PR FROM DEVELOP BRANCH TO MASTER BRANCH
+- seed data (Mongo json export)
+- documentation !!!
+-- instructions on what to install - README #1
+-- instructions on how to run it + tests - README #2
+-- architecture, assumptions, etc - based on Angular tutorial / PRC - README #3
+-- code documentation
+-- database schema
+-- Swagger doc!
+-- test scripts
+-- spreadsheet of manual test results
+-- screen capture / report of automated test results (or how to run)
+-- license - need to update
+
+
+Framework
+---------
+- Angular 6 CLI front end
+- Node.js API (HTTPS - need self signed certificate) *****
+- MongoDB (Mongoose)
+- OAuth *****
+- Karma/Jasmine unit testing
+
+
+Database schema - "users"
+-------------------------
+TBD
+
+
+Database schema - "species"
+---------------------------
+- commonName
+- latinName
+- category
+- dateIntroBC
+- description
+- image
+
+
+Decisions
+---------
+- two roles (user, admin)
+- no KeyCloak
+- no paging (initially)
+

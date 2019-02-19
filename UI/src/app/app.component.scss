@@ -1,0 +1,26 @@
+@import "~assets/styles/base/base.scss";
+
+:host {
+  display: block;
+  @include flex-box();
+  @include flex-direction(column);
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: hidden;
+}
+
+app-header {
+  @include flex(0 0 auto);
+}
+
+.app-body {
+  @include flex-box();
+  @include flex(1 1 auto);
+  @include flex-direction(column);
+  position: relative;
+  margin-top: 68px;
+  overflow-y: auto;
+}
