@@ -13,13 +13,15 @@ This project is the API (back end server) component of the applications.
 
 ## How to set up the database components
 
-Download MongoDB 3.4
+Download MongoDB 3.4.
 
-Download Robo3T 1.2
+Download Robo3T 1.2.
 
-Run MongoDB from the shell by executing mongod.exe (default installation folder: c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe)
+Run MongoDB from the shell by executing **mongod.exe** 
 
-Launch Robo3T, setting up a local connection with address localhost : 27017. Press Connect.
+Default installation folder: c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe
+
+Launch Robo3T, setting up a local connection with address **localhost : 27017**. Press **Connect**.
 
 ## How to run this
  
