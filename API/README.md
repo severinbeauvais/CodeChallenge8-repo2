@@ -19,7 +19,7 @@ Download Robo3T 1.2.
 
 Run MongoDB from the shell by executing **mongod.exe** 
 
-Default installation folder: c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe
+(Default installation folder: c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe)
 
 Launch Robo3T, setting up a local connection with address **localhost : 27017**. Press **Connect**.
 
