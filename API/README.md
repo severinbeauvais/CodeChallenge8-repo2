@@ -1,6 +1,15 @@
-## ACRFD API (master)
+# Code Challenge 8 API Project
 
-Minimal API for the ACRFD [Public](https://github.com/bcgov/nrts-prc-public) and [Admin](https://github.com/bcgov/nrts-prc-admin) apps
+This project is the API (back end server) component of the applications.
+
+## Pre-requisites
+
+- MongoDB 3.4
+- Node.js 8.12.0 (run `node -v` to verify)
+- npm 6.4.1 (run `npm -v` to verify)
+- Yarn 1.10.1 or greater (run `yarn -v` to verify)
+
+- Robo3T (optionally) - to manage database
 
 ## How to run this
  
