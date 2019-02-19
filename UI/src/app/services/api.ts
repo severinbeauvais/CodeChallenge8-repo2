@@ -102,7 +102,7 @@ export class ApiService {
     const reason = error.message ? error.message : (error.status ? `${error.status} - ${error.statusText}` : 'Server error');
     console.log('API error =', reason);
     if (error && error.status === 403 && !this.keycloakService.isKeyCloakEnabled()) {
-      window.location.href = '/admin/login';
+      window.location.href = '/login';
     }
     return throwError(error);
   }

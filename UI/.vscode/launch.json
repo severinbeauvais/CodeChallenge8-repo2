@@ -7,14 +7,14 @@
     //   "name": "Launch Chrome",
     //   "type": "chrome",
     //   "request": "launch",
-    //   "url": "http://localhost:4200/admin/#",
+    //   "url": "http://localhost:4200/#",
     //   "webRoot": "${workspaceRoot}"
     // },
     {
       "name": "Attach Chrome",
       "type": "chrome",
       "request": "attach",
-      "url": "http://localhost:4200/admin",
+      "url": "http://localhost:4200",
       "webRoot": "${workspaceRoot}",
       "port": 9222
     // },

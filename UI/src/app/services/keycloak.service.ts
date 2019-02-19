@@ -165,13 +165,13 @@ export class KeycloakService {
   getLogoutURL(): string {
     // TODO? need to do two stage logoff.
     // logoff prc, as well as bcgov?
-    // https://logon.gov.bc.ca/clp-cgi/logoff.cgi?returl=http://localhost:4200/admin/
-    // https://logontest.gov.bc.ca/clp-cgi/logoff.cgi?returl=http://localhost:4200/admin/
+    // https://logon.gov.bc.ca/clp-cgi/logoff.cgi?returl=http://localhost:4200/
+    // https://logontest.gov.bc.ca/clp-cgi/logoff.cgi?returl=http://localhost:4200/
     if (this.keycloakEnabled) {
-      return this.keycloakAuth.authServerUrl + '/realms/' + this.keycloakRealm + '/protocol/openid-connect/logout?redirect_uri=' + window.location.origin + '/admin/not-authorized?loggedout=true';
+      return this.keycloakAuth.authServerUrl + '/realms/' + this.keycloakRealm + '/protocol/openid-connect/logout?redirect_uri=' + window.location.origin + '/not-authorized?loggedout=true';
     } else {
       // go to the /login page
-      return window.location.origin + '/admin/login';
+      return window.location.origin + '/login';
     }
   }
 }
