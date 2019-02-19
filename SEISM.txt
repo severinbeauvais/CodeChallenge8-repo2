@@ -14,9 +14,9 @@ To provide
 -- database schema
 -- Swagger doc!
 -- test scripts
--- spreadsheet of manual test results
+-- spreadsheet of manual test results (IN PROGRESS)
 -- screen capture / report of automated test results (or how to run)
--- license - need to update
+-- license - need to update (DONE)
 
 
 Framework
