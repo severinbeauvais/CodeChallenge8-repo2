@@ -1,15 +1,15 @@
 const factory = require('factory-girl').factory;
-const Application = require('../../helpers/models/application');
+const Application = require('../../helpers/models/species');
 
-factory.define('application', Application, {
-  code: factory.seq('Application.code', (n) => `app-code-${n}`),
+factory.define('species', Application, {
+  code: factory.seq('Species.code', (n) => `app-code-${n}`),
   isDeleted: false,
   internal: {
     tags: [
       ['public'], ['sysadmin']
     ]  
   },
-  name: factory.seq('Application.name', (n) => `application-${n}`),
+  name: factory.seq('Species.name', (n) => `species-${n}`),
   tags: [
     ['public'], ['sysadmin']
   ], 

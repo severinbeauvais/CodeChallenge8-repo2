@@ -10,8 +10,8 @@ tags:
   externalDocs:
     description: "Find out more"
     url: "https://github.com/BCDevExchange-CodeChallenge/CodeChallenge8-repo2.git"
-- name: "application"
-  description: "Operations about Applications"
+- name: "species"
+  description: "Operations about Species"
   externalDocs:
     description: "Find out more about our API"
     url: "https://github.com/BCDevExchange-CodeChallenge/CodeChallenge8-repo2.git"
@@ -43,6 +43,9 @@ consumes:
 produces:
   - application/json
 
+###
+### Resource Definitions
+###
 definitions:
   Authentication:
     type: object
@@ -53,59 +56,6 @@ definitions:
       password:
         type: string
         example: "password"
-
-### Species Definitions
-  AppId:
-    type: object
-    properties:
-      _id:
-        type: string
-        example: "54759eb3c090d83494e2d804"
-  AppObject:
-    type: object
-    properties:
-      _id:
-        type: string
-        example: "54759eb3c090d83494e2d804"
-        ## TODO: Add more fields here.
-  Application:
-    type: string
-    description: "Optional fields to return."
-    example: name|type
-    enum: &applicationFields
-      - commonName
-      - latinName
-      - category
-      - dateIntroBC
-      - description
-      - image
-
-### Document Definitions
-  DocId:
-    type: object
-    properties:
-      displayName:
-        type: string
-        example: "A cool document"
-  DocObject:
-    type: object
-    properties:
-      displayName:
-        type: string
-        example: "A cool document"
-        ## TODO: Add more fields here.
-  DocumentFields:
-    type: string
-    description: "Optional fields to return."
-    example: name|type
-    #TODO: Fix enums
-    enum: &documentFields
-      - displayName
-      - documentFileName
-      - internalURL
-      - internalMime
-
-### Resource Definitions
   Token:
     type: object
     properties:
@@ -116,6 +66,44 @@ definitions:
     properties:
       message:
         type: string
+
+### Species Definitions
+  SpeciesObject:
+    type: object
+    properties:
+      _id:
+        type: string
+        example: "54759eb3c090d83494e2d804"
+        ## TODO: Add more fields here.
+  SpeciesFields:
+    type: string
+    description: "Optional fields to return"
+    example: commonName|latinName
+    enum: &speciesFields
+      - commonName
+      - latinName
+      - category
+      - dateIntroBC
+      - description
+      - image
+
+### Document Definitions
+  DocumentObject:
+    type: object
+    properties:
+      displayName:
+        type: string
+        example: "A cool document"
+        ## TODO: Add more fields here.
+  DocumentFields:
+    type: string
+    description: "Optional fields to return"
+    example: displayName|documentFileName
+    enum: &documentFields
+      - displayName
+      - documentFileName
+      - internalURL
+      - internalMime
 
 ###
 ### Path Definitions
@@ -158,30 +146,30 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 
-### Application Routes
-  /application:
-    x-swagger-router-controller: application
+### Species Routes
+  /species:
+    x-swagger-router-controller: species
     options:
       tags:
-        - application
+        - species
       operationId: protectedOptions
       summary: "Pre-flight request"
-      description: "Options on Application Route"
+      description: "Options on Species Route"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
             $ref: "#/definitions/Error"
     post:
       tags:
-        - application
+        - species
       operationId: protectedPost
-      summary: "Create a new application"
-      description: "Create a new application object"
+      summary: "Create a new species"
+      description: "Create a new species object"
       security:
         - Bearer: []
       parameters:
@@ -189,401 +177,243 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/AppId"
+            type: object
+            properties:
+              _id:
+                type: string
+                example: "54759eb3c090d83494e2d804"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
             $ref: "#/definitions/Error"
     head:
       tags:
-        - application
+        - species
       operationId: protectedHead
-      summary: "Retrieve META associated with an application"
+      summary: "Retrieve META associated with species entries"
       description: "Get META from the request, without returning the payload in question"
       security:
         - Bearer: []
       parameters:
         - in: query
-          name: fields
-          description: "Application fields to return."
-          required: false
-          type: array
-          collectionFormat: pipes
-          items:
-            type: string
-            enum: *applicationFields
-        - in: query
           name: isDeleted
           type: boolean
           required: false
-          description: "Applications that are deleted or not"
-        - in: query
-          name: pageNum
-          type: number
-          required: false
-          description: "Page number (100 results each)."
-        - in: query
-          name: pageSize
-          type: number
-          required: false
-          description: "Number of results per page (if 'pageNum' is specified)."
-        - in: query
-          name: tantalisId
-          type: number
-          required: false
-          description: "Get an Application that contain this specific disposition."
-        - in: query
-          name: cl_file
-          type: number
-          required: false
-          description: "Get an Application that relates to this crown lands file."
+          description: "Whether or not to return deleted species entries"
         - in: query
           collectionFormat: multi
-          name: purpose
+          name: category
           type: string
           required: false
-          description: "Get an Application that relates to this purpose."
-        - in: query
-          collectionFormat: multi
-          name: subpurpose
-          type: string
-          required: false
-          description: "Get an Application that relates to this subpurpose."
-        - in: query
-          collectionFormat: multi
-          name: status
-          type: string
-          required: false
-          description: "Get an Application that relates to this status."
-        - in: query
-          name: type
-          type: string
-          required: false
-          description: "Get an Application that relates to this type."
-        - in: query
-          name: subtype
-          type: string
-          required: false
-          description: "Get an Application that relates to this subtype."
-        - in: query
-          name: agency
-          type: string
-          required: false
-          description: "Get an Application that relates to this subagencytype."
-        - in: query
-          name: businessUnit
-          type: string
-          required: false
-          description: "Get an Application that relates to this businessUnit."
-        - in: query
-          name: client
-          type: string
-          required: false
-          description: "Get an Application that relates to this client."
-        - in: query
-          name: tenureStage
-          type: string
-          required: false
-          description: "Get an Application that relates to this tenureStage."
-        - in: query
-          name: areaHectares
-          collectionFormat: multi
-          type: string
-          required: false
-          description: "Get an Application that relates to size of areaHectares."
-        - in: query
-          name: centroid
-          required: false
-          description: "Query applications that have their centroid fall within the supplied coordinates."
-          type: string
-        - in: query
-          name: publishDate
-          collectionFormat: multi
-          required: false
-          description: "Query application publish dates.  Multiple parameter instaces is supported."
-          type: string
-          format: date-time
+          description: "Get species entries that match this category(ies)"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
             $ref: "#/definitions/Error"
     get:
       tags:
-        - application
+        - species
       operationId: protectedGet
       summary: "Get a list of species entries"
-      description: "Authenticated access to retrieving applications"
+      description: "Authenticated access to retrieving species"
       security:
         - Bearer: []
       parameters:
         - in: query
           name: fields
-          description: "Application fields to return."
+          description: "Species fields to return"
           required: false
           type: array
           collectionFormat: pipes
           items:
             type: string
-            enum: *applicationFields
+            enum: *speciesFields
         - in: query
           name: isDeleted
           type: boolean
           required: false
-          description: "Applications that are deleted or not"
+          description: "Species that are deleted or not"
         - in: query
           name: pageNum
           type: number
           required: false
-          description: "Page number (100 results each)."
+          description: "Page number (100 results each)"
         - in: query
           name: pageSize
           type: number
           required: false
-          description: "Number of results per page (if 'pageNum' is specified)."
-        - in: query
-          name: tantalisId
-          type: number
-          required: false
-          description: "Get an Application that contain this specific disposition."
-        - in: query
-          name: cl_file
-          type: number
-          required: false
-          description: "Get an Application that relates to this crown lands file."
+          description: "Number of results per page (if 'pageNum' is specified)"
         - in: query
           collectionFormat: multi
-          name: purpose
+          name: category
           type: string
           required: false
-          description: "Get an Application that relates to this purpose."
-        - in: query
-          collectionFormat: multi
-          name: subpurpose
-          type: string
-          required: false
-          description: "Get an Application that relates to this subpurpose."
-        - in: query
-          collectionFormat: multi
-          name: status
-          type: string
-          required: false
-          description: "Get an Application that relates to this status."
-        - in: query
-          name: type
-          type: string
-          required: false
-          description: "Get an Application that relates to this type."
-        - in: query
-          name: subtype
-          type: string
-          required: false
-          description: "Get an Application that relates to this subtype."
-        - in: query
-          name: agency
-          type: string
-          required: false
-          description: "Get an Application that relates to this subagencytype."
-        - in: query
-          name: businessUnit
-          type: string
-          required: false
-          description: "Get an Application that relates to this businessUnit."
-        - in: query
-          name: client
-          type: string
-          required: false
-          description: "Get an Application that relates to this client."
-        - in: query
-          name: tenureStage
-          type: string
-          required: false
-          description: "Get an Application that relates to this tenureStage."
-        - in: query
-          name: areaHectares
-          collectionFormat: multi
-          type: string
-          required: false
-          description: "Get an Application that relates to size of areaHectares."
-        - in: query
-          name: centroid
-          required: false
-          description: "Query applications that have their centroid fall within the supplied coordinates."
-          type: string
-        - in: query
-          name: publishDate
-          collectionFormat: multi
-          required: false
-          description: "Query application publish dates.  Multiple parameter instaces is supported."
-          type: string
-          format: date-time
+          description: "Get species entries that match this category(ies)"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
             $ref: "#/definitions/Error"
-  /application/{appId}:
-    x-swagger-router-controller: application
+  /species/{speciesId}:
+    x-swagger-router-controller: species
     options:
       tags:
-        - application
+        - species
       operationId: protectedOptions
       summary: "Pre-flight request"
-      description: "Options on Application GET Route"
+      description: "Options on Species GET Route"
       parameters:
-        - name: appId
+        - name: speciesId
           in: path
-          description: "ID of application to get"
+          description: "ID of species entry to get"
           required: true
           type: "string"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
             $ref: "#/definitions/Error"
     head:
       tags:
-        - application
+        - species
       operationId: protectedHead
-      summary: "Retrieve META associated with an application"
+      summary: "Retrieve META associated with a species entry"
       description: "Get META from the request, without returning the payload in question"
       security:
         - Bearer: []
       parameters:
-        - name: appId
+        - name: speciesId
           in: path
-          description: "ID of application to get"
+          description: "ID of species entry to get"
           required: true
           type: "string"
-        - in: query
-          name: fields
-          description: "Application fields to return."
-          required: false
-          type: array
-          collectionFormat: pipes
-          items:
-            type: string
-            enum: *applicationFields
         - in: query
           name: isDeleted
           type: boolean
           required: false
-          description: "Applications that are deleted or not"
+          description: "Whether or not to return deleted species entry"
+        - in: query
+          collectionFormat: multi
+          name: category
+          type: string
+          required: false
+          description: "Get a species entry that matches this category(ies)"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
             $ref: "#/definitions/Error"
     get:
       tags:
-        - application
+        - species
       operationId: protectedGet
-      summary: "Get an application"
-      description: "Authenticated access to retrieving an application"
+      summary: "Get a species entry"
+      description: "Authenticated access to retrieve a species object"
       security:
         - Bearer: []
       parameters:
-        - name: appId
+        - name: speciesId
           in: path
-          description: "ID of application to get"
+          description: "ID of species object to get"
           required: true
           type: "string"
         - in: query
           name: fields
-          description: "Application fields to return."
+          description: "Species fields to return"
           required: false
           type: array
           collectionFormat: pipes
           items:
             type: string
-            enum: *applicationFields
+            enum: *speciesFields
         - in: query
           name: isDeleted
           type: boolean
           required: false
-          description: "Applications that are deleted or not"
+          description: "Whether or not to return deleted species entry"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
             $ref: "#/definitions/Error"
     put:
       tags:
-        - application
+        - species
       operationId: protectedPut
-      summary: "Update an application"
-      description: "Update an application object"
+      summary: "Update a species entry"
+      description: "Update a species object"
       security:
         - Bearer: []
       parameters:
-        - name: appId
+        - name: speciesId
           in: path
-          description: "ID of application to update"
+          description: "ID of species object to update"
           required: true
           type: "string"
-        - name: AppObject
+        - name: SpeciesObject
           in: body
           required: true
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
             $ref: "#/definitions/Error"
     delete:
       tags:
-        - application
+        - species
       operationId: protectedDelete
-      summary: "Delete an application"
-      description: "Delete an application object"
+      summary: "Delete a species entry"
+      description: "Delete a species object"
       security:
         - Bearer: []
       parameters:
-        - name: appId
+        - name: speciesId
           in: path
-          description: "ID of application to delete"
+          description: "ID of species object to delete"
           required: true
           type: "string"
-        - name: AppObject
+        - name: SpeciesObject
           in: body
           required: true
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/AppObject"
+            $ref: "#/definitions/SpeciesObject"
         "403":
           description: "Access Denied"
           schema:
@@ -602,7 +432,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:
@@ -620,34 +450,24 @@ paths:
       parameters:
         - name: upfile
           in: formData
-          description: "The file to upload."
+          description: "The file to upload"
           required: true
           type: file
-        - name: _application
+        - name: _species
           in: formData
-          description: "The application to bind this document to."
-          required: false
-          type: string
-        - name: _decision
-          in: formData
-          description: "The decision to bind this document to."
-          required: false
-          type: string
-        - name: _comment
-          in: formData
-          description: "The comment to bind this document to."
+          description: "The species object to bind this document to"
           required: false
           type: string
         - name: displayName
           in: formData
-          description: "The displayName of the file."
+          description: "The displayName of the file"
           required: false
           type: string
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:
@@ -662,24 +482,8 @@ paths:
         - Bearer: []
       parameters:
         - in: query
-          name: _application
-          description: "Documents relating to a particular Application(s)"
-          type: array
-          required: false
-          collectionFormat: pipes
-          items:
-            type: string
-        - in: query
-          name: _decision
-          description: "Documents relating to a particular Decision(s)"
-          type: array
-          required: false
-          collectionFormat: pipes
-          items:
-            type: string
-        - in: query
-          name: _comment
-          description: "Documents relating to a particular Comment(s)"
+          name: _species
+          description: "Documents relating to a particular species object(s)"
           type: array
           required: false
           collectionFormat: pipes
@@ -687,7 +491,7 @@ paths:
             type: string
         - in: query
           name: fields
-          description: "Document fields to return."
+          description: "Document fields to return"
           required: false
           type: array
           collectionFormat: pipes
@@ -703,7 +507,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:
@@ -726,7 +530,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:
@@ -747,7 +551,7 @@ paths:
           type: "string"
         - in: query
           name: fields
-          description: "Document fields to return."
+          description: "Document fields to return"
           required: false
           type: array
           collectionFormat: pipes
@@ -758,7 +562,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:
@@ -781,34 +585,24 @@ paths:
           type: "string"
         - name: upfile
           in: formData
-          description: "The file to upload."
+          description: "The file to upload"
           required: true
           type: file
-        - name: _application
+        - name: _species
           in: formData
-          description: "The application to bind this document to."
-          required: false
-          type: string
-        - name: _decision
-          in: formData
-          description: "The decision to bind this document to."
-          required: false
-          type: string
-        - name: _comment
-          in: formData
-          description: "The comment to bind this document to."
+          description: "The species object to bind this document to"
           required: false
           type: string
         - name: displayName
           in: formData
-          description: "The displayName of the file."
+          description: "The displayName of the file"
           required: false
           type: string
       responses:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:
@@ -833,7 +627,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:
@@ -856,7 +650,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:
@@ -879,7 +673,7 @@ paths:
         "200":
           description: "Success"
           schema:
-            $ref: "#/definitions/DocObject"
+            $ref: "#/definitions/DocumentObject"
         "403":
           description: "Access Denied"
           schema:

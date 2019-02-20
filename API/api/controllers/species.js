@@ -22,16 +22,19 @@ exports.protectedOptions = function (args, res, rest) {
 };
 
 exports.protectedHead = function (args, res, next) {
-  // Build match query if on appId route
+  // Build match query if on speciesId route
   var query = {};
 
   // Add in the default fields to the projection so that the incoming query will work for any selected fields.
   tagList.push('_id');
   tagList.push('tags');
 
-  if (args.swagger.params.appId) {
-    query = Utils.buildQuery("_id", args.swagger.params.appId.value, query);
+  // if specified, add ID query parameter
+  if (args.swagger.params.speciesId) {
+    query = Utils.buildQuery("_id", args.swagger.params.speciesId.value, query);
   }
+
+  // FUTURE: add 'category' query parameter (NB: multi)
 
   // Unless they specifically ask for it, hide deleted results.
   if (args.swagger.params.isDeleted && args.swagger.params.isDeleted.value !== undefined) {
@@ -46,12 +49,12 @@ exports.protectedHead = function (args, res, next) {
                     tagList, // fields
                     null, // sort warmup
                     null, // sort
-                    null, // skip
+                    0, // skip
                     1000000, // limit
                     true) // count
   .then(function (data) {
     // /api/comment/ route, return 200 OK with 0 items if necessary
-    if (!(args.swagger.params.appId && args.swagger.params.appId.value) || (data && data.length > 0)) {
+    if (!(args.swagger.params.speciesId && args.swagger.params.speciesId.value) || (data && data.length > 0)) {
       res.setHeader('x-total-count', data && data.length > 0 ? data[0].total_items: 0);
       return Actions.sendResponse(res, 200, data);
     } else {
@@ -60,15 +63,14 @@ exports.protectedHead = function (args, res, next) {
   });
 };
 
-// TODO: use this one instead of the one above
 exports.protectedGet = function(args, res, next) {
   var skip        = null;
   var limit       = null;
 
-  // Build match query if on appId route
+  // Build match query if on speciesId route
   var query = {};
-  if (args.swagger.params.appId) {
-    query = Utils.buildQuery("_id", args.swagger.params.appId.value, query);
+  if (args.swagger.params.speciesId) {
+    query = Utils.buildQuery("_id", args.swagger.params.speciesId.value, query);
   } else {
     // Could be a bunch of results - enable pagination
     var processedParameters = Utils.getSkipLimitParameters(args.swagger.params.pageSize, args.swagger.params.pageNum);
@@ -121,7 +123,8 @@ exports.protectedPost = function (args, res, next) {
         // Disp lookup
         return Utils.getApplicationByDispositionID(_accessToken, savedApp.tantalisID);
       }).then(resolve, reject);
-    }).then(function (data) {
+    })
+    .then(function (data) {
       // Copy in the meta
       savedApp.areaHectares = data.areaHectares;
       savedApp.centroid     = data.centroid;
@@ -164,13 +167,14 @@ exports.protectedPost = function (args, res, next) {
 
 // Update an existing species entry.
 exports.protectedPut = function (args, res, next) {
-  var objId = args.swagger.params.appId.value;
-  defaultLog.info("ObjectID:", args.swagger.params.appId.value);
+  var objId = args.swagger.params.speciesId.value;
+  defaultLog.info("Putting species id:", args.swagger.params.speciesId.value);
 
   var obj = args.swagger.params.AppObject.value;
   // Strip security tags - these will not be updated on this route.
   delete obj.tags;
-  defaultLog.info("Incoming updated object:", obj);
+  // defaultLog.info("Incoming updated object:", obj);
+  
   // TODO sanitize/update audits.
 
   var Species = require('mongoose').model('Species');
@@ -186,11 +190,11 @@ exports.protectedPut = function (args, res, next) {
 };
 
 exports.protectedDelete = function (args, res, next) {
-  var appId = args.swagger.params.appId.value;
-  defaultLog.info("Delete species:", appId);
+  var speciesId = args.swagger.params.speciesId.value;
+  defaultLog.info("Deleting species id:", speciesId);
 
   var Species = mongoose.model('Species');
-  Species.findOne({_id: appId}, function (err, o) {
+  Species.findOne({_id: speciesId}, function (err, o) {
     if (o) {
       defaultLog.info("o:", o);
 

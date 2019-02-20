@@ -72,24 +72,6 @@ exports.runDataQuery = function (modelName, role, query, fields, sortWarmUp, sor
       {
         "$project": projection
       },
-    // TODO: delete this
-    //   {
-    //     $redact: {
-    //         $cond: {
-    //             if: {
-    //                 $anyElementTrue: {
-    //                     $map: {
-    //                         input: "$tags" ,
-    //                         as: "fieldTag",
-    //                         in: { $setIsSubset: [ "$$fieldTag", role ] }
-    //                     }
-    //                 }
-    //             },
-    //             then: "$$DESCEND",
-    //             else: "$$PRUNE"
-    //         }
-    //     }
-    // },
 
       sortWarmUp, // used to set up the sort if a temporary projection is needed
 

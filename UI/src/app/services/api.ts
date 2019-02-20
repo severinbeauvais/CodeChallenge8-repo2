@@ -27,9 +27,9 @@ export class ApiService {
   public token: string;
   public isMS: boolean; // IE, Edge, etc
   // private jwtHelper: JwtHelperService;
-  pathAPI: string;
-  params: Params;
-  env: 'local' | 'dev' | 'test' | 'demo' | 'scale' | 'beta' | 'master' | 'prod';
+  public pathAPI: string;
+  public params: Params;
+  public env: 'local' | 'dev' | 'test' | 'demo' | 'scale' | 'beta' | 'master' | 'prod';
 
   constructor(
     private http: HttpClient,
@@ -78,7 +78,7 @@ export class ApiService {
   // Species
   //
   getCountSpeciesEntries(): Observable<number> {
-    const queryString = `application?isDeleted=false`;
+    const queryString = `species`;
     return this.http.head<HttpResponse<Object>>(`${this.pathAPI}/${queryString}`, { observe: 'response' })
       .pipe(
         map(res => {
@@ -97,7 +97,7 @@ export class ApiService {
       'description',
       'image'
     ];
-    let queryString = 'application?';
+    let queryString = 'species?';
     if (pageNum !== null) { queryString += `pageNum=${pageNum}&`; }
     if (pageSize !== null) { queryString += `pageSize=${pageSize}&`; }
     queryString += `fields=${this.buildValues(fields)}`;
@@ -114,23 +114,23 @@ export class ApiService {
       'description',
       'image'
     ];
-    const queryString = `application/${id}?fields=${this.buildValues(fields)}`;
+    const queryString = `species/${id}?fields=${this.buildValues(fields)}`;
     return this.http.get<Species[]>(`${this.pathAPI}/${queryString}`, {});
   }
 
   // NB: returns array
   addSpecies(app: Species): Observable<Species> {
-    const queryString = `application/`;
+    const queryString = `species/`;
     return this.http.post<Species>(`${this.pathAPI}/${queryString}`, app, {});
   }
 
   deleteSpecies(app: Species): Observable<Species> {
-    const queryString = `application/${app._id}`;
+    const queryString = `species/${app._id}`;
     return this.http.delete<Species>(`${this.pathAPI}/${queryString}`, {});
   }
 
   saveSpecies(app: Species): Observable<Species> {
-    const queryString = `application/${app._id}`;
+    const queryString = `species/${app._id}`;
     return this.http.put<Species>(`${this.pathAPI}/${queryString}`, app, {});
   }
 
