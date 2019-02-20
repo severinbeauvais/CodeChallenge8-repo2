@@ -1,6 +1,6 @@
 # Code Challenge 8 API Project
 
-This project is the API (back end server) component of the applications.
+This project is the API (back end server) component of the SEISM web application.
 
 ## Pre-requisites
 
