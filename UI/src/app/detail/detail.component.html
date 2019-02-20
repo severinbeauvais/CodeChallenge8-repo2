@@ -2,7 +2,7 @@
   <div class="container">
     <div class="title-container">
       <div class="title-container__title">
-        <h1>Species: {{species.commonName}}</h1>
+        <h1>{{species.commonName}}</h1>
         <span class="title-container__sub text-muted">{{species.latinName}}</span>
       </div>
       <div class="title-container__actions">
@@ -31,51 +31,32 @@
     <div class="row">
       <div class="col-md-8">
         <section class="main-card">
-          <!-- Tabs -->
-          <ngb-tabset>
-            <ngb-tab>
-              <ng-template ngbTabTitle>
-                <i class="material-icons">
-                  info
-                </i>
-                Species Information
-              </ng-template>
-              <ng-template ngbTabContent>
-                <section>
-                  <h2>Description</h2>
-                  <p class="mb-0" [innerHTML]="(species.description | newlines) || '<em>No description available</em>'"></p>
-                </section>
-                <section>
-                  <h2>Details</h2>
-                  <ul class="nv-list">
-                    <li>
-                      <span class="name">Category:</span>
-                      <span class="value">{{species.category|| '-'}}</span>
-                    </li>
-                    <li>
-                      <span class="name">Common Name:</span>
-                      <span class="value">{{species.commonName|| '-'}}</span>
-                    </li>
-                    <li>
-                      <span class="name">Latin Name:</span>
-                      <span class="value">{{species.latinName|| '-'}}</span>
-                    </li>
-                    <li>
-                      <span class="name">Date Introduced in BC:</span>
-                      <span class="value" [innerHTML]="(item.dateIntroBC | date:'longDate') || '-'"></span>
-                    </li>
-                    <li>
-                        <span class="name">Description:</span>
-                        <span class="value" [innerHTML]="(item.description | newlines) || '-'"></span>
-                      </li>
-                    </ul>
-                </section>
+          <h2>Detailed Species Information</h2>
+          <ul class="nv-list">
+            <li>
+              <span class="name">Category:</span>
+              <span class="value">{{species.category|| '-'}}</span>
+            </li>
+            <li>
+              <span class="name">Common Name:</span>
+              <span class="value">{{species.commonName|| '-'}}</span>
+            </li>
+            <li>
+              <span class="name">Latin Name:</span>
+              <span class="value">{{species.latinName|| '-'}}</span>
+            </li>
+            <li>
+              <span class="name">Date Introduced in BC:</span>
+              <span class="value" [innerHTML]="(species.dateIntroBC | date:'longDate') || '-'"></span>
+            </li>
+            <li>
+                <span class="name">Description:</span>
+                <span class="value" [innerHTML]="(species.description | newlines) || '-'"></span>
+              </li>
+            </ul>
 
-                <!-- TODO: add species image/icon image here -->
+            <!-- TODO: add species image/icon image here -->
 
-              </ng-template>
-            </ngb-tab>
-          </ngb-tabset>
         </section>
       </div>
     </div>

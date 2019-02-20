@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { JwtUtil } from 'app/jwt-util';
+import { JwtUtil } from 'app/utils/jwt-util';
 import * as _ from 'lodash';
 
 declare var Keycloak: any;

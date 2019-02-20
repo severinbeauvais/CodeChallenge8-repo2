@@ -2,10 +2,10 @@
   <div class="container">
     <div class="title-container">
       <div class="title-container__title">
-        <h1><span class="text-muted">Crown land File: {{species.clFile}} &nbsp;&rsaquo;&nbsp; </span>
+        <h1><span class="text-muted">{{species.commonName}} &nbsp;&rsaquo;&nbsp; </span>
           {{!species._id ? 'Create' : 'Edit'}} Entry
         </h1>
-        <span class="title-container__sub text-muted">Disposition Transaction: {{species.tantalisID}}</span>
+        <span class="title-container__sub text-muted">{{species.latinName}}</span>
       </div>
       <div class="title-container__actions">
         <button class="btn btn-light" type="button" title="Cancel changes" (click)="cancelChanges()">
@@ -40,51 +40,25 @@
   <div class="container">
     <form class="mb-3" #speciesForm="ngForm">
       <fieldset>
-        <legend>Comment Period</legend>
-        <div class="review-dates">
-          <div class="form-group mb-0">
-            <label>Start Date</label>
-            <div class="input-group" [ngClass]="{'is-invalid': isSubmitSaveClicked && !isValidDate(startDate)}">
-              <input class="form-control" placeholder="yyyy-mm-dd" name="date1" ngbDatepicker #date1="ngbDatepicker"
-                [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="startDate" (ngModelChange)="onStartDateChg($event)"
-                (click)="date1.close(); date2.close();" required aria-required="true">
-              <div class="input-group-append">
-                <button class="btn btn-icon" (click)="date1.toggle()" type="button" tabindex="-1">
-                  <i class="material-icons">date_range</i>
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !isValidDate(startDate)">
-              Enter a valid Start Date
+        <legend>Detailed Species Information</legend>
+
+        <div class="form-group mb-0">
+          <label>Date Introduced in BC</label>
+          <div class="input-group" [ngClass]="{'is-invalid': isSubmitSaveClicked && !isValidDate(dateIntroBC)}">
+            <input class="form-control" placeholder="yyyy-mm-dd" name="date1" ngbDatepicker #date1="ngbDatepicker"
+              [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="dateIntroBC" (ngModelChange)="onDateChg($event)"
+              (click)="date1.close(); date2.close();" required aria-required="true">
+            <div class="input-group-append">
+              <button class="btn btn-icon" (click)="date1.toggle()" type="button" tabindex="-1">
+                <i class="material-icons">date_range</i>
+              </button>
             </div>
           </div>
-          <span class="spacer">+</span>
-          <div class="form-group mb-0">
-            <label>Days</label>
-            <input class="form-control" type="number" min="1" max="365" name="delta" [ngModel]="delta" (ngModelChange)="onDeltaChg($event)" />
-          </div>
-          <span class="spacer">=</span>
-          <div class="form-group mb-0">
-            <label>End Date</label>
-            <div class="input-group" [ngClass]="{'is-invalid': isSubmitSaveClicked && !isValidDate(endDate)}">
-              <input class="form-control" placeholder="yyyy-mm-dd" name="date2" ngbDatepicker #date2="ngbDatepicker"
-                [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="endDate" (ngModelChange)="onEndDateChg($event)"
-                (click)="date1.close(); date2.close();" required aria-required="true">
-              <div class="input-group-append" tabindex="-1">
-                <button class="btn btn-icon" (click)="date2.toggle()" type="button" tabindex="-1">
-                  <i class="material-icons">date_range</i>
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !isValidDate(endDate)">
-              Enter a valid End Date
-            </div>
+          <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !isValidDate(dateIntroBC)">
+            Enter a valid date
           </div>
         </div>
-      </fieldset>
-
-      <fieldset>
-        <legend>Species Details</legend>
+  
         <div class="form-group">
           <label>Description</label>
           <textarea class="form-control" rows="3" id="description" name="description"
@@ -95,7 +69,7 @@
 
         <!-- TODO: change this to display/upload image -->
         <div class="form-group mb-0">
-          <label>Species Documents</label>
+          <label>Species Image</label>
           <ul class="doc-list mb-3" *ngIf="species.documents?.length > 0">
               <li *ngFor="let doc of species.documents">
                 <span class="cell icon">
@@ -114,8 +88,8 @@
           <app-file-upload [fileExt]="['jpg', 'jpeg', 'png', 'pdf', 'tiff']" [maxFiles]="0" [maxSize]="10" [showList]="false" [files]="speciesFiles"
             (filesChange)="addDocuments($event, species.documents); speciesFiles = []"></app-file-upload>
         </div>
-      </fieldset>
 
+      </fieldset>
     </form>
   </div>
 </div>

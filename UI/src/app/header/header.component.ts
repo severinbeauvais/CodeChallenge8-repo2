@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { Router } from '@angular/router';
 import { ApiService } from 'app/services/api';
-import { JwtUtil } from 'app/jwt-util';
-import { KeycloakService } from 'app/services/keycloak.service';
 
 @Component({
   selector: 'app-header',
@@ -27,36 +24,28 @@ import { KeycloakService } from 'app/services/keycloak.service';
   ]
 })
 
-export class HeaderComponent implements OnInit {
-  isNavMenuOpen = false;
-  welcomeMsg: String;
-  private _api: ApiService;
+export class HeaderComponent {
+  public isNavMenuOpen = false;
+  public welcomeMsg: String;
   public jwt: {
     username: String,
     realm_access: {
       roles: Array<String>
-    }
+    },
     scopes: Array<String>
   };
 
   constructor(
-    private api: ApiService,
-    private keycloakService: KeycloakService,
-    public router: Router
-  ) {
-    this._api = api;
-  }
+    private api: ApiService
+  ) { }
 
-  ngOnInit() {
-  }
-
+  // NOT NEEDED?
   navigateToLogout() {
     // reset login status
     this.api.logout();
   }
 
-  toggleNav() {
+  public toggleNav() {
     this.isNavMenuOpen = !this.isNavMenuOpen;
   }
-
 }

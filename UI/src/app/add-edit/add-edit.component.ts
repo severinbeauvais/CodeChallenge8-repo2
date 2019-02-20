@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { NgForm } from '@angular/forms';
-// import { Location } from '@angular/common';
 import { MatSnackBarRef, SimpleSnackBar, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
@@ -18,8 +17,6 @@ import { Document } from 'app/models/document';
 import { ApiService } from 'app/services/api';
 import { SpeciesService } from 'app/services/species.service';
 
-const DEFAULT_DAYS = 30;
-
 @Component({
   selector: 'app-add-edit',
   templateUrl: './add-edit.component.html',
@@ -34,9 +31,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public isSubmitting = false;
   public isSaving = false;
   public species: Species = null;
-  public startDate: NgbDateStruct = null;
-  public endDate: NgbDateStruct = null;
-  public delta: number; // # days (including today)
+  public dateIntroBC: NgbDateStruct = null;
   private snackBarRef: MatSnackBarRef<SimpleSnackBar> = null;
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
   public speciesFiles: Array<File> = [];
@@ -44,7 +39,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    // private location: Location,
     public snackBar: MatSnackBar,
     public api: ApiService, // also also used in template
     private speciesService: SpeciesService,
@@ -109,7 +103,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public cancelChanges() {
-    // this.location.back(); // FAILS WHEN CANCEL IS CANCELLED (DUE TO DIRTY FORM OR UNSAVED DOCUMENTS) MULTIPLE TIMES
+    // NB: don't use 'this.location.back()' as it fails when cancel is cancelled multiple times
 
     if (this.species._id) {
       // go to details page
@@ -127,6 +121,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         (data: { species: Species }) => {
           if (data.species) {
             this.species = data.species;
+            this.dateIntroBC = this.dateToNgbDate(this.species.dateIntroBC);
           } else {
             alert('Error loading species');
             this.router.navigate(['/']); // navigate back to home
@@ -154,8 +149,14 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
+  // converts Date to NgbDateStruct
   private dateToNgbDate(date: Date): NgbDateStruct {
     return date ? { 'year': date.getFullYear(), 'month': date.getMonth() + 1, 'day': date.getDate() } : null;
+  }
+
+  // converts NgbDateStruct to Date
+  private ngbDateToDate(date: NgbDateStruct): Date {
+    return new Date(date.year, (date.month - 1), date.day);
   }
 
   // used in template
@@ -163,19 +164,9 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     return (date && !isNaN(date.year) && !isNaN(date.month) && !isNaN(date.day));
   }
 
-  public onStartDateChg(startDate: NgbDateStruct) {
-    if (startDate !== null) {
-    }
-  }
-
-  public onDeltaChg(delta: number) {
-    if (delta !== null) {
-      this.delta = delta;
-    }
-  }
-
-  public onEndDateChg(endDate: NgbDateStruct) {
-    if (endDate !== null) {
+  public onDateChg(dateIntroBC: NgbDateStruct) {
+    if (dateIntroBC !== null) {
+      this.species.dateIntroBC = this.ngbDateToDate(dateIntroBC);
     }
   }
 
@@ -273,40 +264,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           alert('Error adding species, part 2');
         },
         () => { // onCompleted
-          // reload app with decision for next step
-          this.speciesService.getById(species2._id)
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(
-              species3 => {
-                this.addSpecies3(species3);
-              },
-              error => {
-                this.isSubmitting = false;
-                console.log('error =', error);
-                alert('Error reloading species, part 2');
-              }
-            );
-        }
-      );
-  }
-
-  // this is part 3 of adding a species and all its objects
-  // (multi-part due to dependencies)
-  private addSpecies3(species3: Species) {
-    let observables = of(null);
-
-    observables
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(
-        () => { // onNext
-          // do nothing here - see onCompleted() function below
-        },
-        error => {
-          this.isSubmitting = false;
-          console.log('error =', error);
-          alert('Error adding species, part 3');
-        },
-        () => { // onCompleted
           // we don't need to reload data since we're navigating away below
           // this.isSubmitting = false; // LOOKS BETTER WITHOUT THIS
           // this.snackBarRef = this.snackBar.open('Species created...', null, { duration: 2000 }); // not displayed due to navigate below
@@ -317,7 +274,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           }
 
           // add succeeded --> navigate to details page
-          this.router.navigate(['/species', species3._id]);
+          this.router.navigate(['/species', species2._id]);
         }
       );
   }
@@ -330,7 +287,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.speciesForm.invalid) {
       this.dialogService.addDialog(ConfirmDialogComponent,
         {
-          title: 'Cannot Save SPecies',
+          title: 'Cannot Save Species',
           message: 'Please check for required fields or errors.',
           okOnly: true
         }, {
@@ -399,46 +356,8 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   // this is part 2 of saving a species and all its objects
   // (multi-part due to dependencies)
   private saveSpecies2(species2: Species) {
-    let observables = of(null);
-
-    observables
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(
-        () => { // onNext
-          // do nothing here - see onCompleted() function below
-        },
-        error => {
-          this.isSaving = false;
-          console.log('error =', error);
-          alert('Error saving species, part 2');
-        },
-        () => { // onCompleted
-          // reload app with decision for next step
-          this.speciesService.getById(species2._id)
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(
-              species3 => {
-                this.saveSpecies3(species3);
-              },
-              error => {
-                this.isSaving = false;
-                console.log('error =', error);
-                alert('Error reloading species, part 2');
-              }
-            );
-        }
-      );
-  }
-
-  // this is part 3 of saving a species and all its objects
-  // (multi-part due to dependencies)
-  private saveSpecies3(species3: Species) {
-    let observables = of(null);
-
     // save species
-    observables = observables.concat(this.speciesService.save(this.species));
-
-    observables
+    this.speciesService.save(this.species)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
         () => { // onNext
@@ -466,9 +385,8 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           }
 
           // save succeeded --> navigate to details page
-          this.router.navigate(['/species', species3._id]);
+          this.router.navigate(['/species', species2._id]);
         }
       );
   }
-
 }
