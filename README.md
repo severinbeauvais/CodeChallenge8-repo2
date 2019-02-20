@@ -5,7 +5,7 @@ This is the SEISM Code Challenge private repository.
 
 This repository contains the following documentation:
 * This file (README.md) 
-* The license file (LICENSE)
+* The Apache License 2.0 file (LICENSE)
 * The original Code Challenge Notice, Instructions & Rules file (CODE_CHALLENGE.md)
 * Kirsten's user flow diagram
 * An architecture diagram and explanation
