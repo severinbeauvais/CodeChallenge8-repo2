@@ -11,6 +11,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/concat';
 import * as _ from 'lodash';
 
+import { Constants } from 'app/utils/constants'; // TODO: use Constants.categories to populate drop-down list
 import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
 import { Species } from 'app/models/species';
 import { Document } from 'app/models/document';

@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import * as _ from 'lodash';
 
+import { Constants } from 'app/utils/constants'; // TODO: use Constants.categories to populate drop-down list
 import { Species } from 'app/models/species';
 import { SpeciesService } from 'app/services/species.service';
 
