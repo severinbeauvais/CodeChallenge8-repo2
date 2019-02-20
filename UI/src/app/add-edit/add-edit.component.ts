@@ -23,12 +23,12 @@ import { DocumentService } from 'app/services/document.service';
 const DEFAULT_DAYS = 30;
 
 @Component({
-  selector: 'app-application-add-edit',
-  templateUrl: './application-add-edit.component.html',
-  styleUrls: ['./application-add-edit.component.scss']
+  selector: 'app-add-edit',
+  templateUrl: './add-edit.component.html',
+  styleUrls: ['./add-edit.component.scss']
 })
 
-export class ApplicationAddEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('applicationForm') applicationForm: NgForm;
 
   private scrollToFragment: string = null;

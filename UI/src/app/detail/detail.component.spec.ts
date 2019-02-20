@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicationDetailComponent } from './application-detail.component';
+import { DetailComponent } from './detail.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NewlinesPipe } from 'app/pipes/newlines.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -14,9 +14,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ActivatedRouteStub } from 'app/spec/helpers';
 
 
-describe('ApplicationDetailComponent', () => {
-  let component: ApplicationDetailComponent;
-  let fixture: ComponentFixture<ApplicationDetailComponent>;
+describe('DetailComponent', () => {
+  let component: DetailComponent;
+  let fixture: ComponentFixture<DetailComponent>;
   const existingApplication = new Application();
   const validRouteData = {application: existingApplication};
 
@@ -37,7 +37,7 @@ describe('ApplicationDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ApplicationDetailComponent, NewlinesPipe],
+      declarations: [DetailComponent, NewlinesPipe],
       imports: [RouterTestingModule, NgbModule],
       providers: [
         { provide: MatSnackBar },
@@ -53,7 +53,7 @@ describe('ApplicationDetailComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ApplicationDetailComponent);
+    fixture = TestBed.createComponent(DetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

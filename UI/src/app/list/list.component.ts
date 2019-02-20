@@ -17,12 +17,12 @@ import { Application } from 'app/models/application';
 import { ApplicationService } from 'app/services/application.service';
 
 @Component({
-  selector: 'app-application-list',
-  templateUrl: './application-list.component.html',
-  styleUrls: ['./application-list.component.scss']
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.scss']
 })
 
-export class ApplicationListComponent implements OnInit, OnDestroy {
+export class ListComponent implements OnInit, OnDestroy {
   public loading = true;
   private paramMap: ParamMap = null;
   public showOnlyOpenApps: boolean;

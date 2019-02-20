@@ -3,7 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
-import { SearchComponent } from './search/search.component';
+
+import { ListComponent } from './list/list.component';
+import { DetailComponent } from './detail/detail.component';
+import { AddEditComponent } from './add-edit/add-edit.component';
 
 import { CanDeactivateGuard } from 'app/services/can-deactivate-guard.service';
 
@@ -17,13 +20,24 @@ const routes: Routes = [
     component: NotAuthorizedComponent
   },
   {
-    path: 'search',
-    component: SearchComponent
+    path: 'applications',
+    component: ListComponent
+  },
+  {
+    path: 'a/:appId',
+    component: DetailComponent
+    // FUTURE: add route resolver
+  },
+  {
+    path: 'a/:appId/edit',
+    component: AddEditComponent,
+    // FUTURE: add route resolver
+    canDeactivate: [CanDeactivateGuard]
   },
   {
     // default route
     path: '',
-    component: SearchComponent
+    component: ListComponent
   },
   {
     // wildcard route

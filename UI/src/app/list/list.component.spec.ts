@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApplicationListComponent } from './application-list.component';
+import { ListComponent } from './list.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatSlideToggleModule } from '@angular/material';
 import { OrderByPipe } from 'app/pipes/order-by.pipe';
@@ -10,9 +10,9 @@ import { Application } from 'app/models/application';
 import { of } from 'rxjs';
 import { throwError } from 'rxjs';
 
-describe('ApplicationListComponent', () => {
-  let component: ApplicationListComponent;
-  let fixture: ComponentFixture<ApplicationListComponent>;
+describe('ListComponent', () => {
+  let component: ListComponent;
+  let fixture: ComponentFixture<ListComponent>;
 
   const applicationServiceStub = {
     getAll() {
@@ -22,7 +22,7 @@ describe('ApplicationListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ApplicationListComponent, OrderByPipe, NewlinesPipe],
+      declarations: [ListComponent, OrderByPipe, NewlinesPipe],
       imports: [RouterTestingModule, MatSlideToggleModule],
       providers: [
         { provide: ApplicationService, useValue: applicationServiceStub }
@@ -32,7 +32,7 @@ describe('ApplicationListComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ApplicationListComponent);
+    fixture = TestBed.createComponent(ListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

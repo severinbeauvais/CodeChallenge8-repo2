@@ -14,12 +14,12 @@ import { ApplicationService } from 'app/services/application.service';
 import { DocumentService } from 'app/services/document.service';
 
 @Component({
-  selector: 'app-application-detail',
-  templateUrl: './application-detail.component.html',
-  styleUrls: ['./application-detail.component.scss']
+  selector: 'app-detail',
+  templateUrl: './detail.component.html',
+  styleUrls: ['./detail.component.scss']
 })
 
-export class ApplicationDetailComponent implements OnInit, OnDestroy {
+export class DetailComponent implements OnInit, OnDestroy {
 
   public isPublishing = false;
   public isUnpublishing = false;

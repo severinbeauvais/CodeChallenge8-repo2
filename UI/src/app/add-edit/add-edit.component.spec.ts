@@ -3,7 +3,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { DialogService } from 'ng2-bootstrap-modal';
 
-import { ApplicationAddEditComponent } from './application-add-edit.component';
+import { AddEditComponent } from './add-edit.component';
 import { FileUploadComponent } from 'app/file-upload/file-upload.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBar } from '@angular/material';
@@ -11,14 +11,14 @@ import { ApiService } from 'app/services/api';
 import { ApplicationService } from 'app/services/application.service';
 import { DocumentService } from 'app/services/document.service';
 
-xdescribe('ApplicationAddEditComponent', () => {
-  let component: ApplicationAddEditComponent;
-  let fixture: ComponentFixture<ApplicationAddEditComponent>;
+xdescribe('AddEditComponent', () => {
+  let component: AddEditComponent;
+  let fixture: ComponentFixture<AddEditComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [ FormsModule, NgbModule, RouterTestingModule ],
-      declarations: [ApplicationAddEditComponent, FileUploadComponent],
+      declarations: [AddEditComponent, FileUploadComponent],
       providers: [
         { provide: DialogService },
         { provide: MatSnackBar },
@@ -31,7 +31,7 @@ xdescribe('ApplicationAddEditComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ApplicationAddEditComponent);
+    fixture = TestBed.createComponent(AddEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
