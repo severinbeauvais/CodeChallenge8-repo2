@@ -6,7 +6,6 @@ import { MatSlideToggleModule } from '@angular/material';
 import { OrderByPipe } from 'app/pipes/order-by.pipe';
 import { NewlinesPipe } from 'app/pipes/newlines.pipe';
 import { ApplicationService } from 'app/services/application.service';
-import { CommentPeriodService } from 'app/services/commentperiod.service';
 import { Application } from 'app/models/application';
 import { of } from 'rxjs';
 import { throwError } from 'rxjs';
@@ -26,8 +25,7 @@ describe('ApplicationListComponent', () => {
       declarations: [ApplicationListComponent, OrderByPipe, NewlinesPipe],
       imports: [RouterTestingModule, MatSlideToggleModule],
       providers: [
-        { provide: ApplicationService, useValue: applicationServiceStub },
-        { provide: CommentPeriodService }
+        { provide: ApplicationService, useValue: applicationServiceStub }
       ]
     })
       .compileComponents();

@@ -153,49 +153,6 @@
                 </section>
               </ng-template>
             </ngb-tab>
-            <ngb-tab>
-              <ng-template ngbTabTitle>
-                <i class="material-icons">
-                  pin_drop
-                </i>
-                Location
-              </ng-template>
-              <ng-template ngbTabContent>
-                <section>
-                  <app-application-aside [application]="application"></app-application-aside>
-                </section>
-                <section *ngIf="!application.features || application.features.length === 0">
-                  <!-- if no features, display Legal Description here -->
-                  <!-- otherwise it's displayed in shape section below -->
-                  <h2>Legal Description</h2>
-                  <p [innerHTML]="(application.legalDescription | newlines) || '-'"></p>
-                </section>
-                <section *ngIf="application.features && application.features.length !== 0">
-                  <h2>Geographic Shape Information ({{application.features.length}})</h2>
-                  <ul class="shapefile-list">
-                    <li class="interest-id" *ngFor="let shape of application.features">
-                      <span class="title">Shape ID: {{shape.properties.INTRID_SID}}</span>
-                      <ul class="nv-list">
-                        <li>
-                          <span class="name">Type / Subtype:</span>
-                          <span class="value">{{application.type || '-'}} / {{application.subtype || '-'}}</span>
-                        </li>
-                        <li>
-                          <span class="name">Area (hectares):</span>
-                          <span class="value">
-                            {{shape.properties.TENURE_AREA_IN_HECTARES ? (shape.properties.TENURE_AREA_IN_HECTARES | number:'1.2-2') : '-'}}
-                          </span>
-                        </li>
-                        <li>
-                          <span class="name">Legal Description:</span>
-                          <span class="value" [innerHTML]="(shape.properties.TENURE_LEGAL_DESCRIPTION | newlines) || '-'"></span>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </section>
-              </ng-template>
-            </ngb-tab>
           </ngb-tabset>
         </section>
       </div>
@@ -207,80 +164,6 @@
             <div class="app-status">{{application.appStatus || '-'}}</div>
             <div class="app-status__date text-muted" *ngIf="application.statusHistoryEffectiveDate">
               Last updated on {{application.statusHistoryEffectiveDate | date:'longDate'}}
-            </div>
-          </div>
-        </div>
-
-        <div class="aside-card">
-          <h3 class="title">Comment Period Details</h3>
-          <div class="body" *ngIf="!application.currentPeriod">
-            Not Open For Commenting
-          </div>
-          <div class="body" *ngIf="application.currentPeriod">
-            <ul class="nv-list">
-              <li>
-                <span class="name">Status:</span>
-                <span class="value">{{application.cpStatus}}</span>
-              </li>
-              <li>
-                <span class="name">Start Date:</span>
-                <span class="value">{{application.currentPeriod.startDate | date:'longDate'}}</span>
-              </li>
-              <li>
-                <span class="name">End Date:</span>
-                <span class="value">{{application.currentPeriod.endDate | date:'longDate'}}</span>
-              </li>
-              <li *ngIf="application.currentPeriod['daysRemaining']">
-                <span class="name">Days Remaining:</span>
-                <span class="value">{{application.currentPeriod['daysRemaining']}}</span>
-              </li>
-            </ul>
-            <div class="btn-container">
-              <button class="cta-btn btn btn-sm btn-outline-primary" type="button" title="Review comments"
-                [routerLink]="['/comments', application._id]">
-                Review Comments<span *ngIf="application['numComments'] >= 0">&nbsp;({{application['numComments']}})</span>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="aside-card">
-          <h3 class="title">Application Decision</h3>
-          <div class="body">
-            <div *ngIf="!application.decision">
-              <p class="mb-0">No decisions have been made for this application at this time.</p>
-            </div>
-            <div *ngIf="application.decision">
-              <ul class="doc-list">
-                <li *ngFor="let doc of application.decision.documents">
-                  <span class="cell icon">
-                    <i class="material-icons link" (click)="api.openDocument(doc)">
-                      insert_drive_file
-                    </i>
-                  </span>
-                  <span class="cell name" [title]="doc.displayName || ''">
-                      <span class="cell__txt-content">
-                        <a (click)="api.openDocument(doc)">{{doc.documentFileName}}</a>
-                      </span>
-                  </span>
-                  <span class="cell actions">
-                    <button class="btn btn-icon" title="Download this document" (click)="api.downloadDocument(doc)">
-                      <i class="material-icons">file_download</i>
-                    </button>
-                  </span>
-                </li>
-                <li class="no-results" *ngIf="application.decision.documents.length === 0">
-                  <em>No decision documents</em>
-                </li>
-              </ul>
-            </div>
-            <div class="btn-container">
-              <button class="cta-btn btn btn-sm btn-outline-primary" type="button" title="Edit decision"
-                [routerLink]="['/a', application._id, 'edit']"
-                [disabled]="application.isRetired"
-                fragment="appDecision">
-                Edit Decision
-              </button>
-              <span title="You cannot edit the decision of a retired application"></span>
             </div>
           </div>
         </div>

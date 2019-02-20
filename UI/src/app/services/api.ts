@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Params } from '@angular/router';
-// import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs/Observable';
 import { throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -10,13 +9,7 @@ import * as _ from 'lodash';
 import { KeycloakService } from 'app/services/keycloak.service';
 
 import { Application } from 'app/models/application';
-import { Comment } from 'app/models/comment';
-import { CommentPeriod } from 'app/models/commentperiod';
-import { Decision } from 'app/models/decision';
 import { Document } from 'app/models/document';
-import { Feature } from 'app/models/feature';
-import { SearchResults } from 'app/models/search';
-import { User } from 'app/models/user';
 
 interface LocalLoginResponse {
   _id: string;
@@ -47,55 +40,8 @@ export class ApiService {
     this.token = currentUser && currentUser.token;
     this.isMS = window.navigator.msSaveOrOpenBlob ? true : false;
 
-    const { hostname } = window.location;
-    switch (hostname) {
-      case 'localhost':
-        // Local
-        this.pathAPI = 'http://localhost:3000/api';
-        this.env = 'local';
-        break;
-
-      case 'nrts-prc-dev.pathfinder.gov.bc.ca':
-        // Dev
-        this.pathAPI = 'https://nrts-prc-dev.pathfinder.gov.bc.ca/api';
-        this.env = 'dev';
-        break;
-
-      case 'nrts-prc-test.pathfinder.gov.bc.ca':
-        // Test
-        this.pathAPI = 'https://nrts-prc-test.pathfinder.gov.bc.ca/api';
-        this.env = 'test';
-        break;
-
-      case 'nrts-prc-demo.pathfinder.gov.bc.ca':
-        // Demo
-        this.pathAPI = 'https://nrts-prc-demo.pathfinder.gov.bc.ca/api';
-        this.env = 'demo';
-        break;
-
-      case 'nrts-prc-scale.pathfinder.gov.bc.ca':
-        // Scale
-        this.pathAPI = 'https://nrts-prc-scale.pathfinder.gov.bc.ca/api';
-        this.env = 'scale';
-        break;
-
-      case 'nrts-prc-beta.pathfinder.gov.bc.ca':
-        // Beta
-        this.pathAPI = 'https://nrts-prc-beta.pathfinder.gov.bc.ca/api';
-        this.env = 'beta';
-        break;
-
-      case 'nrts-prc-master.pathfinder.gov.bc.ca':
-        // Master
-        this.pathAPI = 'https://nrts-prc-master.pathfinder.gov.bc.ca/api';
-        this.env = 'master';
-        break;
-
-      default:
-        // Prod
-        this.pathAPI = 'https://comment.nrs.gov.bc.ca/api';
-        this.env = 'prod';
-    }
+    this.pathAPI = 'http://localhost:3000/api';
+    this.env = 'local';
   }
 
   handleError(error: any): Observable<never> {
@@ -280,216 +226,6 @@ export class ApiService {
   }
 
   //
-  // Features
-  //
-  getFeaturesByTantalisId(tantalisId: number): Observable<Feature[]> {
-    const fields = [
-      'type',
-      'tags',
-      'geometry',
-      'geometryName',
-      'properties',
-      'isDeleted',
-      'applicationID'
-    ];
-    const queryString = `feature?isDeleted=false&tantalisId=${tantalisId}&fields=${this.buildValues(fields)}`;
-    return this.http.get<Feature[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  getFeaturesByApplicationId(applicationId: string): Observable<Feature[]> {
-    const fields = [
-      'type',
-      'tags',
-      'geometry',
-      'geometryName',
-      'properties',
-      'isDeleted',
-      'applicationID'
-    ];
-    const queryString = `feature?isDeleted=false&applicationId=${applicationId}&fields=${this.buildValues(fields)}`;
-    return this.http.get<Feature[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  deleteFeaturesByApplicationId(applicationID: string): Observable<Object> {
-    const queryString = `feature/?applicationID=${applicationID}`;
-    return this.http.delete(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  //
-  // Decisions
-  //
-  getDecisionsByAppId(appId: string): Observable<Decision[]> {
-    const fields = [
-      '_addedBy',
-      '_application',
-      'name',
-      'description'
-    ];
-    const queryString = `decision?_application=${appId}&fields=${this.buildValues(fields)}`;
-    return this.http.get<Decision[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  // NB: returns array with 1 element
-  getDecision(id: string): Observable<Decision[]> {
-    const fields = [
-      '_addedBy',
-      '_application',
-      'name',
-      'description'
-    ];
-    const queryString = `decision/${id}?fields=${this.buildValues(fields)}`;
-    return this.http.get<Decision[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  addDecision(decision: Decision): Observable<Decision> {
-    const queryString = `decision/`;
-    return this.http.post<Decision>(`${this.pathAPI}/${queryString}`, decision, {});
-  }
-
-  saveDecision(decision: Decision): Observable<Decision> {
-    const queryString = `decision/${decision._id}`;
-    return this.http.put<Decision>(`${this.pathAPI}/${queryString}`, decision, {});
-  }
-
-  deleteDecision(decision: Decision): Observable<Decision> {
-    const queryString = `decision/${decision._id}`;
-    return this.http.delete<Decision>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  publishDecision(decision: Decision): Observable<Decision> {
-    const queryString = `decision/${decision._id}/publish`;
-    return this.http.put<Decision>(`${this.pathAPI}/${queryString}`, decision, {});
-  }
-
-  unPublishDecision(decision: Decision): Observable<Decision> {
-    const queryString = `decision/${decision._id}/unpublish`;
-    return this.http.put<Decision>(`${this.pathAPI}/${queryString}`, decision, {});
-  }
-
-  //
-  // Comment Periods
-  //
-  getPeriodsByAppId(appId: string): Observable<CommentPeriod[]> {
-    const fields = [
-      '_addedBy',
-      '_application',
-      'startDate',
-      'endDate'
-    ];
-    const queryString = `commentperiod?isDeleted=false&_application=${appId}&fields=${this.buildValues(fields)}`;
-    return this.http.get<CommentPeriod[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  // NB: returns array with 1 element
-  getPeriod(id: string): Observable<CommentPeriod[]> {
-    const fields = [
-      '_addedBy',
-      '_application',
-      'startDate',
-      'endDate'
-    ];
-    const queryString = `commentperiod/${id}?fields=${this.buildValues(fields)}`;
-    return this.http.get<CommentPeriod[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  addCommentPeriod(period: CommentPeriod): Observable<CommentPeriod> {
-    const queryString = `commentperiod/`;
-    return this.http.post<CommentPeriod>(`${this.pathAPI}/${queryString}`, period, {});
-  }
-
-  saveCommentPeriod(period: CommentPeriod): Observable<CommentPeriod> {
-    const queryString = `commentperiod/${period._id}`;
-    return this.http.put<CommentPeriod>(`${this.pathAPI}/${queryString}`, period, {});
-  }
-
-  deleteCommentPeriod(period: CommentPeriod): Observable<CommentPeriod> {
-    const queryString = `commentperiod/${period._id}`;
-    return this.http.delete<CommentPeriod>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  publishCommentPeriod(period: CommentPeriod): Observable<CommentPeriod> {
-    const queryString = `commentperiod/${period._id}/publish`;
-    return this.http.put<CommentPeriod>(`${this.pathAPI}/${queryString}`, period, {});
-  }
-
-  unPublishCommentPeriod(period: CommentPeriod): Observable<CommentPeriod> {
-    const queryString = `commentperiod/${period._id}/unpublish`;
-    return this.http.put<CommentPeriod>(`${this.pathAPI}/${queryString}`, period, {});
-  }
-
-  //
-  // Comments
-  //
-  getCountCommentsByPeriodId(periodId: string): Observable<number> {
-    // NB: count only pending comments
-    const queryString = `comment?isDeleted=false&commentStatus='Pending'&_commentPeriod=${periodId}`;
-    return this.http.head<HttpResponse<Object>>(`${this.pathAPI}/${queryString}`, { observe: 'response' })
-      .pipe(
-        map(res => {
-          // retrieve the count from the response headers
-          return parseInt(res.headers.get('x-total-count'), 10);
-        })
-      );
-  }
-
-  getCommentsByPeriodId(periodId: string, pageNum: number, pageSize: number, sortBy: string): Observable<Comment[]> {
-    const fields = [
-      '_addedBy',
-      '_commentPeriod',
-      'commentNumber',
-      'comment',
-      'commentAuthor',
-      'review',
-      'dateAdded',
-      'commentStatus'
-    ];
-
-    let queryString = `comment?isDeleted=false&_commentPeriod=${periodId}&`;
-    if (pageNum !== null) { queryString += `pageNum=${pageNum}&`; }
-    if (pageSize !== null) { queryString += `pageSize=${pageSize}&`; }
-    if (sortBy !== null) { queryString += `sortBy=${sortBy}&`; }
-    queryString += `fields=${this.buildValues(fields)}`;
-
-    return this.http.get<Comment[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  // NB: returns array with 1 element
-  getComment(id: string): Observable<Comment[]> {
-    const fields = [
-      '_addedBy',
-      '_commentPeriod',
-      'commentNumber',
-      'comment',
-      'commentAuthor',
-      'review',
-      'dateAdded',
-      'commentStatus'
-    ];
-    const queryString = `comment/${id}?fields=${this.buildValues(fields)}`;
-    return this.http.get<Comment[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  addComment(comment: Comment): Observable<Comment> {
-    const queryString = `comment/`;
-    return this.http.post<Comment>(`${this.pathAPI}/${queryString}`, comment, {});
-  }
-
-  saveComment(comment: Comment): Observable<Comment> {
-    const queryString = `comment/${comment._id}`;
-    return this.http.put<Comment>(`${this.pathAPI}/${queryString}`, comment, {});
-  }
-
-  publishComment(comment: Comment): Observable<Comment> {
-    const queryString = `comment/${comment._id}/publish`;
-    return this.http.put<Comment>(`${this.pathAPI}/${queryString}`, null, {});
-  }
-
-  unPublishComment(comment: Comment): Observable<Comment> {
-    const queryString = `comment/${comment._id}/unpublish`;
-    return this.http.put<Comment>(`${this.pathAPI}/${queryString}`, null, {});
-  }
-
-  //
   // Documents
   //
   getDocumentsByAppId(appId: string): Observable<Document[]> {
@@ -595,43 +331,6 @@ export class ApiService {
       const fileURL = URL.createObjectURL(blob);
       tab.location.href = fileURL;
     }
-  }
-
-  //
-  // Searching
-  //
-  searchAppsByCLID(clid: string): Observable<SearchResults[]> {
-    const queryString = `ttlsapi/crownLandFileNumber/${clid}`;
-    return this.http.get<SearchResults[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  searchAppsByDTID(dtid: number): Observable<SearchResults> {
-    const queryString = `ttlsapi/dispositionTransactionId/${dtid}`;
-    return this.http.get<SearchResults>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  //
-  // Users
-  //
-  getUsers(): Observable<User[]> {
-    const fields = [
-      'displayName',
-      'username',
-      'firstName',
-      'lastName'
-    ];
-    const queryString = `user?fields=${this.buildValues(fields)}`;
-    return this.http.get<User[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  saveUser(user: User): Observable<User> {
-    const queryString = `user/${user._id}`;
-    return this.http.put<User>(`${this.pathAPI}/${queryString}`, user, {});
-  }
-
-  addUser(user: User): Observable<User> {
-    const queryString = `user/`;
-    return this.http.post<User>(`${this.pathAPI}/${queryString}`, user, {});
   }
 
   //

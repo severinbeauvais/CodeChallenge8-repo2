@@ -76,18 +76,6 @@
                           <span class="name">Comment Period Status:</span>
                           <span class="value">{{app.cpStatus}}</span>
                         </li>
-                        <li class="p-0" *ngIf="app.currentPeriod">
-                          <span class="name">Comment Period Dates:</span>
-                          <span class="value">{{app.currentPeriod.startDate | date:'mediumDate'}} to {{app.currentPeriod.endDate | date:'mediumDate'}}
-                            <span *ngIf="app.currentPeriod['daysRemaining']">
-                              &nbsp;({{app.currentPeriod['daysRemaining'] + (app.currentPeriod['daysRemaining'] === 1 ? ' day ' : ' days ') + 'remaining'}})
-                            </span>
-                          </span>
-                        </li>
-                        <li class="p-0" *ngIf="app.currentPeriod">
-                          <span class="name">Comments Received:</span>
-                          <span class="value">{{app['numComments']}}</span>
-                        </li>
                         <li class="p-0">
                           <span class="name">Location:</span>
                           <span class="value">{{app.location || '-'}}</span>

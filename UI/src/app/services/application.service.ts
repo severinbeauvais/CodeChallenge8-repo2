@@ -9,19 +9,12 @@ import * as _ from 'lodash';
 
 import { ApiService } from './api';
 import { DocumentService } from './document.service';
-import { CommentPeriodService } from './commentperiod.service';
-import { CommentService } from './comment.service';
-import { DecisionService } from './decision.service';
-import { FeatureService } from './feature.service';
 
 import { Application } from 'app/models/application';
-import { CommentPeriod } from 'app/models/commentperiod';
 
 interface GetParameters {
   getFeatures?: boolean;
   getDocuments?: boolean;
-  getCurrentPeriod?: boolean;
-  getDecision?: boolean;
 }
 
 @Injectable()
@@ -47,11 +40,7 @@ export class ApplicationService {
 
   constructor(
     private api: ApiService,
-    private documentService: DocumentService,
-    private commentPeriodService: CommentPeriodService,
-    private commentService: CommentService,
-    private decisionService: DecisionService,
-    private featureService: FeatureService
+    private documentService: DocumentService
   ) { }
 
   // get count of applications
@@ -137,53 +126,13 @@ export class ApplicationService {
       .catch(error => this.api.handleError(error));
   }
 
-  private _getExtraAppData(application: Application, { getFeatures = false, getDocuments = false, getCurrentPeriod = false, getDecision = false }: GetParameters): Observable<Application> {
+  private _getExtraAppData(application: Application, { getFeatures = false, getDocuments = false }: GetParameters): Observable<Application> {
     return forkJoin(
-      getFeatures ? this.featureService.getByApplicationId(application._id) : of(null),
-      getDocuments ? this.documentService.getAllByApplicationId(application._id) : of(null),
-      getCurrentPeriod ? this.commentPeriodService.getAllByApplicationId(application._id) : of(null),
-      getDecision ? this.decisionService.getByApplicationId(application._id, { getDocuments: true }) : of(null)
+      getDocuments ? this.documentService.getAllByApplicationId(application._id) : of(null)
     )
       .map(payloads => {
-        if (getFeatures) {
-          application.features = payloads[0];
-        }
-
         if (getDocuments) {
-          application.documents = payloads[1];
-        }
-
-        if (getCurrentPeriod) {
-          const periods: Array<CommentPeriod> = payloads[2];
-          application.currentPeriod = this.commentPeriodService.getCurrent(periods);
-
-          // user-friendly comment period status
-          const cpStatusCode = this.commentPeriodService.getStatusCode(application.currentPeriod);
-          application.cpStatus = this.commentPeriodService.getStatusString(cpStatusCode);
-
-          // derive days remaining for display
-          // use moment to handle Daylight Saving Time changes
-          if (application.currentPeriod && this.commentPeriodService.isOpen(cpStatusCode)) {
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            application.currentPeriod['daysRemaining']
-              = moment(application.currentPeriod.endDate).diff(moment(today), 'days') + 1; // including today
-          }
-
-          // get the number of comments for the current comment period only
-          // multiple comment periods are currently not supported
-          if (application.currentPeriod) {
-            this.commentService.getCountByPeriodId(application.currentPeriod._id)
-              .subscribe(
-                numComments => {
-                  application['numComments'] = numComments;
-                }
-              );
-          }
-        }
-
-        if (getDecision) {
-          application.decision = payloads[3];
+          application.documents = payloads[0];
         }
 
         // 7-digit CL File number for display
@@ -228,10 +177,7 @@ export class ApplicationService {
     delete app._id;
 
     // don't send attached data (features, documents, etc)
-    delete app.features;
     delete app.documents;
-    delete app.currentPeriod;
-    delete app.decision;
 
     // replace newlines with \\n (JSON format)
     if (app.description) {
@@ -251,10 +197,7 @@ export class ApplicationService {
     const app = _.cloneDeep(orig);
 
     // don't send attached data (features, documents, etc)
-    delete app.features;
     delete app.documents;
-    delete app.currentPeriod;
-    delete app.decision;
 
     // replace newlines with \\n (JSON format)
     if (app.description) {

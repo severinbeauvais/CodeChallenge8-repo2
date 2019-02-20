@@ -59,7 +59,4 @@ export class HeaderComponent implements OnInit {
     this.isNavMenuOpen = !this.isNavMenuOpen;
   }
 
-  closeNav() {
-    this.isNavMenuOpen = false;
-  }
 }

@@ -15,7 +15,6 @@ import * as _ from 'lodash';
 
 import { Application } from 'app/models/application';
 import { ApplicationService } from 'app/services/application.service';
-import { CommentPeriodService } from 'app/services/commentperiod.service';
 
 @Component({
   selector: 'app-application-list',
@@ -36,8 +35,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
-    private applicationService: ApplicationService,
-    public commentPeriodService: CommentPeriodService
+    private applicationService: ApplicationService
   ) { }
 
   ngOnInit() {
@@ -52,7 +50,7 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
       });
 
     // get data
-    this.applicationService.getAll({ getCurrentPeriod: true })
+    this.applicationService.getAll()
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
         applications => {
@@ -108,9 +106,6 @@ export class ApplicationListComponent implements OnInit, OnDestroy {
   }
 
   public showThisApp(item: Application) {
-    const statusCode = item && this.commentPeriodService.getStatusCode(item.currentPeriod);
-    return !this.showOnlyOpenApps
-      || this.commentPeriodService.isOpen(statusCode)
-      || this.commentPeriodService.isNotStarted(statusCode);
+    return !this.showOnlyOpenApps;
   }
 }

@@ -4,8 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
 import { SearchComponent } from './search/search.component';
-import { AdministrationComponent } from './administration/administration.component';
-import { UsersComponent } from './administration/users/users.component';
 
 import { CanDeactivateGuard } from 'app/services/can-deactivate-guard.service';
 
@@ -13,14 +11,6 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
-  },
-  {
-    path: 'administration',
-    component: AdministrationComponent
-  },
-  {
-    path: 'administration/users',
-    component: UsersComponent
   },
   {
     path: 'not-authorized',

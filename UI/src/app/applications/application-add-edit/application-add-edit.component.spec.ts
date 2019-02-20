@@ -9,8 +9,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBar } from '@angular/material';
 import { ApiService } from 'app/services/api';
 import { ApplicationService } from 'app/services/application.service';
-import { CommentPeriodService } from 'app/services/commentperiod.service';
-import { DecisionService } from 'app/services/decision.service';
 import { DocumentService } from 'app/services/document.service';
 
 xdescribe('ApplicationAddEditComponent', () => {
@@ -26,8 +24,6 @@ xdescribe('ApplicationAddEditComponent', () => {
         { provide: MatSnackBar },
         { provide: ApiService },
         { provide: ApplicationService },
-        { provide: CommentPeriodService },
-        { provide: DecisionService },
         { provide: DocumentService },
       ]
     })

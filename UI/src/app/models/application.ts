@@ -1,8 +1,5 @@
 import * as _ from 'lodash';
-import { CommentPeriod } from './commentperiod';
-import { Decision } from './decision';
 import { Document } from './document';
-import { Feature } from './feature';
 
 export class Application {
   // the following are retrieved from the API
@@ -39,10 +36,7 @@ export class Application {
   isPublished = false; // depends on tags; see below
 
   // associated data
-  currentPeriod: CommentPeriod = null;
-  decision: Decision = null;
   documents: Array<Document> = [];
-  features: Array<Feature> = [];
 
   constructor(obj?: any) {
     this._id          = obj && obj._id          || null;
@@ -101,25 +95,10 @@ export class Application {
       }
     }
 
-    if (obj && obj.currentPeriod) {
-      this.currentPeriod = new CommentPeriod(obj.currentPeriod);
-    }
-
-    if (obj && obj.decision) {
-      this.decision = new Decision(obj.decision);
-    }
-
     // copy documents
     if (obj && obj.documents) {
       for (const doc of obj.documents) {
         this.documents.push(doc);
-      }
-    }
-
-    // copy features
-    if (obj && obj.features) {
-      for (const feature of obj.features) {
-        this.features.push(feature);
       }
     }
 

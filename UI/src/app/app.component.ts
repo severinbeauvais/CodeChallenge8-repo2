@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ConfigService } from './services/config.service';
 
 @Component({
   selector: 'app-root',
@@ -9,16 +8,10 @@ import { ConfigService } from './services/config.service';
 
 export class AppComponent implements OnInit, OnDestroy {
 
-  constructor(
-    private configService: ConfigService
-  ) { }
+  constructor() { }
 
-  ngOnInit() {
-    this.configService.init();
-  }
+  ngOnInit() { }
 
-  ngOnDestroy() {
-    this.configService.destroy();
-  }
+  ngOnDestroy() { }
 
 }

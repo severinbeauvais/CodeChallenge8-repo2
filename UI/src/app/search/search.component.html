@@ -87,21 +87,8 @@
         <tr class="app-comment-details" *ngIf="application['isCreated']">
           <td colspan="6">
             <span class="comment-info">
-              <span *ngIf="application['numComments'] > 0">
-                <strong>
-                  <a [routerLink]="['/comments', application._id]">{{application['numComments']}} {{application['numComments'] === 1 ? 'comment' : 'comments'}}</a>
-                </strong>
-                &nbsp;-&nbsp;
-              </span>
               <span>
                 {{application.cpStatus || 'Unknown'}}
-              </span>
-              <span *ngIf="application.currentPeriod">
-                &nbsp;-&nbsp;
-                {{application.currentPeriod.startDate | date:'longDate'}} to {{application.currentPeriod.endDate | date:'longDate'}}
-                <span *ngIf="application.currentPeriod['daysRemaining']">
-                  &nbsp;({{application.currentPeriod['daysRemaining'] + (application.currentPeriod['daysRemaining'] === 1 ? ' day ' : ' days ') + 'remaining'}})
-                </span>
               </span>
             </span>
           </td>

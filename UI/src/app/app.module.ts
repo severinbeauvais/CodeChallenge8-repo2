@@ -15,28 +15,17 @@ import { AppRoutingModule } from 'app/app-routing.module';
 
 // components
 import { AppComponent } from 'app/app.component';
-import { HomeComponent } from 'app/home/home.component';
 import { SearchComponent } from 'app/search/search.component';
 import { LoginComponent } from 'app/login/login.component';
 import { ConfirmComponent } from 'app/confirm/confirm.component';
 import { HeaderComponent } from 'app/header/header.component';
 import { FooterComponent } from 'app/footer/footer.component';
-import { AdministrationComponent } from 'app/administration/administration.component';
-import { UsersComponent } from 'app/administration/users/users.component';
-import { AddEditUserComponent } from 'app/administration/users/add-edit-user/add-edit-user.component';
 
 // services
-import { SearchService } from 'app/services/search.service';
-import { FeatureService } from 'app/services/feature.service';
 import { AuthenticationService } from 'app/services/authentication.service';
 import { ApplicationService } from 'app/services/application.service';
-import { CommentPeriodService } from 'app/services/commentperiod.service';
-import { CommentService } from 'app/services/comment.service';
 import { DocumentService } from 'app/services/document.service';
-import { DecisionService } from 'app/services/decision.service';
-import { UserService } from 'app/services/user.service';
 import { CanDeactivateGuard } from 'app/services/can-deactivate-guard.service';
-import { ConfigService } from 'app/services/config.service';
 import { KeycloakService } from 'app/services/keycloak.service';
 
 // feature modules
@@ -50,15 +39,11 @@ export function kcFactory(keycloakService: KeycloakService) {
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     SearchComponent,
     LoginComponent,
     ConfirmComponent,
     HeaderComponent,
     FooterComponent,
-    AdministrationComponent,
-    UsersComponent,
-    AddEditUserComponent,
     NotAuthorizedComponent
   ],
   imports: [
@@ -87,21 +72,13 @@ export function kcFactory(keycloakService: KeycloakService) {
       multi: true
     },
     CookieService,
-    SearchService,
-    FeatureService,
     AuthenticationService,
     ApplicationService,
-    CommentPeriodService,
-    CommentService,
     DocumentService,
-    DecisionService,
-    UserService,
-    CanDeactivateGuard,
-    ConfigService
+    CanDeactivateGuard
   ],
   entryComponents: [
-    ConfirmComponent,
-    AddEditUserComponent
+    ConfirmComponent
   ],
   bootstrap: [AppComponent]
 })
