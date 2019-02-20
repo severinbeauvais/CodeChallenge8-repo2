@@ -356,36 +356,23 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isSubmitSaveClicked = true;
 
     if (this.applicationForm.invalid) {
-      if (this.application.isPublished) {
-        this.dialogService.addDialog(ConfirmDialogComponent,
-          {
-            title: 'Cannot Publish Changes',
-            message: 'Please check for required fields or errors.',
-            okOnly: true
-          }, {
-            backdropColor: 'rgba(0, 0, 0, 0.5)'
-          })
-          .takeUntil(this.ngUnsubscribe);
-        return;
-      } else {
-        this.dialogService.addDialog(ConfirmDialogComponent,
-          {
-            title: 'Cannot Save Application',
-            message: 'Please check for required fields or errors.',
-            okOnly: true
-          }, {
-            backdropColor: 'rgba(0, 0, 0, 0.5)'
-          })
-          .takeUntil(this.ngUnsubscribe);
-        return;
-      }
-    }
-
-    if (this.application.isPublished && !this.application.description) {
       this.dialogService.addDialog(ConfirmDialogComponent,
         {
-          title: 'Cannot Publish Changes',
-          message: 'A description for this application is required to publish.',
+          title: 'Cannot Save Application',
+          message: 'Please check for required fields or errors.',
+          okOnly: true
+        }, {
+          backdropColor: 'rgba(0, 0, 0, 0.5)'
+        })
+        .takeUntil(this.ngUnsubscribe);
+      return;
+    }
+
+    if (!this.application.description) {
+      this.dialogService.addDialog(ConfirmDialogComponent,
+        {
+          title: 'Cannot Save Changes',
+          message: 'A description for this application is required to save.',
           okOnly: true
         }, {
           backdropColor: 'rgba(0, 0, 0, 0.5)'
@@ -449,15 +436,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   // (multi-part due to dependencies)
   private saveApplication2(application2: Application) {
     let observables = of(null);
-
-    // auto-publish application documents
-    if (application2.isPublished && application2.documents) {
-      for (const doc of application2.documents) {
-        if (!doc.isPublished) {
-          observables = observables.concat(this.documentService.publish(doc));
-        }
-      }
-    }
 
     observables
       .takeUntil(this.ngUnsubscribe)

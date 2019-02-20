@@ -14,24 +14,6 @@
           </button>
           <span title="You cannot edit a retired application"></span>
         </div>
-        <div class="btn-container">
-          <button class="btn btn-primary ml-1" type="button" title="Publish application"
-            *ngIf="!application.isPublished"
-            (click)="publishApplication()"
-            [disabled]="isPublishing || application.isRetired">
-            <i class="spinner rotating" [hidden]="!isPublishing"></i>
-            <span>{{isPublishing ? 'Publishing' : 'Publish'}}</span>
-          </button>
-          <span title="You cannot publish a retired application"></span>
-        </div>
-        <!-- NB: you CAN unpublish a retired application -->
-        <button class="btn btn-primary ml-1" type="button" title="Unpublish application"
-          *ngIf="application.isPublished"
-          (click)="unPublishApplication()"
-          [disabled]="isUnpublishing">
-          <i class="spinner rotating" [hidden]="!isUnpublishing"></i>
-          <span>{{isUnpublishing ? 'Unpublishing' : 'Unpublish'}}</span>
-        </button>
         <span class="vert-pipe">&nbsp;</span>
         <button class="btn btn-icon" title="Remove this application from ACRFD"
           (click)="deleteApplication()"
@@ -120,10 +102,6 @@
                       <span class="name">Total Area (hectares):</span>
                       <span class="value">{{application.areaHectares ? (application.areaHectares | number:'1.2-2') : '-'}}</span>
                     </li>
-                    <!-- <li *ngIf="application.publishDate">
-                      <span class="name">Initial Publish Date:</span>
-                      <span class="value">{{application.publishDate | date:'longDate'}}</span>
-                    </li> -->
                   </ul>
                 </section>
                 <section>

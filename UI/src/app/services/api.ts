@@ -78,6 +78,18 @@ export class ApiService {
   //
   // Applications
   //
+  // FUTURE: use this for paging
+  getCountApplications(): Observable<number> {
+    const queryString = `application?isDeleted=false`;
+    return this.http.head<HttpResponse<Object>>(`${this.pathAPI}/${queryString}`, { observe: 'response' })
+      .pipe(
+        map(res => {
+          // retrieve the count from the response headers
+          return parseInt(res.headers.get('x-total-count'), 10);
+        })
+      );
+  }
+
   getApplications(pageNum: number, pageSize: number): Observable<Application[]> {
     const fields = [
       'agency',
@@ -90,7 +102,6 @@ export class ApiService {
       'legalDescription',
       'location',
       'name',
-      'publishDate',
       'purpose',
       'status',
       'statusHistoryEffectiveDate',
@@ -120,7 +131,6 @@ export class ApiService {
       'legalDescription',
       'location',
       'name',
-      'publishDate',
       'purpose',
       'status',
       'statusHistoryEffectiveDate',
@@ -134,85 +144,10 @@ export class ApiService {
     return this.http.get<Application[]>(`${this.pathAPI}/${queryString}`, {});
   }
 
-  getCountApplications(): Observable<number> {
-    const queryString = `application?isDeleted=false`;
-    return this.http.head<HttpResponse<Object>>(`${this.pathAPI}/${queryString}`, { observe: 'response' })
-      .pipe(
-        map(res => {
-          // retrieve the count from the response headers
-          return parseInt(res.headers.get('x-total-count'), 10);
-        })
-      );
-  }
-
   // NB: returns array
-  getApplicationsByCrownLandID(clid: string): Observable<Application[]> {
-    const fields = [
-      'agency',
-      'areaHectares',
-      'businessUnit',
-      'centroid',
-      'cl_file',
-      'client',
-      'description',
-      'internal',
-      'legalDescription',
-      'location',
-      'name',
-      'publishDate',
-      'purpose',
-      'status',
-      'statusHistoryEffectiveDate',
-      'subpurpose',
-      'subtype',
-      'tantalisID',
-      'tenureStage',
-      'type'
-    ];
-    const queryString = `application?isDeleted=false&cl_file=${clid}&fields=${this.buildValues(fields)}`;
-    return this.http.get<Application[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  // NB: returns array with 1 element
-  getApplicationByTantalisId(tantalisId: number): Observable<Application[]> {
-    const fields = [
-      'agency',
-      'areaHectares',
-      'businessUnit',
-      'centroid',
-      'cl_file',
-      'client',
-      'description',
-      'legalDescription',
-      'location',
-      'name',
-      'publishDate',
-      'purpose',
-      'status',
-      'statusHistoryEffectiveDate',
-      'subpurpose',
-      'subtype',
-      'tantalisID',
-      'tenureStage',
-      'type'
-    ];
-    const queryString = `application?isDeleted=false&tantalisId=${tantalisId}&fields=${this.buildValues(fields)}`;
-    return this.http.get<Application[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
   addApplication(app: Application): Observable<Application> {
     const queryString = `application/`;
     return this.http.post<Application>(`${this.pathAPI}/${queryString}`, app, {});
-  }
-
-  publishApplication(app: Application): Observable<Application> {
-    const queryString = `application/${app._id}/publish`;
-    return this.http.put<Application>(`${this.pathAPI}/${queryString}`, app, {});
-  }
-
-  unPublishApplication(app: Application): Observable<Application> {
-    const queryString = `application/${app._id}/unpublish`;
-    return this.http.put<Application>(`${this.pathAPI}/${queryString}`, app, {});
   }
 
   deleteApplication(app: Application): Observable<Application> {
@@ -273,16 +208,6 @@ export class ApiService {
   deleteDocument(doc: Document): Observable<Document> {
     const queryString = `document/${doc._id}`;
     return this.http.delete<Document>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  publishDocument(doc: Document): Observable<Document> {
-    const queryString = `document/${doc._id}/publish`;
-    return this.http.put<Document>(`${this.pathAPI}/${queryString}`, doc, {});
-  }
-
-  unPublishDocument(doc: Document): Observable<Document> {
-    const queryString = `document/${doc._id}/unpublish`;
-    return this.http.put<Document>(`${this.pathAPI}/${queryString}`, doc, {});
   }
 
   uploadDocument(formData: FormData): Observable<Document> {

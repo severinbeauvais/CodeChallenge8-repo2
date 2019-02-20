@@ -82,14 +82,4 @@ export class DocumentService {
       .catch(error => this.api.handleError(error));
   }
 
-  publish(document: Document): Observable<Document> {
-    return this.api.publishDocument(document)
-      .catch(error => this.api.handleError(error));
-  }
-
-  unPublish(document: Document): Observable<Document> {
-    return this.api.unPublishDocument(document)
-      .catch(error => this.api.handleError(error));
-  }
-
 }
