@@ -7,9 +7,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBar } from '@angular/material';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { ApiService } from 'app/services/api';
-import { ApplicationService } from 'app/services/application.service';
-import { DocumentService } from 'app/services/document.service';
-import { Application } from 'app/models/application';
+import { SpeciesService } from 'app/services/application.service';
+import { Species } from 'app/models/species';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivatedRouteStub } from 'app/utils/helpers';
 
@@ -17,7 +16,7 @@ import { ActivatedRouteStub } from 'app/utils/helpers';
 describe('DetailComponent', () => {
   let component: DetailComponent;
   let fixture: ComponentFixture<DetailComponent>;
-  const existingApplication = new Application();
+  const existingApplication = new Species();
   const validRouteData = {application: existingApplication};
 
   const activatedRouteStub = new ActivatedRouteStub(validRouteData);
@@ -26,13 +25,6 @@ describe('DetailComponent', () => {
   };
 
   const applicationServiceStub = {
-    getRegionString() {
-      return 'Skeena, Smithers';
-    },
-
-    getRegionCode() {
-      return 'SK';
-    }
   };
 
   beforeEach(async(() => {
@@ -43,8 +35,7 @@ describe('DetailComponent', () => {
         { provide: MatSnackBar },
         { provide: ApiService },
         { provide: DialogService },
-        { provide: ApplicationService, useValue: applicationServiceStub },
-        { provide: DocumentService },
+        { provide: SpeciesService, useValue: applicationServiceStub },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: Router, useValue: routerSpy },
       ]

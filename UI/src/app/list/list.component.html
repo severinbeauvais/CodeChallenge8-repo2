@@ -5,14 +5,14 @@
 
   <main *ngIf="!loading">
     <section>
-      <h2>Crown Lands Applications in British Columbia</h2>
-      <p class="tab-intro">Use the list below to navigate to individual applications. Click on any application to go directly to its details page
-        or click <i class="material-icons open-icon" style="vertical-align: middle">arrow_drop_down</i> to expand the list item to see basic
-        information (e.g., Location, Description, etc.) about that application.</p>
+      <h2>Invasive Species in British Columbia</h2>
+      <p class="tab-intro">
+        Click on any row to go directly to its details page.
+      </p>
 
       <button class="btn btn-primary" [routerLink]="['/a/0/edit']">
         <i class="material-icons">add</i>
-        <span>Create New Application</span>
+        <span>Create New Entry</span>
       </button>
 
       <div class="application-list__options">
@@ -24,82 +24,57 @@
       <table class="table application-table">
         <thead class="application-table__sort-header">
           <tr>
-            <th class="application-table__name-col sortable" (click)="sort('applicants')">Applicant(s)
-              <i class="sort" [ngClass]="{'sort-asc': (column == 'applicants' && direction < 0), 'sort-desc': (column == 'applicants' && direction > 0) }" aria-hidden="true"></i>
+            <th class="application-table__name-col sortable" (click)="sort('category')">Category
+              <i class="sort" [ngClass]="{'sort-asc': (column == 'category' && direction < 0), 'sort-desc': (column == 'category' && direction > 0) }" aria-hidden="true"></i>
             </th>
-            <th class="application-table__cl_file-col sortable" (click)="sort('clFile')">CL File
-              <i class="sort" [ngClass]="{'sort-asc': (column == 'clFile' && direction < 0), 'sort-desc': (column == 'clFile' && direction > 0) }" aria-hidden="true"></i>
+            <th class="application-table__cl_file-col sortable" (click)="sort('commonName')">Common Name
+              <i class="sort" [ngClass]="{'sort-asc': (column == 'commonName' && direction < 0), 'sort-desc': (column == 'commonName' && direction > 0) }" aria-hidden="true"></i>
             </th>
-            <th class="application-table__purpose-col sortable" (click)="sort('purpose')">Purpose / Subpurpose
-              <i class="sort" [ngClass]="{'sort-asc': (column == 'purpose' && direction < 0), 'sort-desc': (column == 'purpose' && direction > 0) }" aria-hidden="true"></i>
+            <th class="application-table__purpose-col sortable" (click)="sort('latinName')">Latin Name
+              <i class="sort" [ngClass]="{'sort-asc': (column == 'latinName' && direction < 0), 'sort-desc': (column == 'latinName' && direction > 0) }" aria-hidden="true"></i>
             </th>
-            <th class="application-table__region-col sortable" (click)="sort('region')">Region
-              <i class="sort" [ngClass]="{'sort-asc': (column == 'region' && direction < 0), 'sort-desc': (column == 'region' && direction > 0) }" aria-hidden="true"></i>
-            </th>
-            <th class="application-table__status-col sortable" (click)="sort('appStatus')">Status
-              <i class="sort" [ngClass]="{'sort-asc': (column == 'appStatus' && direction < 0), 'sort-desc': (column == 'appStatus' && direction > 0) }" aria-hidden="true"></i>
-            </th>
-            <th class="application-table__commenting-col sortable" (click)="sort('cpStatus')">PRC Status
-              <i class="sort" [ngClass]="{'sort-asc': (column == 'cpStatus' && direction < 0), 'sort-desc': (column == 'cpStatus' && direction > 0) }" aria-hidden="true"></i>
+            <th class="application-table__region-col sortable" (click)="sort('dateIntroBC')">Date Introduced in BC
+              <i class="sort" [ngClass]="{'sort-asc': (column == 'dateIntroBC' && direction < 0), 'sort-desc': (column == 'dateIntroBC' && direction > 0) }" aria-hidden="true"></i>
             </th>
           </tr>
         </thead>
 
         <tbody class="application-table__content">
-          <ng-template ngFor let-app [ngForOf]="applications | orderBy: {property: column, direction: direction}">
-            <tr *ngIf="showThisApp(app)">
-              <td class="accordion__collapse-item p-0" colspan="6">
-                <div class="accordion__collapse-header" role="tab">
-                  <a role="button" class="accordion__collapse-header--column toggle collapsed" data-toggle="collapse" href="#accordCollapse{{app._id}}">
-                    <i class="material-icons open-icon">arrow_drop_down</i>
-                    <i class="material-icons close-icon">arrow_drop_up</i>
-                  </a>
-                  <span class="accordion__collapse-header--column application-table__name-col">{{app.applicants || '-'}}</span>
-                  <span class="accordion__collapse-header--column application-table__cl_file-col">
-                    <a [routerLink]="['/a', app._id]">{{app.clFile || '-'}}</a>
-                  </span>
-                  <span class="accordion__collapse-header--column application-table__purpose-col">{{app.purpose || '-'}} / {{app.subpurpose || '-'}}</span>
-                  <span class="accordion__collapse-header--column application-table__region-col">{{app.region || '-'}}</span>
-                  <span class="accordion__collapse-header--column application-table__status-col">{{app.appStatus || '-'}}</span>
-                  <span class="accordion__collapse-header--column application-table__commenting-col">{{app.cpStatus}}</span>
-                </div>
+          <ng-template ngFor let-item [ngForOf]="species | orderBy: {property: column, direction: direction}">
+            <tr *ngIf="showThisApp(item)">
+              <td colspan="6">
+                <a [routerLink]="['/a', item._id]">
+                  <span class="accordion__collapse-header--column application-table__name-col">{{item.category || '-'}}</span>
+                  <span class="accordion__collapse-header--column application-table__cl_file-col">{{item.commonName || '-'}}</span>
+                  <span class="accordion__collapse-header--column application-table__purpose-col">{{item.latinName || '-'}}</span>
+                  <span class="accordion__collapse-header--column application-table__region-col">{{item.dateIntroBC || '-'}}</span>
+                </a>
 
                 <div class="collapse" id="accordCollapse{{app._id}}" role="tabpanel">
                   <div class="accordion__collapse-body">
                     <div class="application-table__application-details">
                       <ul class="nv-list application-table__application-details--list">
-                        <!-- <li class="p-0">
-                          <span class="name">Type / Subtype:</span>
-                          <span class="value">{{app.type || '-'}} / {{app.subtype || '-'}}</span>
-                        </li> -->
                         <li class="p-0">
-                          <span class="name">Comment Period Status:</span>
-                          <span class="value">{{app.cpStatus}}</span>
+                          <span class="name">Category:</span>
+                          <span class="value">{{item.category}}</span>
                         </li>
                         <li class="p-0">
-                          <span class="name">Location:</span>
-                          <span class="value">{{app.location || '-'}}</span>
+                          <span class="name">Common Name:</span>
+                          <span class="value">{{item.commonName || '-'}}</span>
+                        </li>
+                        <li class="p-0">
+                          <span class="name">Latin Name:</span>
+                          <span class="value">{{item.latinName || '-'}}</span>
+                        </li>
+                        <li class="p-0">
+                          <span class="name">Date Introduced in BC:</span>
+                          <span class="value" [innerHTML]="(item.dateIntroBC | date:'longDate') || '-'"></span>
                         </li>
                         <li class="p-0">
                           <span class="name">Description:</span>
-                          <span class="value" [innerHTML]="(app.description | newlines) || '-'"></span>
+                          <span class="value" [innerHTML]="(item.description | newlines) || '-'"></span>
                         </li>
                       </ul>
-
-                      <div class="application-table__application-details--links">
-                        <a class="btn content-btn slide-l-btn btn-sm" [routerLink]="['/a', app._id]">
-                          <i class="material-icons">info_outline</i>
-                          <span>Application Details</span>
-                        </a>
-                        <a class="btn content-btn slide-l-btn btn-sm" [routerLink]="['/comments', app._id]">
-                          <i class="material-icons">message</i>
-                          <span>Review Comments</span>
-                        </a>
-                        <!-- <a class="btn content-btn slide-l-btn btn-sm float-right" [routerLink]="['/map', { application: app._id }]">
-                          <i class="material-icons">place</i>
-                          <span>Show on Map</span>
-                        </a> -->
-                      </div>
                     </div>
                   </div>
                 </div>

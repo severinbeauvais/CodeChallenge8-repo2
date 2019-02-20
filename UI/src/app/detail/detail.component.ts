@@ -8,10 +8,9 @@ import 'rxjs/add/operator/concat';
 import { of } from 'rxjs';
 
 import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
-import { Application } from 'app/models/application';
+import { Species } from 'app/models/species';
 import { ApiService } from 'app/services/api';
-import { ApplicationService } from 'app/services/application.service';
-import { DocumentService } from 'app/services/document.service';
+import { SpeciesService } from 'app/services/application.service';
 
 @Component({
   selector: 'app-detail',
@@ -24,7 +23,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   public isPublishing = false;
   public isUnpublishing = false;
   public isDeleting = false;
-  public application: Application = null;
+  public application: Species = null;
   private snackBarRef: MatSnackBarRef<SimpleSnackBar> = null;
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -34,8 +33,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     public snackBar: MatSnackBar,
     public api: ApiService, // also used in template
     private dialogService: DialogService,
-    public applicationService: ApplicationService, // also used in template
-    public documentService: DocumentService
+    public applicationService: SpeciesService // also used in template
   ) { }
 
   ngOnInit() {
@@ -43,11 +41,11 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.route.data
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
-        (data: { application: Application }) => {
-          if (data.application) {
-            this.application = data.application;
+        (data: { species: Species }) => {
+          if (data.species) {
+            this.application = data.species;
           } else {
-            alert('Uh-oh, couldn\'t load application');
+            alert('Uh-oh, couldn\'t load species');
             // application not found --> navigate back to search
             this.router.navigate(['/search']);
           }
@@ -67,7 +65,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.dialogService.addDialog(ConfirmDialogComponent,
       {
         title: 'Confirm Deletion',
-        message: 'Do you really want to delete this application?'
+        message: 'Do you really want to delete this species entry?'
       }, {
         backdropColor: 'rgba(0, 0, 0, 0.5)'
       })
@@ -84,20 +82,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   private internalDeleteApplication() {
     this.isDeleting = true;
 
-    let observables = of(null);
-
-    // delete application documents
-    if (this.application.documents) {
-      for (const doc of this.application.documents) {
-        observables = observables.concat(this.documentService.delete(doc));
-      }
-    }
-
-    // delete application
-    // do this last in case of prior failures
-    observables = observables.concat(this.applicationService.delete(this.application));
-
-    observables
+    this.applicationService.delete(this.application)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
         () => { // onNext
@@ -106,8 +91,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         error => {
           this.isDeleting = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t delete application');
-          // TODO: should fully reload application here so we have latest non-deleted objects
+          alert('Uh-oh, couldn\'t delete species');
         },
         () => { // onCompleted
           this.isDeleting = false;

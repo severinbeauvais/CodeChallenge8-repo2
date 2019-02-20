@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 
 import { KeycloakService } from 'app/services/keycloak.service';
 
-import { Application } from 'app/models/application';
+import { Species } from 'app/models/species';
 import { Document } from 'app/models/document';
 
 interface LocalLoginResponse {
@@ -39,7 +39,6 @@ export class ApiService {
     const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
     this.isMS = window.navigator.msSaveOrOpenBlob ? true : false;
-
     this.pathAPI = 'http://localhost:3000/api';
     this.env = 'local';
   }
@@ -76,10 +75,9 @@ export class ApiService {
   }
 
   //
-  // Applications
+  // Species
   //
-  // FUTURE: use this for paging
-  getCountApplications(): Observable<number> {
+  getCountSpeciesEntries(): Observable<number> {
     const queryString = `application?isDeleted=false`;
     return this.http.head<HttpResponse<Object>>(`${this.pathAPI}/${queryString}`, { observe: 'response' })
       .pipe(
@@ -90,50 +88,43 @@ export class ApiService {
       );
   }
 
-  getApplications(pageNum: number, pageSize: number): Observable<Application[]> {
+  getSpeciesEntries(pageNum: number, pageSize: number): Observable<Species[]> {
     const fields = [
-      'agency',
-      'areaHectares',
-      'businessUnit',
-      'centroid',
       'cl_file',
       'client',
-      'description',
-      'legalDescription',
       'location',
       'name',
       'purpose',
       'status',
-      'statusHistoryEffectiveDate',
       'subpurpose',
       'subtype',
       'tantalisID',
       'tenureStage',
-      'type'
+      'type',
+
+      'commonName',
+      'latinName',
+      'category',
+      'dateIntroBC',
+      'description',
+      'image'
     ];
     let queryString = 'application?isDeleted=false&';
     if (pageNum !== null) { queryString += `pageNum=${pageNum}&`; }
     if (pageSize !== null) { queryString += `pageSize=${pageSize}&`; }
     queryString += `fields=${this.buildValues(fields)}`;
-    return this.http.get<Application[]>(`${this.pathAPI}/${queryString}`, {});
+    return this.http.get<Species[]>(`${this.pathAPI}/${queryString}`, {});
   }
 
   // NB: returns array with 1 element
-  getApplication(id: string): Observable<Application[]> {
+  getSpecies(id: string): Observable<Species[]> {
     const fields = [
-      'agency',
-      'areaHectares',
-      'businessUnit',
-      'centroid',
       'cl_file',
       'client',
-      'description',
-      'legalDescription',
       'location',
       'name',
       'purpose',
       'status',
-      'statusHistoryEffectiveDate',
       'subpurpose',
       'subtype',
       'tantalisID',
@@ -141,75 +132,28 @@ export class ApiService {
       'type'
     ];
     const queryString = `application/${id}?isDeleted=false&fields=${this.buildValues(fields)}`;
-    return this.http.get<Application[]>(`${this.pathAPI}/${queryString}`, {});
+    return this.http.get<Species[]>(`${this.pathAPI}/${queryString}`, {});
   }
 
   // NB: returns array
-  addApplication(app: Application): Observable<Application> {
+  addSpecies(app: Species): Observable<Species> {
     const queryString = `application/`;
-    return this.http.post<Application>(`${this.pathAPI}/${queryString}`, app, {});
+    return this.http.post<Species>(`${this.pathAPI}/${queryString}`, app, {});
   }
 
-  deleteApplication(app: Application): Observable<Application> {
+  deleteSpecies(app: Species): Observable<Species> {
     const queryString = `application/${app._id}`;
-    return this.http.delete<Application>(`${this.pathAPI}/${queryString}`, {});
+    return this.http.delete<Species>(`${this.pathAPI}/${queryString}`, {});
   }
 
-  saveApplication(app: Application): Observable<Application> {
+  saveSpecies(app: Species): Observable<Species> {
     const queryString = `application/${app._id}`;
-    return this.http.put<Application>(`${this.pathAPI}/${queryString}`, app, {});
+    return this.http.put<Species>(`${this.pathAPI}/${queryString}`, app, {});
   }
 
   //
   // Documents
   //
-  getDocumentsByAppId(appId: string): Observable<Document[]> {
-    const fields = [
-      '_application',
-      'documentFileName',
-      'displayName',
-      'internalURL',
-      'internalMime'
-    ];
-    const queryString = `document?isDeleted=false&_application=${appId}&fields=${this.buildValues(fields)}`;
-    return this.http.get<Document[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  getDocumentsByCommentId(commentId: string): Observable<Document[]> {
-    const fields = [
-      '_comment',
-      'documentFileName',
-      'displayName',
-      'internalURL',
-      'internalMime'
-    ];
-    const queryString = `document?isDeleted=false&_comment=${commentId}&fields=${this.buildValues(fields)}`;
-    return this.http.get<Document[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  getDocumentsByDecisionId(decisionId: string): Observable<Document[]> {
-    const fields = [
-      '_decision',
-      'documentFileName',
-      'displayName',
-      'internalURL',
-      'internalMime'
-    ];
-    const queryString = `document?isDeleted=false&_decision=${decisionId}&fields=${this.buildValues(fields)}`;
-    return this.http.get<Document[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  // NB: returns array with 1 element
-  getDocument(id: string): Observable<Document[]> {
-    const queryString = `document/${id}`;
-    return this.http.get<Document[]>(`${this.pathAPI}/${queryString}`, {});
-  }
-
-  deleteDocument(doc: Document): Observable<Document> {
-    const queryString = `document/${doc._id}`;
-    return this.http.delete<Document>(`${this.pathAPI}/${queryString}`, {});
-  }
-
   uploadDocument(formData: FormData): Observable<Document> {
     const fields = [
       'documentFileName',

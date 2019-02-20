@@ -10,15 +10,13 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/concat';
-import * as moment from 'moment';
 import * as _ from 'lodash';
 
 import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
-import { Application } from 'app/models/application';
+import { Species } from 'app/models/species';
 import { Document } from 'app/models/document';
 import { ApiService } from 'app/services/api';
-import { ApplicationService } from 'app/services/application.service';
-import { DocumentService } from 'app/services/document.service';
+import { SpeciesService } from 'app/services/application.service';
 
 const DEFAULT_DAYS = 30;
 
@@ -35,13 +33,12 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public isSubmitSaveClicked = false;
   public isSubmitting = false;
   public isSaving = false;
-  public application: Application = null;
+  public application: Species = null;
   public startDate: NgbDateStruct = null;
   public endDate: NgbDateStruct = null;
   public delta: number; // # days (including today)
   private snackBarRef: MatSnackBarRef<SimpleSnackBar> = null;
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
-  private docsToDelete: Document[] = [];
   public applicationFiles: Array<File> = [];
 
   constructor(
@@ -50,9 +47,8 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     // private location: Location,
     public snackBar: MatSnackBar,
     public api: ApiService, // also also used in template
-    private applicationService: ApplicationService,
-    private dialogService: DialogService,
-    private documentService: DocumentService
+    private speciesService: SpeciesService,
+    private dialogService: DialogService
   ) {
     // if we have an URL fragment, save it for future scrolling
     router.events.subscribe(event => {
@@ -109,11 +105,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     }
 
-    // look for application or decision documents not yet removed from db
-    if (this.docsToDelete && this.docsToDelete.length > 0) {
-      return true;
-    }
-
     return false; // no unsaved items
   }
 
@@ -134,9 +125,9 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.route.data
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
-        (data: { application: Application }) => {
-          if (data.application) {
-            this.application = data.application;
+        (data: { species: Species }) => {
+          if (data.species) {
+            this.application = data.species;
 
             // add comment period if there isn't one already (not just on create but also on edit --
             // this will fix the situation where existing applications don't have a comment period)
@@ -146,7 +137,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
             this.endDate = this.dateToNgbDate(new Date());
             this.onEndDateChg(this.endDate);
           } else {
-            alert('Uh-oh, couldn\'t load application');
+            alert('Uh-oh, couldn\'t load species');
             // application not found --> navigate back to search
             this.router.navigate(['/search']);
           }
@@ -175,10 +166,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private dateToNgbDate(date: Date): NgbDateStruct {
     return date ? { 'year': date.getFullYear(), 'month': date.getMonth() + 1, 'day': date.getDate() } : null;
-  }
-
-  private ngbDateToDate(date: NgbDateStruct): Date {
-    return new Date(date.year, (date.month - 1), date.day);
   }
 
   // used in template
@@ -233,11 +220,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     if (doc && documents) { // safety check
       // remove doc from current list
       _.remove(documents, item => (item.documentFileName === doc.documentFileName));
-
-      if (doc._id) {
-        // save document for removal from db when application is saved
-        this.docsToDelete.push(doc);
-      }
     }
   }
 
@@ -262,7 +244,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isSubmitting = true;
 
     // add application
-    this.applicationService.add(this.application)
+    this.speciesService.add(this.application)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
         application2 => { // onNext
@@ -271,23 +253,23 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSubmitting = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t create application');
+          alert('Uh-oh, couldn\'t create species');
         }
       );
   }
 
   // this is part 2 of adding an application and all its objects
   // (multi-part due to dependencies)
-  private addApplication2(application2: Application) {
+  private addApplication2(application2: Species) {
     let observables = of(null);
 
     // add all application documents
-    if (this.application.documents) {
-      for (const doc of this.application.documents) {
-        doc['formData'].append('_application', application2._id); // set back-reference
-        observables = observables.concat(this.documentService.add(doc['formData']));
-      }
-    }
+    // if (this.application.documents) {
+    //   for (const doc of this.application.documents) {
+    //     doc['formData'].append('_application', application2._id); // set back-reference
+    //     observables = observables.concat(this.documentService.add(doc['formData']));
+    //   }
+    // }
 
     observables
       .takeUntil(this.ngUnsubscribe)
@@ -298,11 +280,11 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSubmitting = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t add application, part 2');
+          alert('Uh-oh, couldn\'t add species, part 2');
         },
         () => { // onCompleted
           // reload app with decision for next step
-          this.applicationService.getById(application2._id)
+          this.speciesService.getById(application2._id)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
               application3 => {
@@ -311,7 +293,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
               error => {
                 this.isSubmitting = false;
                 console.log('error =', error);
-                alert('Uh-oh, couldn\'t reload application, part 2');
+                alert('Uh-oh, couldn\'t reload species, part 2');
               }
             );
         }
@@ -320,7 +302,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // this is part 3 of adding an application and all its objects
   // (multi-part due to dependencies)
-  private addApplication3(application3: Application) {
+  private addApplication3(application3: Species) {
     let observables = of(null);
 
     observables
@@ -332,7 +314,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSubmitting = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t save application, part 3');
+          alert('Uh-oh, couldn\'t add species, part 3');
         },
         () => { // onCompleted
           // we don't need to reload data since we're navigating away below
@@ -385,23 +367,15 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let observables = of(null);
 
-    // delete staged application and decision documents
-    // NB: delete first and add below -- in case the user wants to simultaneously
-    //     delete an old doc and add a new doc with the same name
-    for (const doc of this.docsToDelete) {
-      observables = observables.concat(this.documentService.delete(doc));
-    }
-    this.docsToDelete = []; // assume delete succeeds
-
     // add any new application documents
-    if (this.application.documents) {
-      for (const doc of this.application.documents) {
-        if (!doc._id) {
-          doc['formData'].append('_application', this.application._id); // set back-reference
-          observables = observables.concat(this.documentService.add(doc['formData']));
-        }
-      }
-    }
+    // if (this.application.documents) {
+    //   for (const doc of this.application.documents) {
+    //     if (!doc._id) {
+    //       doc['formData'].append('_application', this.application._id); // set back-reference
+    //       observables = observables.concat(this.documentService.add(doc['formData']));
+    //     }
+    //   }
+    // }
 
     observables
       .takeUntil(this.ngUnsubscribe)
@@ -412,11 +386,11 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSaving = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t save application, part 1');
+          alert('Uh-oh, couldn\'t save species, part 1');
         },
         () => { // onCompleted
           // reload app with documents, current period and decision for next step
-          this.applicationService.getById(this.application._id, { getDocuments: true })
+          this.speciesService.getById(this.application._id)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
               application2 => {
@@ -425,7 +399,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
               error => {
                 this.isSaving = false;
                 console.log('error =', error);
-                alert('Uh-oh, couldn\'t reload application, part 1');
+                alert('Uh-oh, couldn\'t reload species, part 1');
               }
             );
         }
@@ -434,7 +408,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // this is part 2 of saving an application and all its objects
   // (multi-part due to dependencies)
-  private saveApplication2(application2: Application) {
+  private saveApplication2(application2: Species) {
     let observables = of(null);
 
     observables
@@ -446,11 +420,11 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSaving = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t save application, part 2');
+          alert('Uh-oh, couldn\'t save species, part 2');
         },
         () => { // onCompleted
           // reload app with decision for next step
-          this.applicationService.getById(application2._id)
+          this.speciesService.getById(application2._id)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
               application3 => {
@@ -459,7 +433,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
               error => {
                 this.isSaving = false;
                 console.log('error =', error);
-                alert('Uh-oh, couldn\'t reload application, part 2');
+                alert('Uh-oh, couldn\'t reload species, part 2');
               }
             );
         }
@@ -468,11 +442,11 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // this is part 3 of saving an application and all its objects
   // (multi-part due to dependencies)
-  private saveApplication3(application3: Application) {
+  private saveApplication3(application3: Species) {
     let observables = of(null);
 
     // save application
-    observables = observables.concat(this.applicationService.save(this.application));
+    observables = observables.concat(this.speciesService.save(this.application));
 
     observables
       .takeUntil(this.ngUnsubscribe)
@@ -483,7 +457,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSaving = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t save application, part 3');
+          alert('Uh-oh, couldn\'t save species, part 3');
         },
         () => { // onCompleted
           // we don't need to reload data since we're navigating away below

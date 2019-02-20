@@ -8,8 +8,7 @@ import { FileUploadComponent } from 'app/file-upload/file-upload.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBar } from '@angular/material';
 import { ApiService } from 'app/services/api';
-import { ApplicationService } from 'app/services/application.service';
-import { DocumentService } from 'app/services/document.service';
+import { SpeciesService } from 'app/services/application.service';
 
 xdescribe('AddEditComponent', () => {
   let component: AddEditComponent;
@@ -23,8 +22,7 @@ xdescribe('AddEditComponent', () => {
         { provide: DialogService },
         { provide: MatSnackBar },
         { provide: ApiService },
-        { provide: ApplicationService },
-        { provide: DocumentService },
+        { provide: SpeciesService }
       ]
     })
       .compileComponents();

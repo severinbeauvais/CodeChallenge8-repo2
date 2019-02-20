@@ -5,8 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatSlideToggleModule } from '@angular/material';
 import { OrderByPipe } from 'app/pipes/order-by.pipe';
 import { NewlinesPipe } from 'app/pipes/newlines.pipe';
-import { ApplicationService } from 'app/services/application.service';
-import { Application } from 'app/models/application';
+import { SpeciesService } from 'app/services/application.service';
+import { Species } from 'app/models/species';
 import { of } from 'rxjs';
 import { throwError } from 'rxjs';
 
@@ -25,7 +25,7 @@ describe('ListComponent', () => {
       declarations: [ListComponent, OrderByPipe, NewlinesPipe],
       imports: [RouterTestingModule, MatSlideToggleModule],
       providers: [
-        { provide: ApplicationService, useValue: applicationServiceStub }
+        { provide: SpeciesService, useValue: applicationServiceStub }
       ]
     })
       .compileComponents();
@@ -43,24 +43,24 @@ describe('ListComponent', () => {
 
   describe('when applications are returned from the service', () => {
     const existingApplications = [
-      new Application(),
-      new Application()
+      new Species(),
+      new Species()
     ];
 
     beforeEach(() => {
-      let applicationService = TestBed.get(ApplicationService);
+      let applicationService = TestBed.get(SpeciesService);
       spyOn(applicationService, 'getAll').and.returnValue(of(existingApplications));
     });
 
     it('sets the component application to the one from the route', () => {
       component.ngOnInit();
-      expect(component.applications).toEqual(existingApplications);
+      expect(component.species).toEqual(existingApplications);
     });
   });
 
   describe('when the application service throws an error', () => {
     beforeEach(() => {
-      let applicationService = TestBed.get(ApplicationService);
+      let applicationService = TestBed.get(SpeciesService);
       spyOn(applicationService, 'getAll').and.returnValue(throwError('Beep boop server error'));
     });
 

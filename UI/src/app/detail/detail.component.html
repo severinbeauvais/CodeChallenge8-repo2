@@ -2,8 +2,8 @@
   <div class="container">
     <div class="title-container">
       <div class="title-container__title">
-        <h1>Crown land File: {{application.clFile}}</h1>
-        <span class="title-container__sub text-muted">Disposition Transaction: {{application.tantalisID}}</span>
+        <h1>Species: {{application.commonName}}</h1>
+        <span class="title-container__sub text-muted">{{application.latinName}}</span>
       </div>
       <div class="title-container__actions">
         <div class="btn-container">
@@ -12,10 +12,9 @@
             [disabled]="application.isRetired">
             Edit
           </button>
-          <span title="You cannot edit a retired application"></span>
         </div>
         <span class="vert-pipe">&nbsp;</span>
-        <button class="btn btn-icon" title="Remove this application from ACRFD"
+        <button class="btn btn-icon" title="Remove this species entry"
           (click)="deleteApplication()"
           [disabled]="isDeleting">
           <i class="material-icons">
@@ -29,23 +28,6 @@
 
 <div class="bottom-container" *ngIf="application">
   <div class="container">
-    <ngb-alert type="primary" [dismissible]="false" *ngIf="application.retireDate && !application.isRetired">
-      <div class="alert-contents">
-        <i class="material-icons">warning</i>
-        <div class="alert-msg">
-          This application will be visible on the public website until {{application.retireDate | date:'longDate'}}.
-        </div>
-      </div>
-    </ngb-alert>
-    <ngb-alert type="warning" [dismissible]="false" *ngIf="application.retireDate && application.isRetired">
-      <div class="alert-contents">
-        <i class="material-icons">warning</i>
-        <div class="alert-msg">
-          This application was removed from the public website on {{application.retireDate | date:'longDate'}}.
-        </div>
-      </div>
-    </ngb-alert>
-
     <div class="row">
       <div class="col-md-8">
         <section class="main-card">
@@ -56,95 +38,45 @@
                 <i class="material-icons">
                   info
                 </i>
-                Application Information
+                Species Information
               </ng-template>
               <ng-template ngbTabContent>
                 <section>
                   <h2>Description</h2>
-                  <p class="mb-0" [innerHTML]="(application.description | newlines) || '<em>No application description available</em>'"></p>
+                  <p class="mb-0" [innerHTML]="(application.description | newlines) || '<em>No description available</em>'"></p>
                 </section>
                 <section>
                   <h2>Details</h2>
                   <ul class="nv-list">
                     <li>
-                      <span class="name">Applicant(s):</span>
-                      <span class="value">{{application.applicants || 'No Applicant on this File'}}</span>
+                      <span class="name">Category:</span>
+                      <span class="value">{{application.category|| '-'}}</span>
                     </li>
                     <li>
-                      <span class="name">Purpose/Subpurpose:</span>
-                      <span class="value">{{application.purpose || '-'}} / {{application.subpurpose || '-'}}</span>
+                      <span class="name">Common Name:</span>
+                      <span class="value">{{application.commonName|| '-'}}</span>
                     </li>
                     <li>
-                      <span class="name">Type / Subtype:</span>
-                      <span class="value">{{application.type || '-'}} / {{application.subtype || '-'}}</span>
+                      <span class="name">Latin Name:</span>
+                      <span class="value">{{application.latinName|| '-'}}</span>
                     </li>
                     <li>
-                      <span class="name">Stage:</span>
-                      <span class="value">{{application.tenureStage || '-'}}</span>
+                      <span class="name">Date Introduced in BC:</span>
+                      <span class="value" [innerHTML]="(item.dateIntroBC | date:'longDate') || '-'"></span>
                     </li>
                     <li>
-                      <span class="name">Agency:</span>
-                      <span class="value">{{application.agency || '-'}}</span>
-                    </li>
-                    <li>
-                      <span class="name">Business Unit:</span>
-                      <span class="value">{{application.businessUnit || '-'}}</span>
-                    </li>
-                    <li>
-                      <span class="name">Region:</span>
-                      <span class="value">{{applicationService.getRegionString(application.region) || '-'}}</span>
-                    </li>
-                    <li>
-                      <span class="name">Location:</span>
-                      <span class="value">{{application.location || '-'}}</span>
-                    </li>
-                    <li>
-                      <span class="name">Total Area (hectares):</span>
-                      <span class="value">{{application.areaHectares ? (application.areaHectares | number:'1.2-2') : '-'}}</span>
-                    </li>
-                  </ul>
+                        <span class="name">Description:</span>
+                        <span class="value" [innerHTML]="(item.description | newlines) || '-'"></span>
+                      </li>
+                    </ul>
                 </section>
-                <section>
-                  <h2>Documents</h2>
-                  <ul class="doc-list">
-                    <li *ngFor="let doc of application.documents">
-                      <span class="cell icon">
-                        <i class="material-icons link" (click)="api.openDocument(doc)">
-                          insert_drive_file
-                        </i>
-                      </span>
-                      <span class="cell name" [title]="doc.displayName || ''">
-                        <span class="cell__txt-content">
-                          <a (click)="api.openDocument(doc)">{{doc.documentFileName}}</a>
-                        </span>
-                      </span>
-                      <span class="cell actions">
-                      <button class="btn btn-icon" type="button" title="Download this document" (click)="api.downloadDocument(doc)">
-                          <i class="material-icons">file_download</i>
-                        </button>
-                      </span>
-                    </li>
-                    <li class="no-results" *ngIf="application.documents.length === 0">
-                      <em>No application documents</em>
-                    </li>
-                  </ul>
-                </section>
+
+                <!-- TODO: add species image/icon image here -->
+
               </ng-template>
             </ngb-tab>
           </ngb-tabset>
         </section>
-      </div>
-
-      <div class="col-md-4">
-        <div class="aside-card">
-          <h3 class="title">Application Status</h3>
-          <div class="body">
-            <div class="app-status">{{application.appStatus || '-'}}</div>
-            <div class="app-status__date text-muted" *ngIf="application.statusHistoryEffectiveDate">
-              Last updated on {{application.statusHistoryEffectiveDate | date:'longDate'}}
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>

@@ -1,7 +1,4 @@
 /*
- * This component is no longer supported (but it may still mostly work).
- * There is no route to this component but it can be navigated to directly.
- * Some developers might find this component useful for looking at data.
  * Known issues:
  * - the accordion collapse is broken because it needs jQuery (which has since been removed)
  */
@@ -13,8 +10,8 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import * as _ from 'lodash';
 
-import { Application } from 'app/models/application';
-import { ApplicationService } from 'app/services/application.service';
+import { Species } from 'app/models/species';
+import { SpeciesService } from 'app/services/application.service';
 
 @Component({
   selector: 'app-list',
@@ -26,7 +23,7 @@ export class ListComponent implements OnInit, OnDestroy {
   public loading = true;
   private paramMap: ParamMap = null;
   public showOnlyOpenApps: boolean;
-  public applications: Array<Application> = [];
+  public species: Array<Species> = [];
   public column: string = null;
   public direction = 0;
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
@@ -35,7 +32,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
-    private applicationService: ApplicationService
+    private applicationService: SpeciesService
   ) { }
 
   ngOnInit() {
@@ -49,18 +46,18 @@ export class ListComponent implements OnInit, OnDestroy {
         this.resetFilters();
       });
 
-    // get data
+    // get all species entries
     this.applicationService.getAll()
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
-        applications => {
+        species => {
           this.loading = false;
-          this.applications = applications;
+          this.species = species;
         },
         error => {
           this.loading = false;
           console.log(error);
-          alert('Uh-oh, couldn\'t load applications');
+          alert('Uh-oh, couldn\'t load species entries');
           // applications not found --> navigate back to home
           this.router.navigate(['/']);
         }
@@ -105,7 +102,7 @@ export class ListComponent implements OnInit, OnDestroy {
     this.saveFilters();
   }
 
-  public showThisApp(item: Application) {
+  public showThisApp(item: Species) {
     return !this.showOnlyOpenApps;
   }
 }
