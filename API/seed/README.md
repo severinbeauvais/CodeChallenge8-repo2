@@ -5,7 +5,8 @@
 
 ## How to Mongo Export
 
-1. Change to folder to export the files to, eg
+1. Open a BASH shell.
+1. Change directories to the folder to export the files to, eg
 ``cd /c/Users/severin/Desktop/``
 1. Export the 'species' collection:
 ``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoexport -h localhost:27017 -d seism --collection species --out species.json``
@@ -14,6 +15,7 @@
 
 ## How to Mongo Import
 
+1. Open a BASH shell.
 1. Change directories to the folder where the files to be imported are stored, eg
 ``cd /c/Users/severin/Desktop/``
 1. Run the following command to import the 'species' collection:
