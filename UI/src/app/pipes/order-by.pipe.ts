@@ -27,13 +27,16 @@ export class OrderByPipe implements PipeTransform {
         bCompare = self.coalesce(bCompare[0]);
 
       } else if (typeof aCompare === 'object' || typeof bCompare === 'object') {
-        // put undefined values first
-        // MBL TODO: Assume name for sub-property.  Fix this to be more generic.
-        if (aCompare.name === undefined) { return +args.direction; }
-        if (bCompare.name === undefined) { return -args.direction; }
+        // fall through for dates, which can be compared directly
+        if (!(aCompare instanceof Date) && !(bCompare instanceof Date)) {
+          // put undefined values first
+          if (aCompare.name === undefined) { return +args.direction; }
+          if (bCompare.name === undefined) { return -args.direction; }
 
-        aCompare = self.coalesce(aCompare.name);
-        bCompare = self.coalesce(bCompare.name);
+          // TODO: Don't assume name for sub-property -- fix this to be more generic.
+          aCompare = self.coalesce(aCompare.name);
+          bCompare = self.coalesce(bCompare.name);
+        }
       }
 
       if (aCompare < bCompare) { return -args.direction; }
