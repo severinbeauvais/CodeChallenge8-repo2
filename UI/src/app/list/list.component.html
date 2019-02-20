@@ -7,12 +7,13 @@
     <section>
       <h2>Invasive Species in British Columbia</h2>
       <p class="tab-intro">
-        Click on any row to go directly to its details page.
+        Click on any row to go to its detailed view.
       </p>
 
+      <!-- TODO: add ngIf for admin only -->
       <button class="btn btn-primary" [routerLink]="['/a/0/edit']">
         <i class="material-icons">add</i>
-        <span>Create New Entry</span>
+        <span>Create New Library Item</span>
       </button>
 
       <div class="application-list__options">

@@ -7,19 +7,19 @@
       </div>
       <div class="title-container__actions">
         <div class="btn-container">
-          <button class="btn btn-light" type="button" title="Edit application"
-            [routerLink]="['/a', application._id, 'edit']"
-            [disabled]="application.isRetired">
-            Edit
+          <button class="btn btn-light" type="button" title="Edit this species"
+            [routerLink]="['/a', application._id, 'edit']">
+            Edit Item
           </button>
         </div>
+
         <span class="vert-pipe">&nbsp;</span>
-        <button class="btn btn-icon" title="Remove this species entry"
+
+        <button class="btn btn-icon" title="Remove this species"
           (click)="deleteApplication()"
           [disabled]="isDeleting">
-          <i class="material-icons">
-            delete
-          </i>
+          <i class="material-icons">delete</i>
+          Delete Item
         </button>
       </div>
     </div>
