@@ -24,7 +24,3 @@ In order to run this application, you need to launch the following:
 1. MongoDB (see API documentation for details)
 2. API component
 3. UI component
-
-TODO
-Instructions for running each component can be found **provide links**. * *
-Add Kirsten's user flow diagram * *
