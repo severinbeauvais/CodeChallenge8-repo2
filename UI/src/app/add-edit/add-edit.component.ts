@@ -113,10 +113,9 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.species._id) {
       // go to details page
-      this.router.navigate(['/a', this.species._id]);
+      this.router.navigate(['/species', this.species._id]);
     } else {
-      // go to search page
-      this.router.navigate(['/search']);
+      this.router.navigate(['/']); // navigate back to home
     }
   }
 
@@ -318,7 +317,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           }
 
           // add succeeded --> navigate to details page
-          this.router.navigate(['/a', species3._id]);
+          this.router.navigate(['/species', species3._id]);
         }
       );
   }
@@ -467,7 +466,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           }
 
           // save succeeded --> navigate to details page
-          this.router.navigate(['/a', species3._id]);
+          this.router.navigate(['/species', species3._id]);
         }
       );
   }

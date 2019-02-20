@@ -20,21 +20,21 @@ const routes: Routes = [
     component: NotAuthorizedComponent
   },
   {
-    path: 'applications',
+    path: 'species',
     component: ListComponent
   },
   {
-    path: 'a/:id',
+    path: 'species/:id',
     component: DetailComponent,
     resolve: {
-      application: SpeciesResolver
+      species: SpeciesResolver
     }
   },
   {
-    path: 'a/:appId/edit',
+    path: 'species/:id/edit',
     component: AddEditComponent,
     resolve: {
-      application: SpeciesResolver
+      species: SpeciesResolver
     },
     canDeactivate: [CanDeactivateGuard]
   },
@@ -59,6 +59,7 @@ const routes: Routes = [
     RouterModule
   ],
   providers: [
+    SpeciesResolver,
     CanDeactivateGuard
   ]
 })

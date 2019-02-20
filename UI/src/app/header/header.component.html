@@ -1,6 +1,6 @@
 <header class="app-header app-header--solid" id="header">
   <nav class="navbar navbar-expand-md justify-content-between">
-    <a class="navbar-brand" title="Invasive Species System Build " routerLink="/home">
+    <a class="navbar-brand" title="Invasive Species System Build " routerLink="/">
       <span class="navbar-brand__title">Invasive Species<span class="wb">System Build </span></span>
     </a>
     <button class="navbar-toggler" type="button" title="Toggle Main Navigation"
@@ -14,8 +14,8 @@
     <div class="navbar-collapse" [@toggleNav]="isNavMenuOpen ? 'navOpen' : 'navClosed'" id="mainNav">
       <ul class="navbar-nav">
         <li *ngIf="jwt" class="nav-item">
-          <a class="nav-link" routerLink="/search" title="Search Tantalis for applications" tabindex="0">
-            <span>Find Applications</span>
+          <a class="nav-link" routerLink="/species" title="List invasive species" tabindex="0">
+            <span>List Invasive Species</span>
           </a>
         </li>
 

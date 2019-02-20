@@ -68,25 +68,29 @@ export class DetailComponent implements OnInit, OnDestroy {
       .subscribe(
         isConfirmed => {
           if (isConfirmed) {
-            this.isDeleting = true;
-
-            this.speciesService.delete(this.species)
-              .takeUntil(this.ngUnsubscribe)
-              .subscribe(
-                () => { // onNext
-                  // do nothing here - see onCompleted() function below
-                },
-                error => {
-                  this.isDeleting = false;
-                  console.log('error =', error);
-                  alert('Error deleting species');
-                },
-                () => { // onCompleted
-                  this.isDeleting = false;
-                  this.router.navigate(['/']); // navigate back to home
-                }
-              );
+            this.internalDeleteSpecies();
           }
+        }
+      );
+  }
+
+  private internalDeleteSpecies() {
+    this.isDeleting = true;
+
+    this.speciesService.delete(this.species)
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe(
+        () => { // onNext
+          // do nothing here - see onCompleted() function below
+        },
+        error => {
+          this.isDeleting = false;
+          console.log('error =', error);
+          alert('Error deleting species');
+        },
+        () => { // onCompleted
+          this.isDeleting = false;
+          this.router.navigate(['/']); // navigate back to home
         }
       );
   }

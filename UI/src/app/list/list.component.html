@@ -11,7 +11,7 @@
       </p>
 
       <!-- TODO: add ngIf for admin only -->
-      <button class="btn btn-primary" [routerLink]="['/a/0/edit']">
+      <button class="btn btn-primary" [routerLink]="['/species/0/edit']">
         <i class="material-icons">add</i>
         <span>Create New Library Item</span>
       </button>
@@ -44,7 +44,7 @@
           <ng-template ngFor let-item [ngForOf]="species | orderBy: {property: column, direction: direction}">
             <tr *ngIf="showThisApp(item)">
               <td colspan="6">
-                <a [routerLink]="['/a', item._id]">
+                <a [routerLink]="['/species', item._id]">
                   <span class="accordion__collapse-header--column application-table__name-col">{{item.category || '-'}}</span>
                   <span class="accordion__collapse-header--column application-table__cl_file-col">{{item.commonName || '-'}}</span>
                   <span class="accordion__collapse-header--column application-table__purpose-col">{{item.latinName || '-'}}</span>
