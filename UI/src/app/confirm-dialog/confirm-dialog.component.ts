@@ -8,11 +8,11 @@ export interface DataModel {
 }
 
 @Component({
-  templateUrl: './confirm.component.html',
-  styleUrls: ['./confirm.component.scss']
+  templateUrl: './confirm-dialog.component.html',
+  styleUrls: ['./confirm-dialog.component.scss']
 })
 
-export class ConfirmComponent extends DialogComponent<DataModel, boolean> implements DataModel {
+export class ConfirmDialogComponent extends DialogComponent<DataModel, boolean> implements DataModel {
   title = 'Confirm';
   message = 'Are you sure?';
   okOnly = false;

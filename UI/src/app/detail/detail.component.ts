@@ -7,7 +7,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/concat';
 import { of } from 'rxjs';
 
-import { ConfirmComponent } from 'app/confirm/confirm.component';
+import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
 import { Application } from 'app/models/application';
 import { ApiService } from 'app/services/api';
 import { ApplicationService } from 'app/services/application.service';
@@ -65,7 +65,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   public deleteApplication() {
     if (this.application['numComments'] > 0) {
-      this.dialogService.addDialog(ConfirmComponent,
+      this.dialogService.addDialog(ConfirmDialogComponent,
         {
           title: 'Cannot Delete Application',
           message: 'An application with submitted comments cannot be deleted.',
@@ -78,7 +78,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     }
 
     if (this.application.isPublished) {
-      this.dialogService.addDialog(ConfirmComponent,
+      this.dialogService.addDialog(ConfirmDialogComponent,
         {
           title: 'Cannot Delete Application',
           message: 'Please unpublish application first.',
@@ -90,7 +90,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.dialogService.addDialog(ConfirmComponent,
+    this.dialogService.addDialog(ConfirmDialogComponent,
       {
         title: 'Confirm Deletion',
         message: 'Do you really want to delete this application?'
@@ -145,7 +145,7 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   public publishApplication() {
     if (!this.application.description) {
-      this.dialogService.addDialog(ConfirmComponent,
+      this.dialogService.addDialog(ConfirmDialogComponent,
         {
           title: 'Cannot Publish Application',
           message: 'A description for this application is required to publish.',
@@ -157,7 +157,7 @@ export class DetailComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.dialogService.addDialog(ConfirmComponent,
+    this.dialogService.addDialog(ConfirmDialogComponent,
       {
         title: 'Confirm Publish',
         message: 'Publishing this application will make it visible to the public. Are you sure you want to proceed?'

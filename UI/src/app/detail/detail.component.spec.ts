@@ -11,7 +11,7 @@ import { ApplicationService } from 'app/services/application.service';
 import { DocumentService } from 'app/services/document.service';
 import { Application } from 'app/models/application';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ActivatedRouteStub } from 'app/spec/helpers';
+import { ActivatedRouteStub } from 'app/utils/helpers';
 
 
 describe('DetailComponent', () => {

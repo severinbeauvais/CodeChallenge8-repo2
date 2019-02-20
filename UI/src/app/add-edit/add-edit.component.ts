@@ -13,7 +13,7 @@ import 'rxjs/add/operator/concat';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 
-import { ConfirmComponent } from 'app/confirm/confirm.component';
+import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
 import { Application } from 'app/models/application';
 import { Document } from 'app/models/document';
 import { ApiService } from 'app/services/api';
@@ -88,7 +88,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // otherwise prompt the user with observable (asynchronous) dialog
-    return this.dialogService.addDialog(ConfirmComponent,
+    return this.dialogService.addDialog(ConfirmDialogComponent,
       {
         title: 'Unsaved Changes',
         message: 'Click OK to discard your changes or Cancel to return to the application.'
@@ -247,7 +247,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     this.isSubmitSaveClicked = true;
 
     if (this.applicationForm.invalid) {
-      this.dialogService.addDialog(ConfirmComponent,
+      this.dialogService.addDialog(ConfirmDialogComponent,
         {
           title: 'Cannot Create Application',
           message: 'Please check for required fields or errors.',
@@ -357,7 +357,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.applicationForm.invalid) {
       if (this.application.isPublished) {
-        this.dialogService.addDialog(ConfirmComponent,
+        this.dialogService.addDialog(ConfirmDialogComponent,
           {
             title: 'Cannot Publish Changes',
             message: 'Please check for required fields or errors.',
@@ -368,7 +368,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           .takeUntil(this.ngUnsubscribe);
         return;
       } else {
-        this.dialogService.addDialog(ConfirmComponent,
+        this.dialogService.addDialog(ConfirmDialogComponent,
           {
             title: 'Cannot Save Application',
             message: 'Please check for required fields or errors.',
@@ -382,7 +382,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     if (this.application.isPublished && !this.application.description) {
-      this.dialogService.addDialog(ConfirmComponent,
+      this.dialogService.addDialog(ConfirmDialogComponent,
         {
           title: 'Cannot Publish Changes',
           message: 'A description for this application is required to publish.',
