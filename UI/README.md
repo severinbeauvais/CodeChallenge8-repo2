@@ -1,6 +1,6 @@
 # Code Challenge 8 UI Project
 
-This project is the UI (front end) component of the applications.
+This project is the UI (front end) component of the SEISM web application.
 
 ## Pre-requisites
 
