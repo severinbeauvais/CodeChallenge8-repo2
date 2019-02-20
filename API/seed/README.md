@@ -14,9 +14,9 @@
 
 ## How to Mongo Import
 
-1. Change to folder to import the files from, eg
+1. Change directories to the folder where the files to be imported are stored, eg
 ``cd /c/Users/severin/Desktop/``
-1. Import the 'species' collection:
+1. Run the following command to import the 'species' collection:
 ``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d seism --drop --collection species species.json``
-1. Import the 'users' collection:
+1. Run the following command to import the 'users' collection:
 ``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d seism --drop --collection users users.json``
