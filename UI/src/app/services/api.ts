@@ -97,7 +97,7 @@ export class ApiService {
       'description',
       'image'
     ];
-    let queryString = 'application?isDeleted=false&';
+    let queryString = 'application?';
     if (pageNum !== null) { queryString += `pageNum=${pageNum}&`; }
     if (pageSize !== null) { queryString += `pageSize=${pageSize}&`; }
     queryString += `fields=${this.buildValues(fields)}`;
@@ -105,7 +105,7 @@ export class ApiService {
   }
 
   // NB: returns array with 1 element
-  getSpecies(id: string): Observable<Species[]> {
+  getSpeciesEntry(id: string): Observable<Species[]> {
     const fields = [
       'commonName',
       'latinName',
@@ -114,7 +114,7 @@ export class ApiService {
       'description',
       'image'
     ];
-    const queryString = `application/${id}?isDeleted=false&fields=${this.buildValues(fields)}`;
+    const queryString = `application/${id}?fields=${this.buildValues(fields)}`;
     return this.http.get<Species[]>(`${this.pathAPI}/${queryString}`, {});
   }
 

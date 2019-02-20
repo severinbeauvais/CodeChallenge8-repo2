@@ -41,7 +41,7 @@ export class SpeciesService {
 
   // get a specific species entry by its object id
   getById(id: string): Observable<Species> {
-    return this.api.getSpecies(id)
+    return this.api.getSpeciesEntry(id)
       .map(res => {
         if (res && res.length > 0) {
           // return the first (only) species entry

@@ -1,5 +1,4 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { DetailComponent } from './detail.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NewlinesPipe } from 'app/pipes/newlines.pipe';
@@ -11,7 +10,6 @@ import { SpeciesService } from 'app/services/species.service';
 import { Species } from 'app/models/species';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivatedRouteStub } from 'app/utils/helpers';
-
 
 describe('DetailComponent', () => {
   let component: DetailComponent;
@@ -69,9 +67,9 @@ describe('DetailComponent', () => {
       activatedRouteStub.setData({something: 'went wrong'});
     });
 
-    it('redirects to /search', () => {
+    it('redirects to /', () => {
       component.ngOnInit();
-      expect(routerSpy.navigate).toHaveBeenCalledWith(['/search']);
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
     });
   });
 });

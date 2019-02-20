@@ -41,7 +41,7 @@ describe('ListComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('when applications are returned from the service', () => {
+  describe('when species are returned from the service', () => {
     const existingSpeciesArray = [
       new Species(),
       new Species()
@@ -52,13 +52,13 @@ describe('ListComponent', () => {
       spyOn(speciesService, 'getAll').and.returnValue(of(existingSpeciesArray));
     });
 
-    it('sets the component application to the one from the route', () => {
+    it('sets the component species to the one from the route', () => {
       component.ngOnInit();
       expect(component.species).toEqual(existingSpeciesArray);
     });
   });
 
-  describe('when the application service throws an error', () => {
+  describe('when the species service throws an error', () => {
     beforeEach(() => {
       let speciesService = TestBed.get(SpeciesService);
       spyOn(speciesService, 'getAll').and.returnValue(throwError('Beep boop server error'));
