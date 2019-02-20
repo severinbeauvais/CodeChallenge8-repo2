@@ -90,18 +90,6 @@ export class ApiService {
 
   getSpeciesEntries(pageNum: number, pageSize: number): Observable<Species[]> {
     const fields = [
-      'cl_file',
-      'client',
-      'location',
-      'name',
-      'purpose',
-      'status',
-      'subpurpose',
-      'subtype',
-      'tantalisID',
-      'tenureStage',
-      'type',
-
       'commonName',
       'latinName',
       'category',
@@ -119,17 +107,12 @@ export class ApiService {
   // NB: returns array with 1 element
   getSpecies(id: string): Observable<Species[]> {
     const fields = [
-      'cl_file',
-      'client',
-      'location',
-      'name',
-      'purpose',
-      'status',
-      'subpurpose',
-      'subtype',
-      'tantalisID',
-      'tenureStage',
-      'type'
+      'commonName',
+      'latinName',
+      'category',
+      'dateIntroBC',
+      'description',
+      'image'
     ];
     const queryString = `application/${id}?isDeleted=false&fields=${this.buildValues(fields)}`;
     return this.http.get<Species[]>(`${this.pathAPI}/${queryString}`, {});

@@ -1,11 +1,13 @@
 {
-  "name": "nrts-prc-api",
-  "version": "1.0.7",
-  "author": "Mark Lisé",
+  "name": "seism-api",
+  "version": "1.0.0",
+  "author": "Quartech Systems",
   "contributors": [
-    "Mark Lisé <mark@digitalspace.ca>"
+    "Séverin Beauvais <severin.beauvais@quartech.com>",
+    "Elizabeth Wolfe <elizabeth.wolfe@quartech.com>",
+    "Kirsten Dodd <kirsten@heynova.io>"
   ],
-  "description": "ACRFD API",
+  "description": "SEISM API",
   "keywords": [],
   "license": "Apache 2.0",
   "main": "app",

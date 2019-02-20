@@ -46,7 +46,7 @@ exports.verifyToken = function(req, authOrSecDef, token, callback) {
         }
       });
     } else {
-      defaultLog.info("proceeding with local JWT verification:", tokenString);
+      defaultLog.info("Proceeding with local JWT verification:", tokenString);
       _verifySecret(currentScopes, tokenString, SECRET, req, callback, sendError);
     }
   } else {
@@ -100,9 +100,7 @@ function _verifySecret (currentScopes, tokenString, secret, req, callback, sendE
   });
 }
 
-exports.issueToken = function(user,
-                              deviceId,
-                              scopes) {
+exports.issueToken = function(user, deviceId, scopes) {
   defaultLog.info("user:",user);
   defaultLog.info("deviceId:",deviceId);
   defaultLog.info("scopes:",scopes);
@@ -145,10 +143,9 @@ exports.setPassword = function (user) {
   user.salt = bcrypt.genSaltSync(16);
   user.password = hashPassword(user, user.password);
   return user;
-}
-/**
- * Create instance method for authenticating user
- */
+};
+
+// Create instance method for authenticating user
 var authenticate = function (user, password) {
   defaultLog.info("HASH:", hashPassword(user, password));
   defaultLog.info("user.password:", user.password);

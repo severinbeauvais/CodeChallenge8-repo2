@@ -12,7 +12,7 @@ To provide
 -- architecture, assumptions, etc - based on Angular tutorial / PRC - README #3
 -- code documentation
 -- database schema
--- Swagger doc!
+-- Swagger API doc (http://localhost:3000/api/docs/#/)
 -- test scripts
 -- spreadsheet of manual test results (IN PROGRESS)
 -- screen capture / report of automated test results (or how to run)

@@ -1,15 +1,10 @@
 "use strict";
 
 var app           = require("express")();
-var fs            = require('fs');
-var uploadDir     = process.env.UPLOAD_DIRECTORY || "./uploads/";
 var hostname      = process.env.API_HOSTNAME || "localhost:3000";
 var swaggerTools  = require("swagger-tools");
 var YAML          = require("yamljs");
 var mongoose      = require("mongoose");
-var passport      = require("passport");
-var auth          = require("./api/helpers/auth");
-var models        = require("./api/helpers/models");
 var swaggerConfig = YAML.load("./api/swagger/swagger.yaml");
 var winston       = require('winston');
 var bodyParser    = require('body-parser');
@@ -17,7 +12,7 @@ var bodyParser    = require('body-parser');
 var dbConnection  = 'mongodb://'
                     + (process.env.MONGODB_SERVICE_HOST || process.env.DB_1_PORT_27017_TCP_ADDR || 'localhost')
                     + '/'
-                    + (process.env.MONGODB_DATABASE || 'nrts-dev');
+                    + (process.env.MONGODB_DATABASE || 'seism');
 var db_username = process.env.MONGODB_USERNAME || '';
 var db_password = process.env.MONGODB_PASSWORD || '';
 
@@ -62,7 +57,7 @@ if (hostname !== 'localhost:3000') {
 swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
   app.use(middleware.swaggerMetadata());
 
-  // TODO: Fix this
+  // TODO: fix this
   // app.use(middleware.swaggerValidator({ validateResponse: false}));
 
   // app.use(
@@ -80,15 +75,6 @@ swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
 
   app.use(middleware.swaggerUi({apiDocs: '/api/docs', swaggerUi: '/api/docs'}));
 
-  // Make sure uploads directory exists
-  try {
-    if (!fs.existsSync(uploadDir)){
-        fs.mkdirSync(uploadDir);
-    }
-  } catch (e) {
-    // Fall through - uploads will continue to fail until this is resolved locally.
-    defaultLog.info("Couldn't create upload folder:", e);
-  }
   // Load up DB
   var options = {
     useMongoClient: true,
@@ -104,21 +90,15 @@ swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
     socketTimeoutMS: 45000 // Close sockets after 45 seconds of inactivity
   };
   defaultLog.info("Connecting to:", dbConnection);
-  mongoose.Promise  = global.Promise;
+  mongoose.Promise  = global.Promise;  
   var db = mongoose.connect(dbConnection, options).then(
     () => {
       defaultLog.info("Database connected");
 
       // Load database models
       defaultLog.info("loading db models.");
-      require('./api/helpers/models/user');
-      require('./api/helpers/models/application');
-      require('./api/helpers/models/feature');
+      require('./api/helpers/models/species');
       require('./api/helpers/models/document');
-      require('./api/helpers/models/comment');
-      require('./api/helpers/models/commentperiod');
-      require('./api/helpers/models/decision');
-      require('./api/helpers/models/review');
       defaultLog.info("db model loading done.");
 
       app.listen(3000, '0.0.0.0', function() {

@@ -47,37 +47,8 @@
                   <span class="accordion__collapse-header--column application-table__name-col">{{item.category || '-'}}</span>
                   <span class="accordion__collapse-header--column application-table__cl_file-col">{{item.commonName || '-'}}</span>
                   <span class="accordion__collapse-header--column application-table__purpose-col">{{item.latinName || '-'}}</span>
-                  <span class="accordion__collapse-header--column application-table__region-col">{{item.dateIntroBC || '-'}}</span>
+                  <span class="accordion__collapse-header--column application-table__region-col">{{(item.dateIntroBC | date:'longDate') || '-'}}</span>
                 </a>
-
-                <div class="collapse" id="accordCollapse{{app._id}}" role="tabpanel">
-                  <div class="accordion__collapse-body">
-                    <div class="application-table__application-details">
-                      <ul class="nv-list application-table__application-details--list">
-                        <li class="p-0">
-                          <span class="name">Category:</span>
-                          <span class="value">{{item.category}}</span>
-                        </li>
-                        <li class="p-0">
-                          <span class="name">Common Name:</span>
-                          <span class="value">{{item.commonName || '-'}}</span>
-                        </li>
-                        <li class="p-0">
-                          <span class="name">Latin Name:</span>
-                          <span class="value">{{item.latinName || '-'}}</span>
-                        </li>
-                        <li class="p-0">
-                          <span class="name">Date Introduced in BC:</span>
-                          <span class="value" [innerHTML]="(item.dateIntroBC | date:'longDate') || '-'"></span>
-                        </li>
-                        <li class="p-0">
-                          <span class="name">Description:</span>
-                          <span class="value" [innerHTML]="(item.description | newlines) || '-'"></span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
               </td>
             </tr>
           </ng-template>
