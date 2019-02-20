@@ -6,7 +6,6 @@ This project is the API (back end server) component of the SEISM web application
 
 - MongoDB 3.4
 - Robo3T 1.2 (optionally) - to manage database
-
 - Node.js 8.12.0 (run `node -v` to verify)
 - npm 6.4.1 (run `npm -v` to verify)
 - Yarn 1.10.1 or greater (run `yarn -v` to verify)
