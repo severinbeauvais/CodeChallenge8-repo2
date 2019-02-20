@@ -7,7 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatSnackBar } from '@angular/material';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { ApiService } from 'app/services/api';
-import { SpeciesService } from 'app/services/application.service';
+import { SpeciesService } from 'app/services/species.service';
 import { Species } from 'app/models/species';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ActivatedRouteStub } from 'app/utils/helpers';
@@ -24,7 +24,7 @@ describe('DetailComponent', () => {
     navigate: jasmine.createSpy('navigate')
   };
 
-  const applicationServiceStub = {
+  const speciesServiceStub = {
   };
 
   beforeEach(async(() => {
@@ -35,7 +35,7 @@ describe('DetailComponent', () => {
         { provide: MatSnackBar },
         { provide: ApiService },
         { provide: DialogService },
-        { provide: SpeciesService, useValue: applicationServiceStub },
+        { provide: SpeciesService, useValue: speciesServiceStub },
         { provide: ActivatedRoute, useValue: activatedRouteStub },
         { provide: Router, useValue: routerSpy },
       ]
@@ -60,7 +60,7 @@ describe('DetailComponent', () => {
     });
 
     it('sets the component application to the one from the route', () => {
-      expect(component.application).toEqual(existingApplication);
+      expect(component.species).toEqual(existingApplication);
     });
   });
 

@@ -1,8 +1,3 @@
-/*
- * Known issues:
- * - the accordion collapse is broken because it needs jQuery (which has since been removed)
- */
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Location } from '@angular/common';
@@ -11,7 +6,7 @@ import 'rxjs/add/operator/takeUntil';
 import * as _ from 'lodash';
 
 import { Species } from 'app/models/species';
-import { SpeciesService } from 'app/services/application.service';
+import { SpeciesService } from 'app/services/species.service';
 
 @Component({
   selector: 'app-list',
@@ -32,7 +27,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
-    private applicationService: SpeciesService
+    private speciesService: SpeciesService
   ) { }
 
   ngOnInit() {
@@ -47,7 +42,7 @@ export class ListComponent implements OnInit, OnDestroy {
       });
 
     // get all species entries
-    this.applicationService.getAll()
+    this.speciesService.getAll()
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
         species => {
@@ -57,9 +52,8 @@ export class ListComponent implements OnInit, OnDestroy {
         error => {
           this.loading = false;
           console.log(error);
-          alert('Uh-oh, couldn\'t load species entries');
-          // applications not found --> navigate back to home
-          this.router.navigate(['/']);
+          alert('Error loading species list');
+          this.router.navigate(['/']); // navigate back to home
         }
       );
   }

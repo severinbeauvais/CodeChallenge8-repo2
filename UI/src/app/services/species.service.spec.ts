@@ -1,12 +1,12 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { of } from 'rxjs';
 
-import { SpeciesService } from './application.service';
+import { SpeciesService } from './species.service';
 import { ApiService } from 'app/services/api';
 
 import { Species } from 'app/models/species';
 
-describe('ApplicationService', () => {
+describe('SpeciesService', () => {
   let service: any;
 
   const apiServiceStub = {

@@ -5,12 +5,11 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/concat';
-import { of } from 'rxjs';
 
 import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
 import { Species } from 'app/models/species';
 import { ApiService } from 'app/services/api';
-import { SpeciesService } from 'app/services/application.service';
+import { SpeciesService } from 'app/services/species.service';
 
 @Component({
   selector: 'app-detail',
@@ -19,11 +18,8 @@ import { SpeciesService } from 'app/services/application.service';
 })
 
 export class DetailComponent implements OnInit, OnDestroy {
-
-  public isPublishing = false;
-  public isUnpublishing = false;
   public isDeleting = false;
-  public application: Species = null;
+  public species: Species = null;
   private snackBarRef: MatSnackBarRef<SimpleSnackBar> = null;
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
@@ -31,9 +27,9 @@ export class DetailComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     public snackBar: MatSnackBar,
-    public api: ApiService, // also used in template
+    public api: ApiService,
     private dialogService: DialogService,
-    public applicationService: SpeciesService // also used in template
+    public speciesService: SpeciesService
   ) { }
 
   ngOnInit() {
@@ -43,11 +39,10 @@ export class DetailComponent implements OnInit, OnDestroy {
       .subscribe(
         (data: { species: Species }) => {
           if (data.species) {
-            this.application = data.species;
+            this.species = data.species;
           } else {
-            alert('Uh-oh, couldn\'t load species');
-            // application not found --> navigate back to search
-            this.router.navigate(['/search']);
+            alert('Error loading species');
+            this.router.navigate(['/']); // navigate back to home
           }
         }
       );
@@ -61,7 +56,7 @@ export class DetailComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.complete();
   }
 
-  public deleteApplication() {
+  public deleteSpecies() {
     this.dialogService.addDialog(ConfirmDialogComponent,
       {
         title: 'Confirm Deletion',
@@ -73,32 +68,26 @@ export class DetailComponent implements OnInit, OnDestroy {
       .subscribe(
         isConfirmed => {
           if (isConfirmed) {
-            this.internalDeleteApplication();
+            this.isDeleting = true;
+
+            this.speciesService.delete(this.species)
+              .takeUntil(this.ngUnsubscribe)
+              .subscribe(
+                () => { // onNext
+                  // do nothing here - see onCompleted() function below
+                },
+                error => {
+                  this.isDeleting = false;
+                  console.log('error =', error);
+                  alert('Error deleting species');
+                },
+                () => { // onCompleted
+                  this.isDeleting = false;
+                  this.router.navigate(['/']); // navigate back to home
+                }
+              );
           }
         }
       );
   }
-
-  private internalDeleteApplication() {
-    this.isDeleting = true;
-
-    this.applicationService.delete(this.application)
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(
-        () => { // onNext
-          // do nothing here - see onCompleted() function below
-        },
-        error => {
-          this.isDeleting = false;
-          console.log('error =', error);
-          alert('Uh-oh, couldn\'t delete species');
-        },
-        () => { // onCompleted
-          this.isDeleting = false;
-          // delete succeeded --> navigate back to search
-          this.router.navigate(['/search']);
-        }
-      );
-  }
-
 }

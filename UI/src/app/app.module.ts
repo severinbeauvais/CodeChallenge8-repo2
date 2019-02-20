@@ -33,7 +33,7 @@ import { FileUploadComponent } from 'app/file-upload/file-upload.component';
 // services
 import { ApiService } from 'app/services/api';
 import { AuthenticationService } from 'app/services/authentication.service';
-import { SpeciesService } from 'app/services/application.service';
+import { SpeciesService } from 'app/services/species.service';
 import { CanDeactivateGuard } from 'app/services/can-deactivate-guard.service';
 import { KeycloakService } from 'app/services/keycloak.service';
 import { TokenInterceptor } from './utils/token-interceptor';

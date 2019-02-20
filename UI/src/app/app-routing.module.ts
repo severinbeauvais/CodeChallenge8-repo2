@@ -3,11 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
 import { NotAuthorizedComponent } from './not-authorized/not-authorized.component';
-
 import { ListComponent } from './list/list.component';
 import { DetailComponent } from './detail/detail.component';
 import { AddEditComponent } from './add-edit/add-edit.component';
 
+import { SpeciesResolver } from 'app/services/species-resolver.service';
 import { CanDeactivateGuard } from 'app/services/can-deactivate-guard.service';
 
 const routes: Routes = [
@@ -24,14 +24,18 @@ const routes: Routes = [
     component: ListComponent
   },
   {
-    path: 'a/:appId',
-    component: DetailComponent
-    // FUTURE: add route resolver
+    path: 'a/:id',
+    component: DetailComponent,
+    resolve: {
+      application: SpeciesResolver
+    }
   },
   {
     path: 'a/:appId/edit',
     component: AddEditComponent,
-    // FUTURE: add route resolver
+    resolve: {
+      application: SpeciesResolver
+    },
     canDeactivate: [CanDeactivateGuard]
   },
   {

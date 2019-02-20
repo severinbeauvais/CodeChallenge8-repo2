@@ -1,14 +1,14 @@
-<div class="top-container" *ngIf="application">
+<div class="top-container" *ngIf="species">
   <div class="container">
     <div class="title-container">
       <div class="title-container__title">
-        <h1>Species: {{application.commonName}}</h1>
-        <span class="title-container__sub text-muted">{{application.latinName}}</span>
+        <h1>Species: {{species.commonName}}</h1>
+        <span class="title-container__sub text-muted">{{species.latinName}}</span>
       </div>
       <div class="title-container__actions">
         <div class="btn-container">
           <button class="btn btn-light" type="button" title="Edit this species"
-            [routerLink]="['/a', application._id, 'edit']">
+            [routerLink]="['/a', species._id, 'edit']">
             Edit Item
           </button>
         </div>
@@ -16,7 +16,7 @@
         <span class="vert-pipe">&nbsp;</span>
 
         <button class="btn btn-icon" title="Remove this species"
-          (click)="deleteApplication()"
+          (click)="deleteSpecies()"
           [disabled]="isDeleting">
           <i class="material-icons">delete</i>
           Delete Item
@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<div class="bottom-container" *ngIf="application">
+<div class="bottom-container" *ngIf="species">
   <div class="container">
     <div class="row">
       <div class="col-md-8">
@@ -43,22 +43,22 @@
               <ng-template ngbTabContent>
                 <section>
                   <h2>Description</h2>
-                  <p class="mb-0" [innerHTML]="(application.description | newlines) || '<em>No description available</em>'"></p>
+                  <p class="mb-0" [innerHTML]="(species.description | newlines) || '<em>No description available</em>'"></p>
                 </section>
                 <section>
                   <h2>Details</h2>
                   <ul class="nv-list">
                     <li>
                       <span class="name">Category:</span>
-                      <span class="value">{{application.category|| '-'}}</span>
+                      <span class="value">{{species.category|| '-'}}</span>
                     </li>
                     <li>
                       <span class="name">Common Name:</span>
-                      <span class="value">{{application.commonName|| '-'}}</span>
+                      <span class="value">{{species.commonName|| '-'}}</span>
                     </li>
                     <li>
                       <span class="name">Latin Name:</span>
-                      <span class="value">{{application.latinName|| '-'}}</span>
+                      <span class="value">{{species.latinName|| '-'}}</span>
                     </li>
                     <li>
                       <span class="name">Date Introduced in BC:</span>

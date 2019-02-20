@@ -16,7 +16,7 @@ import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.compon
 import { Species } from 'app/models/species';
 import { Document } from 'app/models/document';
 import { ApiService } from 'app/services/api';
-import { SpeciesService } from 'app/services/application.service';
+import { SpeciesService } from 'app/services/species.service';
 
 const DEFAULT_DAYS = 30;
 
@@ -27,19 +27,19 @@ const DEFAULT_DAYS = 30;
 })
 
 export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('applicationForm') applicationForm: NgForm;
+  @ViewChild('speciesForm') speciesForm: NgForm;
 
   private scrollToFragment: string = null;
   public isSubmitSaveClicked = false;
   public isSubmitting = false;
   public isSaving = false;
-  public application: Species = null;
+  public species: Species = null;
   public startDate: NgbDateStruct = null;
   public endDate: NgbDateStruct = null;
   public delta: number; // # days (including today)
   private snackBarRef: MatSnackBarRef<SimpleSnackBar> = null;
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
-  public applicationFiles: Array<File> = [];
+  public speciesFiles: Array<File> = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -62,24 +62,24 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   // check for unsaved changes before closing (or reloading) current tab/window
   @HostListener('window:beforeunload', ['$event'])
   public handleBeforeUnload(event) {
-    if (!this.applicationForm) {
+    if (!this.speciesForm) {
       event.returnValue = true; // no form means page error -- allow unload
     }
 
     // display browser alert if needed
-    if (this.applicationForm.dirty || this.anyUnsavedItems()) {
+    if (this.speciesForm.dirty || this.anyUnsavedItems()) {
       event.returnValue = true;
     }
   }
 
   // check for unsaved changes before navigating away from current route (ie, this page)
   public canDeactivate(): Observable<boolean> | boolean {
-    if (!this.applicationForm) {
+    if (!this.speciesForm) {
       return true; // no form means page error -- allow deactivate
     }
 
     // allow synchronous navigation if everything is OK
-    if (!this.applicationForm.dirty && !this.anyUnsavedItems()) {
+    if (!this.speciesForm.dirty && !this.anyUnsavedItems()) {
       return true;
     }
 
@@ -87,7 +87,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.dialogService.addDialog(ConfirmDialogComponent,
       {
         title: 'Unsaved Changes',
-        message: 'Click OK to discard your changes or Cancel to return to the application.'
+        message: 'Click OK to discard your changes or Cancel to return to the page.'
       }, {
         backdropColor: 'rgba(0, 0, 0, 0.5)'
       })
@@ -96,9 +96,9 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // this is needed because we don't have a form control that is marked as dirty
   private anyUnsavedItems(): boolean {
-    // look for application documents not yet uploaded to db
-    if (this.application.documents) {
-      for (const doc of this.application.documents) {
+    // look for species documents not yet uploaded to db
+    if (this.species.documents) {
+      for (const doc of this.species.documents) {
         if (!doc._id) {
           return true;
         }
@@ -111,9 +111,9 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public cancelChanges() {
     // this.location.back(); // FAILS WHEN CANCEL IS CANCELLED (DUE TO DIRTY FORM OR UNSAVED DOCUMENTS) MULTIPLE TIMES
 
-    if (this.application._id) {
+    if (this.species._id) {
       // go to details page
-      this.router.navigate(['/a', this.application._id]);
+      this.router.navigate(['/a', this.species._id]);
     } else {
       // go to search page
       this.router.navigate(['/search']);
@@ -127,19 +127,10 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(
         (data: { species: Species }) => {
           if (data.species) {
-            this.application = data.species;
-
-            // add comment period if there isn't one already (not just on create but also on edit --
-            // this will fix the situation where existing applications don't have a comment period)
-            // set startDate
-            this.startDate = this.dateToNgbDate(new Date());
-            // set endDate and delta
-            this.endDate = this.dateToNgbDate(new Date());
-            this.onEndDateChg(this.endDate);
+            this.species = data.species;
           } else {
-            alert('Uh-oh, couldn\'t load species');
-            // application not found --> navigate back to search
-            this.router.navigate(['/search']);
+            alert('Error loading species');
+            this.router.navigate(['/']); // navigate back to home
           }
         }
       );
@@ -189,7 +180,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // add application or decision documents
+  // add species or decision documents
   public addDocuments(files: FileList, documents: Document[]) {
     if (files && documents) { // safety check
       for (let i = 0; i < files.length; i++) {
@@ -208,14 +199,14 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           document['formData'] = formData; // temporary
           document.documentFileName = files[i].name;
 
-          // save document for upload to db when application is added or saved
+          // save document for upload to db when species is added or saved
           documents.push(document);
         }
       }
     }
   }
 
-  // delete application or decision document
+  // delete species or decision document
   public deleteDocument(doc: Document, documents: Document[]) {
     if (doc && documents) { // safety check
       // remove doc from current list
@@ -223,15 +214,15 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // this is part 1 of adding an application and all its objects
+  // this is part 1 of adding a species and all its objects
   // (multi-part due to dependencies)
-  public addApplication() {
+  public addSpecies() {
     this.isSubmitSaveClicked = true;
 
-    if (this.applicationForm.invalid) {
+    if (this.speciesForm.invalid) {
       this.dialogService.addDialog(ConfirmDialogComponent,
         {
-          title: 'Cannot Create Application',
+          title: 'Cannot Create Species',
           message: 'Please check for required fields or errors.',
           okOnly: true
         }, {
@@ -243,30 +234,30 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isSubmitting = true;
 
-    // add application
-    this.speciesService.add(this.application)
+    // add species
+    this.speciesService.add(this.species)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
-        application2 => { // onNext
-          this.addApplication2(application2);
+        species2 => { // onNext
+          this.addSpecies2(species2);
         },
         error => {
           this.isSubmitting = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t create species');
+          alert('Error creating species');
         }
       );
   }
 
-  // this is part 2 of adding an application and all its objects
+  // this is part 2 of adding a species and all its objects
   // (multi-part due to dependencies)
-  private addApplication2(application2: Species) {
+  private addSpecies2(species2: Species) {
     let observables = of(null);
 
-    // add all application documents
-    // if (this.application.documents) {
-    //   for (const doc of this.application.documents) {
-    //     doc['formData'].append('_application', application2._id); // set back-reference
+    // add all species documents
+    // if (this.species.documents) {
+    //   for (const doc of this.species.documents) {
+    //     doc['formData'].append('_species', species2._id); // set back-reference
     //     observables = observables.concat(this.documentService.add(doc['formData']));
     //   }
     // }
@@ -280,29 +271,29 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSubmitting = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t add species, part 2');
+          alert('Error adding species, part 2');
         },
         () => { // onCompleted
           // reload app with decision for next step
-          this.speciesService.getById(application2._id)
+          this.speciesService.getById(species2._id)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-              application3 => {
-                this.addApplication3(application3);
+              species3 => {
+                this.addSpecies3(species3);
               },
               error => {
                 this.isSubmitting = false;
                 console.log('error =', error);
-                alert('Uh-oh, couldn\'t reload species, part 2');
+                alert('Error reloading species, part 2');
               }
             );
         }
       );
   }
 
-  // this is part 3 of adding an application and all its objects
+  // this is part 3 of adding a species and all its objects
   // (multi-part due to dependencies)
-  private addApplication3(application3: Species) {
+  private addSpecies3(species3: Species) {
     let observables = of(null);
 
     observables
@@ -314,33 +305,33 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSubmitting = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t add species, part 3');
+          alert('Error adding species, part 3');
         },
         () => { // onCompleted
           // we don't need to reload data since we're navigating away below
           // this.isSubmitting = false; // LOOKS BETTER WITHOUT THIS
-          // this.snackBarRef = this.snackBar.open('Application created...', null, { duration: 2000 }); // not displayed due to navigate below
+          // this.snackBarRef = this.snackBar.open('Species created...', null, { duration: 2000 }); // not displayed due to navigate below
 
-          this.applicationForm.form.markAsPristine();
-          if (this.application.documents) {
-            this.application.documents = []; // negate unsaved document check
+          this.speciesForm.form.markAsPristine();
+          if (this.species.documents) {
+            this.species.documents = []; // negate unsaved document check
           }
 
           // add succeeded --> navigate to details page
-          this.router.navigate(['/a', application3._id]);
+          this.router.navigate(['/a', species3._id]);
         }
       );
   }
 
-  // this is part 1 of saving an application and all its objects
+  // this is part 1 of saving a species and all its objects
   // (multi-part due to dependencies)
-  public saveApplication() {
+  public saveSpecies() {
     this.isSubmitSaveClicked = true;
 
-    if (this.applicationForm.invalid) {
+    if (this.speciesForm.invalid) {
       this.dialogService.addDialog(ConfirmDialogComponent,
         {
-          title: 'Cannot Save Application',
+          title: 'Cannot Save SPecies',
           message: 'Please check for required fields or errors.',
           okOnly: true
         }, {
@@ -350,11 +341,11 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    if (!this.application.description) {
+    if (!this.species.description) {
       this.dialogService.addDialog(ConfirmDialogComponent,
         {
           title: 'Cannot Save Changes',
-          message: 'A description for this application is required to save.',
+          message: 'A description for this species is required to save.',
           okOnly: true
         }, {
           backdropColor: 'rgba(0, 0, 0, 0.5)'
@@ -367,11 +358,11 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     let observables = of(null);
 
-    // add any new application documents
-    // if (this.application.documents) {
-    //   for (const doc of this.application.documents) {
+    // add any new species documents
+    // if (this.species.documents) {
+    //   for (const doc of this.species.documents) {
     //     if (!doc._id) {
-    //       doc['formData'].append('_application', this.application._id); // set back-reference
+    //       doc['formData'].append('_species', this.species._id); // set back-reference
     //       observables = observables.concat(this.documentService.add(doc['formData']));
     //     }
     //   }
@@ -386,29 +377,29 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSaving = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t save species, part 1');
+          alert('Error saving species, part 1');
         },
         () => { // onCompleted
           // reload app with documents, current period and decision for next step
-          this.speciesService.getById(this.application._id)
+          this.speciesService.getById(this.species._id)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-              application2 => {
-                this.saveApplication2(application2);
+              species2 => {
+                this.saveSpecies2(species2);
               },
               error => {
                 this.isSaving = false;
                 console.log('error =', error);
-                alert('Uh-oh, couldn\'t reload species, part 1');
+                alert('Error reloading species, part 1');
               }
             );
         }
       );
   }
 
-  // this is part 2 of saving an application and all its objects
+  // this is part 2 of saving a species and all its objects
   // (multi-part due to dependencies)
-  private saveApplication2(application2: Species) {
+  private saveSpecies2(species2: Species) {
     let observables = of(null);
 
     observables
@@ -420,33 +411,33 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSaving = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t save species, part 2');
+          alert('Error saving species, part 2');
         },
         () => { // onCompleted
           // reload app with decision for next step
-          this.speciesService.getById(application2._id)
+          this.speciesService.getById(species2._id)
             .takeUntil(this.ngUnsubscribe)
             .subscribe(
-              application3 => {
-                this.saveApplication3(application3);
+              species3 => {
+                this.saveSpecies3(species3);
               },
               error => {
                 this.isSaving = false;
                 console.log('error =', error);
-                alert('Uh-oh, couldn\'t reload species, part 2');
+                alert('Error reloading species, part 2');
               }
             );
         }
       );
   }
 
-  // this is part 3 of saving an application and all its objects
+  // this is part 3 of saving a species and all its objects
   // (multi-part due to dependencies)
-  private saveApplication3(application3: Species) {
+  private saveSpecies3(species3: Species) {
     let observables = of(null);
 
-    // save application
-    observables = observables.concat(this.speciesService.save(this.application));
+    // save species
+    observables = observables.concat(this.speciesService.save(this.species));
 
     observables
       .takeUntil(this.ngUnsubscribe)
@@ -457,17 +448,17 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         error => {
           this.isSaving = false;
           console.log('error =', error);
-          alert('Uh-oh, couldn\'t save species, part 3');
+          alert('Error saving species, part 3');
         },
         () => { // onCompleted
           // we don't need to reload data since we're navigating away below
           // this.isSaving = false; // LOOKS BETTER WITHOUT THIS
-          // this.snackBarRef = this.snackBar.open('Application saved...', null, { duration: 2000 }); // not displayed due to navigate below
+          // this.snackBarRef = this.snackBar.open('Species saved...', null, { duration: 2000 }); // not displayed due to navigate below
 
-          this.applicationForm.form.markAsPristine();
+          this.speciesForm.form.markAsPristine();
 
-          if (this.application.documents) {
-            for (const doc of this.application.documents) {
+          if (this.species.documents) {
+            for (const doc of this.species.documents) {
               // assign 'arbitrary' id to docs so that:
               // 1) unsaved document check passes
               // 2) page doesn't jump around
@@ -476,7 +467,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           }
 
           // save succeeded --> navigate to details page
-          this.router.navigate(['/a', application3._id]);
+          this.router.navigate(['/a', species3._id]);
         }
       );
   }
