@@ -14,9 +14,7 @@ This repository contains the following documentation:
 
 Also, when the API is running, the API documentation is available at http://localhost:3000/api/docs/.
 
-## Web application high-level view
-
-This repository contains 2 projects:
+This repository contains 2 code projects:
 1. [API](API/README.md) - this is the API (back end server) component of the application
 2. [UI](UI/README.md) - this is the UI (front end) component of the application
 
