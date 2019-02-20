@@ -72,32 +72,13 @@ definitions:
     type: string
     description: "Optional fields to return."
     example: name|type
-    #TODO: Fix enums
     enum: &applicationFields
-      - agency
-      - areaHectares
-      - businessUnit
-      - centroid
-      - cl_file
-      - client
-      - _createdBy
-      - createdDate
-      - legalDescription
-      - location
-      - name
-      - publishDate
-      - purpose
-      - status
-      - subpurpose
-      - subtype
-      - tantalisID
-      - tenureStage
-      - type
       - commonName
       - latinName
       - category
       - dateIntroBC
       - description
+      - image
 
 ### Document Definitions
   DocId:

@@ -8,7 +8,7 @@ var FlakeIdGen  = require('flake-idgen');
 var intformat   = require('biguint-format');
 var generator   = new FlakeIdGen(); // new FlakeIdGen;
 var fs          = require('fs');
-var uploadDir   = process.env.UPLOAD_DIRECTORY || "./uploads/";
+var uploadDir   = "./uploads/";
 var ENABLE_VIRUS_SCANNING = process.env.ENABLE_VIRUS_SCANNING || false;
 var tagList     = ['displayName',
                    'internalURL',
