@@ -32,9 +32,21 @@ Launch Robo3T, setting up a local connection with address **localhost : 27017**.
 
 3) Start the server by entering `npm start`.
 
+### First Time Setup
+
+1) Run the API as above. If needed, this creates the initial database.
+
+2) Add the Admin user to the 'users' collection:
+
+    ``
+    db.users.insert({  "username": #{username}, "password": #{password}, roles: [['sysadmin'],['public']] })
+    ``
+
+3) Seed the local database as described in [seed README](seed/README.md).
+
 ## How to look at the Swagger OpenAPI documentation and test the API
 
-1) Run the API
+1) Run the API as above.
 
 2) Check the swagger-ui at http://localhost:3000/api/docs/.
 
@@ -47,21 +59,9 @@ Launch Robo3T, setting up a local connection with address **localhost : 27017**.
 4) GET `http://localhost:3000/api/species` again with the following header
 ``Authorization: Bearer _TOKEN_``, replacing `_TOKEN_ ` with the value you got from that request.
 
-## Initial Setup
-
-1) Start server and create initial database by running `npm start` in root folder.
-
-2) Add Admin user to 'users' collection:
-
-    ``
-    db.users.insert({  "username": #{username}, "password": #{password}, roles: [['sysadmin'],['public']] })
-    ``
-
-3) Seed local database as described in [seed README](seed/README.md).
-
 ## Unit Testing
 
-This project is using [jest](http://jestjs.io/) as a testing framework. You can run tests with
+This project uses [jest](http://jestjs.io/) as a testing framework. You can run tests with
 `yarn test` or `jest`. Running either command with the `--watch` flag will re-run the tests every time a file is changed.
 
 To run the tests in one file, simply pass the path of the file name e.g. `jest api/test/search.test.js --watch`. To run only one test in that file, chain the `.only` command e.g. `test.only("Search returns results", () => {})`.
@@ -88,7 +88,7 @@ test("GET /api/feature/:id  returns 200", done => {
 });
 ```
 
-This code will stand in for the swagger-tools router, and help build the objects that swagger-tools magically generates when HTTP calls go through it's router. The above code will send an object like below to the `api/controllers/feature.js` controller `protectedGet` function as the first parameter (typically called `args`).
+The above code will stand in for the swagger-tools router, and help build the objects that swagger-tools magically generates when HTTP calls go through it's router. The above code will send an object like below to the `api/controllers/feature.js` controller `protectedGet` function as the first parameter (typically called `args`).
 
 ```javascript
 {
@@ -111,8 +111,8 @@ This code will stand in for the swagger-tools router, and help build the objects
 
 Unfortunately, this results in a lot of boilerplate code in each of the controller tests. There are some helpers to reduce the amount you need to write, but you will still need to check the parameter field names sent by your middleware router match what the controller(and swagger router) expect. However, this method results in  pretty effective integration tests as they exercise the controller code and save objects in the database. 
 
-
 ## Test Database
+
 The tests run on an in-memory MongoDB server, using the [mongodb-memory-server](https://github.com/nodkz/mongodb-memory-server) package. The setup can be viewed at [test_helper.js](api/test/test_helper.js), and additional config in [config/mongoose_options.js]. It is currently configured to wipe out the database after each test run to prevent database pollution. 
 
 [Factory-Girl](https://github.com/aexmachina/factory-girl) is used to easily create models (persisted to db) for testing purposes. 
