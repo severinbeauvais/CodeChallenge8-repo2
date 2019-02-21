@@ -165,6 +165,7 @@ hr {
     h1 {
       margin-bottom: 0;
       font-size: 1.65rem;
+      text-transform: capitalize;
     }
   }
 
@@ -186,6 +187,9 @@ hr {
 .title-container__sub {
   display: block;
   letter-spacing: 0.01rem;
+  &:first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .top-container {

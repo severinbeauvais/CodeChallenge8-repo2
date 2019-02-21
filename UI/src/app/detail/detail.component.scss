@@ -116,12 +116,12 @@ section {
     }
   }
   .latin {
-    span::first-letter {
+    .value::first-letter {
       text-transform: uppercase;
     }
   }
   .common {
-    span {
+    .value {
       text-transform: capitalize;
     }
   }
