@@ -7,13 +7,14 @@ This repository contains the following documentation:
 * This file (README.md)
 * The Apache License 2.0 [file](LICENSE)
 * The original Code Challenge Notice, Instructions & Rules [file](docs/CODE_CHALLENGE.md)
-* Kirsten's user flow diagram (docs/TBD)
-* An architecture diagram and explanation (docs/TBD)
-* A test scripts file [file](docs/SEISM_test_scripts.xlsx)
-* [UI documentation](UI/README.md)
-* [API documentation](API/README.md)
+* [A user flow diagram](docs/user-flow.pdf)
+* An architecture and design document diagram and explanation (docs/TBD)
+* [A database schema document](docs/database-schema.txt)
+* [A test document](docs/SEISM_test_scripts.xlsx)
+* [UI component documentation](UI/README.md)
+* [API component documentation](API/README.md)
 * [Database seeding documentation](API/seed/README.md)
-* [Docker documentation](docker/README.md)
+* [Docker Keycloak documentation](docker/README.md)
 
 Note that, when the API is running, its Swagger UI page is at http://localhost:3000/api/docs/.
 
