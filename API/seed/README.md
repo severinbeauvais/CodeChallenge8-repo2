@@ -5,7 +5,7 @@
 ## How to export a Mongo collection
 
 1. Open a BASH shell.
-1. Change directories to the folder to save the file to, eg
+1. Change directories to the folder to export the file to, eg
 ``cd /c/Users/severin/Desktop/``
 1. Run the following command to export the 'species' collection:
 ``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoexport -h localhost:27017 -d seism --collection species --out species.json``

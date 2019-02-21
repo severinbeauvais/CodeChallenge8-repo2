@@ -6,30 +6,30 @@ This is the SEISM Code Challenge private repository.
 This repository contains the following documentation:
 * This file (README.md)
 * The Apache License 2.0 file (LICENSE)
-* The original Code Challenge Notice, Instructions & Rules file (docs/CODE_CHALLENGE.md)
+* The original Code Challenge Notice, Instructions & Rules [file](docs/CODE_CHALLENGE.md)
 * Kirsten's user flow diagram (docs/TBD)
 * An architecture diagram and explanation (docs/TBD)
 * A test scripts file (docs/TBD)
-* UI documentation (UI/README.md)
-* API documentation (API/README.md)
-* Database seedind documentation (API/seed/README.md)
-* Docker documentation (docker/README.md)
+* [UI documentation](UI/README.md)
+* [API documentation](API/README.md)
+* [Database seeding documentation](API/seed/README.md)
+* [Docker documentation](docker/README.md)
 * OTHERS ???
 
 Note that, when the API is running, the API documentation is available at http://localhost:3000/api/docs/.
 
 This repository contains the following components:
-1. [API](API) code project - this is the API (back end server) component of the application.
-1. [UI](UI) code project - this is the UI (front end) component of the application.
-1. [Keycloak](docker/keycloak) - Docker image to run Keycloak locally.
+1. [API](API) code project - this is the API (back end server) component of the application
+2. [UI](UI) code project - this is the UI (front end) component of the application
+3. [Keycloak](docker/keycloak) - Docker image to run Keycloak locally
 
 ## How to install, build and run
 
-In order to run this application, you need to launch the following:
-1. Run MongoDB - see API documentation for details
-1. Run Keycloak (optional) - see [Docker documentation](docker/README.md) for details
-1. Build and run the API component - see [API documentation](API/README.md) for details
-1. Build and run the UI component - see [UI documentation](UI/README.md) for details
+In order to run this application, you need to do the following:
+1. Run MongoDB - see [API documentation](API/README.md) for details
+2. Run Keycloak (optional) - see [Docker documentation](docker/README.md) for details
+3. Build and run the API component - see [API documentation](API/README.md) for details
+4. Build and run the UI component - see [UI documentation](UI/README.md) for details
 
 This application can run in 3 modes:
 

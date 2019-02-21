@@ -12,52 +12,28 @@ This project is the API (back end server) component of the SEISM web application
 
 ## How to set up the database component
 
-Download MongoDB 3.4.
+1. Download MongoDB 3.4
+2. Download Robo3T 1.2 (optional - to manage the db)
+3. Run MongoDB from the shell by executing **mongod.exe**
 
-Download Robo3T 1.2.
+The default installation folder is `c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe`.
 
-Run MongoDB from the shell by executing **mongod.exe** 
-
-(Default installation folder: c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe)
-
-Launch Robo3T, setting up a local connection with address **localhost : 27017**. Press **Connect**.
+The default connection is `localhost:20717`.
 
 ## How to run the API
 
-**See also Initial Setup below.**
+1. Open a BASH shell.
+2. Change to this project's directory, eg ``cd /c/My\ Repos/CodeChallenge8-repo2/API/``.
+3. Start the server by entering ``npm start``.
+The API creates the initial database, if needed..
+4. Seed the local database as described in [seed README](seed/README.md).
 
-1) Open a BASH shell.
+### How to look at the Swagger OpenAPI documentation
 
-2) Change to this project's directory, eg `cd /c/My\ Repos/CodeChallenge8-repo2/API/.
+1. Run the API as above.
+2. Check the Swagger UI at http://localhost:3000/api/docs/.
 
-3) Start the server by entering `npm start`.
-
-### First Time Setup
-
-1) Run the API as above. If needed, this creates the initial database.
-
-2) Add the Admin user to the 'users' collection:
-
-    ``
-    db.users.insert({  "username": #{username}, "password": #{password}, roles: [['sysadmin'],['public']] })
-    ``
-
-3) Seed the local database as described in [seed README](seed/README.md).
-
-## How to look at the Swagger OpenAPI documentation and test the API
-
-1) Run the API as above.
-
-2) Check the swagger-ui at http://localhost:3000/api/docs/.
-
-3) POST `http://localhost:3000/api/login/token` with the following body
-``{
-"username": #{username},
-"password": #{password}
-}`` and take the token that you get in the response.
- 
-4) GET `http://localhost:3000/api/species` again with the following header
-``Authorization: Bearer _TOKEN_``, replacing `_TOKEN_ ` with the value you got from that request.
+Note that the Swagger UI allows you to 'try out' most of the API operations (if you are not using Keycloak).
 
 ## Unit Testing
 
