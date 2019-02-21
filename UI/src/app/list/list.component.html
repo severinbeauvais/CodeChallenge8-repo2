@@ -19,7 +19,7 @@
       <div class="application-list__options">
         <select class="sort-comments form-control" (change)="filterChange($event.checked)" [(ngModel)]="filterBy">
           <option *ngFor="let key of filterKeys" [value]="key" [innerHTML]="key"></option>
-        </select>        
+        </select>
       </div>
 
       <table class="table application-table">

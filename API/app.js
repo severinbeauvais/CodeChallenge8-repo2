@@ -58,7 +58,7 @@ if (hostname !== 'localhost:3000') {
 swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
   app.use(middleware.swaggerMetadata());
 
-  // TODO: fix this
+  // FUTURE: fix this
   // app.use(middleware.swaggerValidator({ validateResponse: false}));
 
   app.use(

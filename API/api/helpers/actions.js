@@ -4,7 +4,7 @@ var _ = require('lodash');
 exports.delete = function (o) {
   return new Promise(function (resolve, reject) {
     _.remove(o.tags, function (item) {
-      return _.isEqual(item, ['public']); // TODO: don't need this
+      return _.isEqual(item, ['public']); // TODO: don't need this currently
     });
     o.isDeleted = true;
     o.markModified('tags');

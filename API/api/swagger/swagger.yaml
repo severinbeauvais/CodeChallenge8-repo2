@@ -73,7 +73,7 @@ definitions:
       _id:
         type: string
         example: "54759eb3c090d83494e2d804"
-        ## TODO: Add more fields here.
+        ## FUTURE: add more fields here
   SpeciesFields:
     type: string
     description: "Optional fields to return"
@@ -93,7 +93,7 @@ definitions:
       displayName:
         type: string
         example: "A cool document"
-        ## TODO: Add more fields here.
+        ## FUTURE: add more fields here
   DocumentFields:
     type: string
     description: "Optional fields to return"
@@ -184,7 +184,7 @@ paths:
               _id:
                 type: string
                 example: "54759eb3c090d83494e2d804"
-                ## TODO: Add more fields here.
+                ## FUTURE: add more fields here
       responses:
         "200":
           description: "Success"

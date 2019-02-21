@@ -9,7 +9,6 @@ This database has 2 collections:
 
 Species collection
 ------------------
-// TODO: make 'category' an enumeration (ie, one of [])
 _id : 
 commonName : { type: String, unique: 'Common Name already exists', required: 'Please fill in a Common Name', trim: true }
 latinName : { type: String, unique: 'Latin Name already exists', required: 'Please fill in a Latin Name', trim: true }

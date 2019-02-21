@@ -143,7 +143,7 @@ exports.protectedPut = function (args, res) {
   delete obj.tags; // strip security tags - these will not be updated on this route
   defaultLog.info("Putting updated species object:", obj);
 
-  // TODO: sanitize/update audits
+  // FUTURE: sanitize/update audits
 
   var Species = mongoose.model('Species');
   Species.findOneAndUpdate({ _id: speciesId }, obj, { upsert: false, new: true }, function (err, o) {
