@@ -57,10 +57,12 @@
 
           <div class="form-group">
             <label>Common Name</label>
-            <input class="form-control" type="text" id="commonName" name="commonName"
-              #commonName="ngModel" [(ngModel)]="species.commonName"
-              required aria-required="true">
-            <!-- TODO: make this validation work (needs ngClass as above, etc) -->
+            <div [ngClass]="{'is-invalid': isSubmitSaveClicked && !species.commonName}">
+              <input class="form-control" [ngClass]="{'is-invalid': isSubmitSaveClicked && !species.commonName}" type="text" id="commonName" name="commonName"
+                #commonName="ngModel" [(ngModel)]="species.commonName"
+                required aria-required="true">
+              <!-- TODO: make this validation work (needs ngClass as above, etc) -->
+            </div>
             <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.commonName">
               Enter a common name
             </div>
@@ -68,10 +70,12 @@
 
           <div class="form-group">
             <label>Latin Name</label>
-            <input class="form-control" type="text" id="latinName" name="latinName"
-              #latinName="ngModel" [(ngModel)]="species.latinName"
-              required aria-required="true">
-            <!-- TODO: make this validation work (needs ngClass as above, etc) -->
+            <div [ngClass]="{'is-invalid': isSubmitSaveClicked && !species.latinName}">
+              <input class="form-control" [ngClass]="{'is-invalid': isSubmitSaveClicked && !species.latinName}" type="text" id="latinName" name="latinName"
+                #latinName="ngModel" [(ngModel)]="species.latinName"
+                required aria-required="true">
+            </div>
+              <!-- TODO: make this validation work (needs ngClass as above, etc) -->
             <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.latinName">
               Enter a latin name
             </div>
@@ -79,18 +83,13 @@
 
           <div class="form-group mb-0">
             <label>Date Introduced in BC</label>
-            <div class="input-group" [ngClass]="{'is-invalid': isSubmitSaveClicked && !isValidDate(dateIntroBC)}">
-              <input class="form-control" placeholder="yyyy-mm-dd" name="date1" ngbDatepicker #date1="ngbDatepicker"
-                [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="dateIntroBC" (ngModelChange)="onDateChg($event)"
-                (click)="date1.close()" required aria-required="true">
-              <div class="input-group-append">
-                <button class="btn btn-icon" (click)="date1.toggle()" type="button" tabindex="-1">
-                  <i class="material-icons">date_range</i>
-                </button>
-              </div>
-            </div>
-            <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !isValidDate(dateIntroBC)">
-              Enter a valid date
+            <input class="form-control" placeholder="yyyy-mm-dd" name="date1" ngbDatepicker #date1="ngbDatepicker"
+              [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="dateIntroBC" (ngModelChange)="onDateChg($event)"
+              (click)="date1.close()">
+            <div class="input-group-append">
+              <button class="btn btn-icon" (click)="date1.toggle()" type="button" tabindex="-1">
+                <i class="material-icons">date_range</i>
+              </button>
             </div>
           </div>
 

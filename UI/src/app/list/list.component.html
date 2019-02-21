@@ -47,12 +47,12 @@
         <tbody class="application-table__content">
           <ng-template ngFor let-item [ngForOf]="species | orderBy: {property: column, direction: direction}">
             <tr *ngIf="showThisApp(item)">
-              <td class="accordion__collapse-header--column application-table__cl_file-col">
+              <td class="accordion__collapse-header--column application-table__cl_file-col common">
                 <a [routerLink]="['/species', item._id]">
                   {{item.commonName || '-'}}
                 </a>
               </td>
-              <td class="accordion__collapse-header--column application-table__cl_file-col">
+              <td class="latin accordion__collapse-header--column application-table__cl_file-col">
                 {{item.latinName || '-'}}
               </td>
               <td class="accordion__collapse-header--column application-table__cl_file-col">{{(item.dateIntroBC | date:'longDate') || '-'}}</td>
