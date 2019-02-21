@@ -1,29 +1,31 @@
-<div class="container" id="anchor-point">
+<div class="container body-container" id="anchor-point">
   <div class="spinner-container full-screen" *ngIf="loading">
     <div class="spinner-new rotating"></div>
   </div>
 
   <main *ngIf="!loading">
     <section>
-      <h2>Invasive Species in British Columbia</h2>
+      <h1>Invasive Species in British Columbia</h1>
       <!-- <p class="tab-intro">
         Click on any row to go to its detailed view.
       </p> -->
 
       <!-- TODO: add ngIf for admin only -->
-      <div *ngIf="api.isAdmin">
-        <button class="btn btn-primary" [routerLink]="['/species/0/edit']">
-          <i class="material-icons">add</i>
-          <span>Create New Library Item</span>
-        </button>
-      </div>
+      <div class="actions-contaienr">
+        <div *ngIf="api.isAdmin">
+          <button class="btn btn-primary" [routerLink]="['/species/0/edit']">
+            <i class="material-icons">add</i>
+            <span>Create New Library Item</span>
+          </button>
+        </div>
 
-      <div class="application-list__options">
-        <select class="sort-comments form-control" (change)="saveFilters()" [(ngModel)]="filterBy">
-          <option *ngFor="let key of filterKeys" [value]="key" [innerHTML]="key"></option>
-        </select>
+        <div class="application-list__options">
+          <i class="arrow down"></i>
+          <select class="sort-comments form-control" (change)="saveFilters()" [(ngModel)]="filterBy">
+            <option *ngFor="let key of filterKeys" [value]="key" [innerHTML]="key"></option>
+          </select>
+        </div>
       </div>
-
       <table class="table application-table">
         <thead class="application-table__sort-header">
           <tr>

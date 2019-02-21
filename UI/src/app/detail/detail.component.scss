@@ -18,6 +18,12 @@ $card-shadow: 0.02rem 0 0.2rem rgba(#000, 0.15);
   border-radius: 4px;
 }
 
+.detail-heading {
+  font-size: 26px;
+  padding: 20px 0 10px;
+  font-weight: 300;
+}
+
 .aside-card {
   background: $card-bg;
   box-shadow: -1px 4px 24px 0 rgba(119, 119, 119, 0.13);
@@ -98,22 +104,34 @@ section {
 }
 
 .nv-list {
-  border-bottom: 1px dotted #ccc;
 
   li {
-    @include flex-box();
+    display: flex;
     padding: 0.5rem 0;
-    border-top: 1px dotted #ccc;
+    border-top: 1px solid #eee;
     background: #fff;
+    font-size: 18px;
+    &:first-of-type {
+      border-top: none;
+    }
   }
-
+  span {
+    display: block;
+  }
   span.name {
-    @include flex(0 0 12rem);
+    text-transform: uppercase;
+    letter-spacing: -.015em;
     margin: 0;
+    font-weight: 600;
+    min-width: 234px;
+    text-align: right;
+    padding-right: 20px;
+    width: auto;
+    float: none;
   }
-
   span.value {
-    @include flex(1 1 auto);
+    float: none;
+
   }
 }
 
