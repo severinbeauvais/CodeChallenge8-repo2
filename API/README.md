@@ -26,11 +26,17 @@ Note that MongoDB must be running first.
 
 1. After installing the pre-requisites, you can fork or straight download a copy of this application to start your own app.
 2. Open a BASH shell.
-3. Change to this project's directory, eg `cd /c/My\ Repos/CodeChallenge8-repo2/API/`.
+3. Change to this project's directory, eg:
+    - `cd /c/My\ Repos/CodeChallenge8-repo2/API/`.
 4. Download all the dependencies with `yarn install`.
 5. Run `npm start` to start the webpack server to run the application on port **3000**.
-The API creates the initial database, if needed..
-6. Seed the local database as described in [seed README](seed/README.md).
+The API creates the initial database, if needed.
+6. Seed the local database.
+    1. Open a BASH shell.
+    1. Change directories to the folder containing the file to import, eg:
+        - ```cd /c/Users/severin/Desktop/```
+    1. Run the following command to import the 'species' collection:
+        - ```/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d seism --drop --collection species species.json```
 
 ## How to look at the Swagger OpenAPI documentation
 
@@ -46,7 +52,11 @@ Note that the Swagger UI allows you to 'try out' most of the API operations (if 
 This project uses [jest](http://jestjs.io/) as a testing framework. You can run tests with
 `yarn test` or `jest`. Running either command with the `--watch` flag will re-run the tests every time a file is changed.
 
-To run the tests in one file, simply pass the path of the file name e.g. `jest api/test/search.test.js --watch`. To run only one test in that file, chain the `.only` command e.g. `test.only("Search returns results", () => {})`.
+To run the tests in one file, simply pass the path of the file name eg:
+ - `jest api/test/search.test.js --watch`.
+
+To run only one test in that file, chain the `.only` command eg:
+ - `test.only("Search returns results", () => {})`.
 
 The **_MOST IMPORTANT_** thing to know about this project's test environment is the router setup. At the time of writing this, it wasn't possible to get [swagger-tools](https://github.com/apigee-127/swagger-tools) router working in the test environment. As a result, all tests **_COMPLETELY bypass_ the real life swagger-tools router**. Instead, a middleware router called [supertest](https://github.com/visionmedia/supertest) is used to map routes to controller actions. In each controller test, you will need to add code like the following:
 
@@ -79,10 +89,10 @@ The above code will stand in for the swagger-tools router, and help build the ob
       auth_payload: {
         scopes: ['sysadmin', 'public'],
         userID: null
-      }, 
+      },
       fields: {
         value: ['tags', 'properties', 'applicationID']
-      }, 
+      },
       featureId: {
         value: 'AAABBB'
       }
@@ -91,10 +101,10 @@ The above code will stand in for the swagger-tools router, and help build the ob
 }
 ```
 
-Unfortunately, this results in a lot of boilerplate code in each of the controller tests. There are some helpers to reduce the amount you need to write, but you will still need to check the parameter field names sent by your middleware router match what the controller(and swagger router) expect. However, this method results in  pretty effective integration tests as they exercise the controller code and save objects in the database. 
+Unfortunately, this results in a lot of boilerplate code in each of the controller tests. There are some helpers to reduce the amount you need to write, but you will still need to check the parameter field names sent by your middleware router match what the controller(and swagger router) expect. However, this method results in  pretty effective integration tests as they exercise the controller code and save objects in the database.
 
 ### Test database
 
-The tests run on an in-memory MongoDB server, using the [mongodb-memory-server](https://github.com/nodkz/mongodb-memory-server) package. The setup can be viewed at [test_helper.js](api/test/test_helper.js), and additional config in [config/mongoose_options.js]. It is currently configured to wipe out the database after each test run to prevent database pollution. 
+The tests run on an in-memory MongoDB server, using the [mongodb-memory-server](https://github.com/nodkz/mongodb-memory-server) package. The setup can be viewed at [test_helper.js](api/test/test_helper.js), and additional config in [config/mongoose_options.js]. It is currently configured to wipe out the database after each test run to prevent database pollution.
 
-[Factory-Girl](https://github.com/aexmachina/factory-girl) is used to easily create models (persisted to db) for testing purposes. 
+[Factory-Girl](https://github.com/aexmachina/factory-girl) is used to easily create models (persisted to db) for testing purposes.

@@ -14,5 +14,5 @@ let keycloakConfig: KeycloakConfig = {
 export const environment = {
   production: false,
   keycloak: keycloakConfig,
-  KeycloakEnabled: false
+  KeycloakEnabled: true
 };

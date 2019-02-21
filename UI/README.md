@@ -51,14 +51,16 @@ Note that the API must be running first.
     Go to http://localhost:4200 to verify that the application is running.
 
     :bulb: To change the default port, open `.angular-cli.json`, change the value on `defaults.serve.port`.
-    
+
+    Note: when running without keycloak enabled instead of `npm start` use `npm run start-noauth`.
+
 6. Run `npm run build` to just build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build, like so: `ng serve --prod` to run in production mode.
 7. Run `npm run lint` to just lint your app code using TSLint.
 
 ## Running tests
 
 ### Unit tests
-  
+
 1. Run `ng test` to execute the Jasmine unit tests via [Karma](https://karma-runner.github.io).
 
 ### End-to-end tests

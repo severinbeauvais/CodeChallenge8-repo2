@@ -30,11 +30,11 @@
             ]
           },
           "configurations": {
-            "keycloak": {
+            "noauth": {
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.keycloak.ts"
+                  "with": "src/environments/environment.noauth.ts"
                 }
               ]
             },
@@ -64,8 +64,8 @@
             "port": 4200
           },
           "configurations": {
-            "keycloak": {
-              "browserTarget": "base-app2:build:keycloak"
+            "noauth": {
+              "browserTarget": "base-app2:build:noauth"
             },
             "production": {
               "browserTarget": "base-app2:build:production"
