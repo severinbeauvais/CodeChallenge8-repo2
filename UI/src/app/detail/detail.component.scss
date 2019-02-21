@@ -115,6 +115,16 @@ section {
       border-top: none;
     }
   }
+  .latin {
+    span::first-letter {
+      text-transform: uppercase;
+    }
+  }
+  .common {
+    span {
+      text-transform: capitalize;
+    }
+  }
   span {
     display: block;
   }
@@ -210,10 +220,10 @@ ngb-alert {
   text-align: center;
   position: absolute;
   background: #f5f7fa;
-  z-index: 2000;
   width: 100%;
   height: 100%;
   text-align: center;
+  z-index: 2;
   i {
     color: $primary;
     opacity: .25;
