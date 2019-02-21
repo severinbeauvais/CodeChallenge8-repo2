@@ -1,23 +1,14 @@
 import { TestBed, async } from '@angular/core/testing';
-import {
-  RouterTestingModule
-} from '@angular/router/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
 import { ApiService } from 'app/services/api';
-import { KeycloakService } from 'app/services/keycloak.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
-    const mockKeycloakService = {
-      isValidForSite: () => {
-        return true;
-      }
-    };
-
     TestBed.configureTestingModule({
       declarations: [
         AppComponent,
@@ -26,8 +17,7 @@ describe('AppComponent', () => {
       ],
       imports: [RouterTestingModule, BrowserAnimationsModule],
       providers: [
-        { provide: ApiService },
-        { provide: KeycloakService, useValue: mockKeycloakService },
+        { provide: ApiService }
       ]
     }).compileComponents();
   }));
