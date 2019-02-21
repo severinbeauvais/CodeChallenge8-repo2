@@ -116,7 +116,7 @@
   },
   "commonName": "Shaggy Ink Cap",
   "latinName": "Coprinus comatus",
-  "category": "Fungi",
+  "category": "Fungus",
   "dateIntroBC": {
     "$date": "2005-11-01T21:29:16.913Z"
   },
@@ -172,7 +172,7 @@
   },
   "commonName": "Oyster Mushroom",
   "latinName": "Pleurotus ostreatus",
-  "category": "Fungi",
+  "category": "Fungus",
   "dateIntroBC": {
     "$date": "2011-06-26T21:29:16.913Z"
   },
