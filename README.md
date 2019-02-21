@@ -4,7 +4,7 @@ This is the SEISM Code Challenge private repository.
 ## What you'll find here...
 
 This repository contains the following documentation:
-* This file (README.md) 
+* This file (README.md)
 * The Apache License 2.0 file (LICENSE)
 * The original Code Challenge Notice, Instructions & Rules file (CODE_CHALLENGE.md)
 * Kirsten's user flow diagram
@@ -25,3 +25,11 @@ In order to run this application, you need to launch the following:
 2. API component
 3. UI component
 4. Keycloak
+
+## Run without Keycloak
+
+## API
+  Set a system environment variable `KeycloakEnabled` to `false`.
+
+## UI
+  Set environment.ts variable `KeycloakEnabled: false`.

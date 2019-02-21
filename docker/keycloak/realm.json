@@ -276,7 +276,7 @@
   "users" : [ {
     "id" : "e00dc8b2-a68d-4fb7-ad5c-7f58a69e4db3",
     "createdTimestamp" : 1550687986260,
-    "username" : "admin",
+    "username" : "seismadmin",
     "enabled" : true,
     "totp" : false,
     "emailVerified" : false,
