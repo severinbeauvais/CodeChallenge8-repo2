@@ -39,7 +39,7 @@ import { KeycloakService } from 'keycloak-angular';
 import { environment } from 'environments/environment';
 
 export function kcFactory(keycloakService: KeycloakService) {
-  return () => keycloakService.init({ config: environment.keycloak });
+  return () => keycloakService.init({ config: environment['keycloak'] });
 }
 
 @NgModule({
