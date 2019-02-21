@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  keycloak:
+    build:
+      context: ./keycloak
+      dockerfile: Dockerfile-keycloak
+    command: -Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/realm.json -Dkeycloak.migration.strategy=IGNORE_EXISTING
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_LOGLEVEL: WARN
+      ROOT_LOGLEVEL: WARN
+    ports:
+      - 8888:8080

@@ -5,6 +5,7 @@ var hostname      = process.env.API_HOSTNAME || "localhost:3000";
 var swaggerTools  = require("swagger-tools");
 var YAML          = require("yamljs");
 var mongoose      = require("mongoose");
+var auth          = require("./api/helpers/auth");
 var swaggerConfig = YAML.load("./api/swagger/swagger.yaml");
 var winston       = require('winston');
 var bodyParser    = require('body-parser');
@@ -60,12 +61,12 @@ swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
   // TODO: fix this
   // app.use(middleware.swaggerValidator({ validateResponse: false}));
 
-  // app.use(
-  //   middleware.swaggerSecurity({
-  //     Bearer: auth.verifyToken
-  //   })
-  // );
-  
+  app.use(
+    middleware.swaggerSecurity({
+      Bearer: auth.verifyToken
+    })
+  );
+
   var routerConfig = {
     controllers: "./api/controllers",
     useStubs: false
@@ -90,7 +91,7 @@ swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
     socketTimeoutMS: 45000 // Close sockets after 45 seconds of inactivity
   };
   defaultLog.info("Connecting to:", dbConnection);
-  mongoose.Promise  = global.Promise;  
+  mongoose.Promise  = global.Promise;
   var db = mongoose.connect(dbConnection, options).then(
     () => {
       defaultLog.info("Database connected");

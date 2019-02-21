@@ -6,20 +6,8 @@ import { throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from 'lodash';
 
-import { KeycloakService } from 'app/services/keycloak.service';
-
 import { Species } from 'app/models/species';
 import { Document } from 'app/models/document';
-
-interface LocalLoginResponse {
-  _id: string;
-  title: string;
-  created_at: string;
-  startTime: string;
-  endTime: string;
-  state: boolean;
-  accessToken: string;
-}
 
 @Injectable()
 export class ApiService {
@@ -32,8 +20,7 @@ export class ApiService {
   public env: 'local' | 'dev' | 'test' | 'demo' | 'scale' | 'beta' | 'master' | 'prod';
 
   constructor(
-    private http: HttpClient,
-    private keycloakService: KeycloakService
+    private http: HttpClient
   ) {
     // this.jwtHelper = new JwtHelperService();
     const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
@@ -46,26 +33,10 @@ export class ApiService {
   handleError(error: any): Observable<never> {
     const reason = error.message ? error.message : (error.status ? `${error.status} - ${error.statusText}` : 'Server error');
     console.log('API error =', reason);
-    if (error && error.status === 403 && !this.keycloakService.isKeyCloakEnabled()) {
-      window.location.href = '/login';
+    if (error && error.status === 403) {
+      window.location.href = '/not-authorized';
     }
     return throwError(error);
-  }
-
-  login(username: string, password: string): Observable<boolean> {
-    return this.http.post<LocalLoginResponse>(`${this.pathAPI}/login/token`, { username: username, password: password })
-      .map(res => {
-        // login successful if there's a jwt token in the response
-        if (res && res.accessToken) {
-          this.token = res.accessToken;
-
-          // store username and jwt token in local storage to keep user logged in between page refreshes
-          window.localStorage.setItem('currentUser', JSON.stringify({ username: username, token: this.token }));
-
-          return true; // successful login
-        }
-        return false; // failed login
-      });
   }
 
   logout() {
