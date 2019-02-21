@@ -3,7 +3,7 @@
     "$oid": "5c6c865df0570d03c4af0b13"
   },
   "commonName": "Eastern Grey Squirrel",
-  "latinName": "Sciurus carolinensis",
+  "latinName": "sciurus carolinensis",
   "category": "Land Animal",
   "dateIntroBC": {
     "$date": "2000-06-26T21:29:17.913Z"
@@ -17,7 +17,7 @@
     "$oid": "5c6c865df0570d03c4af0b17"
   },
   "commonName": "Burdock",
-  "latinName": "Arctium",
+  "latinName": "arctium",
   "category": "Land Plant",
   "dateIntroBC": {
     "$date": "1965-09-04T21:29:16.913Z"
@@ -31,7 +31,7 @@
     "$oid": "5c6c865df0570d03c4af0b1c"
   },
   "commonName": "Blueweed",
-  "latinName": "Echium vulgare",
+  "latinName": "echium vulgare",
   "category": "Land Plant",
   "dateIntroBC": {
     "$date": "2000-02-14T21:29:16.913Z"
@@ -45,7 +45,7 @@
     "$oid": "5c6c865df0570d03c4af0b18"
   },
   "commonName": "New Zealand Mudsnail",
-  "latinName": "Tateidae",
+  "latinName": "tateidae",
   "category": "Marine Animal",
   "dateIntroBC": {
     "$date": "2001-10-03T21:29:16.913Z"
@@ -59,7 +59,7 @@
     "$oid": "5c6c865df0570d03c4af0b1d"
   },
   "commonName": "Kelp",
-  "latinName": "Phylum Phaeophyta",
+  "latinName": "phylum phaeophyta",
   "category": "Marine Plant",
   "dateIntroBC": {
     "$date": "1950-02-01T21:29:16.913Z"
@@ -73,7 +73,7 @@
     "$oid": "5c6c865df0570d03c4af0b1e"
   },
   "commonName": "European Cottontail Rabbit",
-  "latinName": "Oryctolagus cuniculus",
+  "latinName": "oryctolagus cuniculus",
   "category": "Land Animal",
   "dateIntroBC": {
     "$date": "1950-02-01T21:29:17.913Z"
@@ -87,7 +87,7 @@
     "$oid": "5c6c865df0570d03c4af0b20"
   },
   "commonName": "Gorse",
-  "latinName": "Ulex",
+  "latinName": "ulex",
   "category": "Land Plant",
   "dateIntroBC": {
     "$date": "1942-01-18T21:29:16.913Z"
@@ -101,7 +101,7 @@
     "$oid": "5c6c865df0570d03c4af0b1f"
   },
   "commonName": "Japanese Knotweed",
-  "latinName": "Fallopia japonica",
+  "latinName": "fallopia japonica",
   "category": "Land Plant",
   "dateIntroBC": {
     "$date": "1990-03-22T21:29:16.913Z"
@@ -115,7 +115,7 @@
     "$oid": "5c6c865df0570d03c4af0b19"
   },
   "commonName": "Shaggy Ink Cap",
-  "latinName": "Coprinus comatus",
+  "latinName": "coprinus comatus",
   "category": "Fungus",
   "dateIntroBC": {
     "$date": "2005-11-01T21:29:16.913Z"
@@ -129,7 +129,7 @@
     "$oid": "5c6c865df0570d03c4af0b1a"
   },
   "commonName": "Red Rock Crab",
-  "latinName": "Cancer productus",
+  "latinName": "cancer productus",
   "category": "Marine Animal",
   "dateIntroBC": {
     "$date": "2011-12-10T21:29:16.913Z"
@@ -143,7 +143,7 @@
     "$oid": "5c6c865df0570d03c4af0b1b"
   },
   "commonName": "American Bullfrog",
-  "latinName": "Rana catesbeiana",
+  "latinName": "rana catesbeiana",
   "category": "Marine Animal",
   "dateIntroBC": {
     "$date": "2010-01-14T21:29:16.913Z"
@@ -157,7 +157,7 @@
     "$oid": "5c6c865df0570d03c4af0b16"
   },
   "commonName": "Olympia Oyster",
-  "latinName": "Ostrea lurida",
+  "latinName": "ostrea lurida",
   "category": "Marine Animal",
   "dateIntroBC": {
     "$date": "1999-08-18T21:29:16.913Z"
@@ -171,7 +171,7 @@
     "$oid": "5c6c865df0570d03c4af0b14"
   },
   "commonName": "Oyster Mushroom",
-  "latinName": "Pleurotus ostreatus",
+  "latinName": "pleurotus ostreatus",
   "category": "Fungus",
   "dateIntroBC": {
     "$date": "2011-06-26T21:29:16.913Z"
@@ -185,7 +185,7 @@
     "$oid": "5c6c865df0570d03c4af0b15"
   },
   "commonName": "Native Dunegrass",
-  "latinName": "Elymus mollis",
+  "latinName": "elymus mollis",
   "category": "Marine Plant",
   "dateIntroBC": {
     "$date": "2002-07-05T21:29:16.913Z"

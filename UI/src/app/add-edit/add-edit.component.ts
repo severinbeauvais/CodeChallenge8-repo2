@@ -226,19 +226,6 @@ export class AddEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // if (!this.species.description) {
-    //   this.dialogService.addDialog(ConfirmDialogComponent,
-    //     {
-    //       title: 'Cannot Save Changes',
-    //       message: 'A description for this species is required to save.',
-    //       okOnly: true
-    //     }, {
-    //       backdropColor: 'rgba(0, 0, 0, 0.5)'
-    //     })
-    //     .takeUntil(this.ngUnsubscribe);
-    //   return;
-    // }
-
     this.isSaving = true;
 
     this.speciesService.save(this.species)
