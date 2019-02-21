@@ -17,6 +17,8 @@ var dbConnection  = 'mongodb://'
 var db_username = process.env.MONGODB_USERNAME || '';
 var db_password = process.env.MONGODB_PASSWORD || '';
 
+var KeycloakEnabled = process.env.KeycloakEnabled || false;
+
 // Logging middleware
 winston.loggers.add('default', {
     console: {
@@ -61,11 +63,13 @@ swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
   // FUTURE: fix this
   // app.use(middleware.swaggerValidator({ validateResponse: false}));
 
-  app.use(
-    middleware.swaggerSecurity({
-      Bearer: auth.verifyToken
-    })
-  );
+  if (KeycloakEnabled) {
+    app.use(
+      middleware.swaggerSecurity({
+        Bearer: auth.verifyToken
+      })
+    );
+  }
 
   var routerConfig = {
     controllers: "./api/controllers",

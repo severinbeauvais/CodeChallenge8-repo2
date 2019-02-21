@@ -12,12 +12,23 @@ import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 
+import { environment } from '../../environments/environment';
+
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
 
   constructor(private auth: KeycloakService) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+    if (!environment.KeycloakEnabled) {
+      return next.handle(request).pipe(
+        map((resp: HttpResponse<any>) => {
+          return resp;
+        })
+      );
+    }
+
     const tokenObs = from  (this.auth.getToken());
 
     return tokenObs.pipe(
