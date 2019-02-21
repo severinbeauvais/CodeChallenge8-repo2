@@ -33,10 +33,10 @@ export class ListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // dynamically load filters -- including a 'None' option
-    this.filterKeys.push('None');
+    // load filter keys, including a 'Show All' option to display species entries for all categories
+    this.filterKeys.push('Show All');
     Constants.categories.forEach(key => this.filterKeys.push(key));
-    this.filterBy = this.filterKeys[0]; // initial filter is 'none'
+    this.filterBy = this.filterKeys[0]; // initial filter
 
     // get optional query parameters
     this.route.queryParamMap
@@ -67,16 +67,16 @@ export class ListComponent implements OnInit, OnDestroy {
 
   public filterChange(event: Event) {
     console.log('event: ', event);
-    // this.showOnlyOpenApps = checked;
+    // TODO: filterBy is already updated... anything else to do here???
     this.saveFilters();
   }
 
   private saveFilters() {
     const params: Params = {};
 
-    // if (this.showOnlyOpenApps) {
-    //   params['showOnlyOpenApps'] = true;
-    // }
+    if (this.filterBy !== this.filterKeys[0]) {
+      params['filterBy'] = this.filterBy;
+    }
 
     if (this.column && this.direction) {
       params['col'] = this.column;
@@ -88,7 +88,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private resetFilters() {
-    // this.showOnlyOpenApps = (this.paramMap.get('showOnlyOpenApps') === 'true');
+    this.filterBy = this.paramMap.get('filterBy') || this.filterKeys[0];
     this.column = this.paramMap.get('col'); // == null if col isn't present
     this.direction = +this.paramMap.get('dir'); // == 0 if dir isn't present
   }
@@ -105,6 +105,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public showThisApp(item: Species) {
-    // return !this.showOnlyOpenApps;
+    return (this.filterBy === this.filterKeys[0] || item.category === this.filterBy);
   }
 }
