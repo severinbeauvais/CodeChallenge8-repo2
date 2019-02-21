@@ -14,7 +14,7 @@
     "ng": "ng",
     "prestart": "",
     "start": "ng serve -o",
-    "start-keycloak": "ng serve -o -c keycloak",
+    "start-noauth": "ng serve -o -c noauth",
     "build": "npm run lint && ng build --prod",
     "pretest": "",
     "test": "echo 'Test suite should be run with \"`npm run tests` or npm `run tests-ci`\"'",
