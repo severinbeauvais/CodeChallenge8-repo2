@@ -5,7 +5,7 @@ This is the SEISM Code Challenge private repository.
 
 This repository contains the following documentation:
 * This file (README.md)
-* The Apache License 2.0 file (LICENSE)
+* The Apache License 2.0 [file](LICENSE)
 * The original Code Challenge Notice, Instructions & Rules [file](docs/CODE_CHALLENGE.md)
 * Kirsten's user flow diagram (docs/TBD)
 * An architecture diagram and explanation (docs/TBD)
@@ -14,13 +14,12 @@ This repository contains the following documentation:
 * [API documentation](API/README.md)
 * [Database seeding documentation](API/seed/README.md)
 * [Docker documentation](docker/README.md)
-* OTHERS ???
 
 Note that, when the API is running, the API documentation is available at http://localhost:3000/api/docs/.
 
 This repository contains the following components:
-1. [API](API) code project - this is the API (back end server) component of the application
-2. [UI](UI) code project - this is the UI (front end) component of the application
+1. [API code project](API) - this is the API (back end server) component of the application
+2. [UI code project](UI) - this is the UI (front end) component of the application
 3. [Keycloak](docker/keycloak) - Docker image to run Keycloak locally
 
 ## How to install, build and run
