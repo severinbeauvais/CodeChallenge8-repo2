@@ -41,88 +41,88 @@
     <form class="mb-3" #speciesForm="ngForm">
       <fieldset>
         <legend>Detailed Species Information</legend>
-
-        <div class="form-group mb-0">
-          <label>Species Category</label>
-          <div [ngClass]="{'is-invalid': isSubmitSaveClicked && !species.category}">
-            <select class="sort-comments form-control" [ngClass]="{'is-invalid': isSubmitSaveClicked && !species.category}"
-              id="category" name="category" #category="ngModel" [(ngModel)]="species.category">
-              <option *ngFor="let key of filterKeys" [value]="key" [innerHTML]="key"></option>
-            </select>
-          </div>
-          <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.category">
-            Select a category
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Common Name</label>
-          <input class="form-control" type="text" id="commonName" name="commonName"
-            #commonName="ngModel" [(ngModel)]="species.commonName"
-            required aria-required="true">
-          <!-- TODO: make this validation work (needs ngClass as above, etc) -->
-          <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.commonName">
-            Enter a common name
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Latin Name</label>
-          <input class="form-control" type="text" id="latinName" name="latinName"
-            #latinName="ngModel" [(ngModel)]="species.latinName"
-            required aria-required="true">
-          <!-- TODO: make this validation work (needs ngClass as above, etc) -->
-          <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.latinName">
-            Enter a latin name
-          </div>
-        </div>
-
-        <div class="form-group mb-0">
-          <label>Date Introduced in BC</label>
-          <div class="input-group" [ngClass]="{'is-invalid': isSubmitSaveClicked && !isValidDate(dateIntroBC)}">
-            <input class="form-control" placeholder="yyyy-mm-dd" name="date1" ngbDatepicker #date1="ngbDatepicker"
-              [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="dateIntroBC" (ngModelChange)="onDateChg($event)"
-              (click)="date1.close()" required aria-required="true">
-            <div class="input-group-append">
-              <button class="btn btn-icon" (click)="date1.toggle()" type="button" tabindex="-1">
-                <i class="material-icons">date_range</i>
-              </button>
+        <section class="main-card">
+          <div class="form-group mb-0">
+            <label>Species Category</label>
+            <div [ngClass]="{'is-invalid': isSubmitSaveClicked && !species.category}">
+              <select class="sort-comments form-control" [ngClass]="{'is-invalid': isSubmitSaveClicked && !species.category}"
+                id="category" name="category" #category="ngModel" [(ngModel)]="species.category">
+                <option *ngFor="let key of filterKeys" [value]="key" [innerHTML]="key"></option>
+              </select>
             </div>
-          </div>
-          <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !isValidDate(dateIntroBC)">
-            Enter a valid date
-          </div>
-        </div>
-  
-        <div class="form-group">
-          <label>Description</label>
-          <textarea class="form-control" rows="3" id="description" name="description"
-            #description="ngModel" [(ngModel)]="species.description">
-          </textarea>
-        </div>
-
- 
-        <div class="form-group mb-0">
-          <label>Species Image</label>
-
-          <div class="map-thumbnail">
-            <div class="map-thumbnail__no-results" *ngIf="!(species.image.size > 0)">
-              <span class="no-results-msg">No image available</span>
-            </div>
-            <div class="map-container">
-              <img class="map" [src]="imagePath">
+            <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.category">
+              Select a category
             </div>
           </div>
 
-          <button class="btn btn-icon" type="button" title="Delete image" (click)="deleteImage()">
-            <i class="material-icons">delete</i>
-            Delete Image
-          </button>
+          <div class="form-group">
+            <label>Common Name</label>
+            <input class="form-control" type="text" id="commonName" name="commonName"
+              #commonName="ngModel" [(ngModel)]="species.commonName"
+              required aria-required="true">
+            <!-- TODO: make this validation work (needs ngClass as above, etc) -->
+            <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.commonName">
+              Enter a common name
+            </div>
+          </div>
 
-          <app-file-upload [fileExt]="['jpg', 'jpeg', 'png', 'gif', 'tiff']" [maxFiles]="1" [maxSize]="4" [showList]="false" [files]="tempFiles"
-            (filesChange)="addImage($event); tempFiles = []"></app-file-upload>
-        </div>
+          <div class="form-group">
+            <label>Latin Name</label>
+            <input class="form-control" type="text" id="latinName" name="latinName"
+              #latinName="ngModel" [(ngModel)]="species.latinName"
+              required aria-required="true">
+            <!-- TODO: make this validation work (needs ngClass as above, etc) -->
+            <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.latinName">
+              Enter a latin name
+            </div>
+          </div>
 
+          <div class="form-group mb-0">
+            <label>Date Introduced in BC</label>
+            <div class="input-group" [ngClass]="{'is-invalid': isSubmitSaveClicked && !isValidDate(dateIntroBC)}">
+              <input class="form-control" placeholder="yyyy-mm-dd" name="date1" ngbDatepicker #date1="ngbDatepicker"
+                [firstDayOfWeek]="7" navigation="arrows" [(ngModel)]="dateIntroBC" (ngModelChange)="onDateChg($event)"
+                (click)="date1.close()" required aria-required="true">
+              <div class="input-group-append">
+                <button class="btn btn-icon" (click)="date1.toggle()" type="button" tabindex="-1">
+                  <i class="material-icons">date_range</i>
+                </button>
+              </div>
+            </div>
+            <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !isValidDate(dateIntroBC)">
+              Enter a valid date
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea class="form-control" rows="3" id="description" name="description"
+              #description="ngModel" [(ngModel)]="species.description">
+            </textarea>
+          </div>
+
+
+          <div class="form-group mb-0">
+            <label>Species Image</label>
+
+            <div class="map-thumbnail">
+              <div class="map-thumbnail__no-results" *ngIf="!(species.image.size > 0)">
+                <span class="no-results-msg">No image available</span>
+              </div>
+              <div class="map-container">
+                <img class="map" [src]="imagePath">
+              </div>
+            </div>
+
+            <button class="btn btn-icon" type="button" title="Delete image" (click)="deleteImage()">
+              <i class="material-icons">delete</i>
+              Delete Image
+            </button>
+
+            <app-file-upload [fileExt]="['jpg', 'jpeg', 'png', 'gif', 'tiff']" [maxFiles]="1" [maxSize]="4" [showList]="false" [files]="tempFiles"
+              (filesChange)="addImage($event); tempFiles = []"></app-file-upload>
+          </div>
+        </section>
       </fieldset>
     </form>
   </div>

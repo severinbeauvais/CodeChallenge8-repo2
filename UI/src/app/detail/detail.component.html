@@ -52,21 +52,22 @@
               <span class="value" [innerHTML]="(species.dateIntroBC | date:'longDate') || '-'"></span>
             </li>
             <li>
-                <span class="name">Description:</span>
-                <span class="value" [innerHTML]="(species.description | newlines) || '-'"></span>
-              </li>
-            </ul>
-
-            <label>Species Image</label>
-            <div class="map-thumbnail">
-              <div class="map-thumbnail__no-results" *ngIf="!(species.image.size > 0)">
-                <span class="no-results-msg">No image available</span>
+              <span class="name">Description:</span>
+              <span class="value" [innerHTML]="(species.description | newlines) || '-'"></span>
+            </li>
+            <li>
+              <span class="name">Species Image</span>
+              <div class="value map-thumbnail">
+                <div class="map-thumbnail__no-results" *ngIf="!(species.image.size > 0)">
+                  <i class="material-icons">image</i>
+                  <span class="no-results-msg">No image available</span>
+                </div>
+                <div class="map-container">
+                  <img class="map" [src]="speciesImagePath">
+                </div>
               </div>
-              <div class="map-container">
-                <img class="map" [src]="speciesImagePath">
-              </div>
-            </div>    
-
+            </li>
+          </ul>
         </section>
       </div>
     </div>
