@@ -1,19 +1,19 @@
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/concat';
 import * as _ from 'lodash';
+import { Md5 } from 'ts-md5/dist/md5';
 
 import { Constants } from 'app/utils/constants';
 import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
-import { Species } from 'app/models/species';
-import { Document } from 'app/models/document';
+import { Species, Image } from 'app/models/species';
 import { ApiService } from 'app/services/api';
 import { SpeciesService } from 'app/services/species.service';
 
@@ -23,34 +23,28 @@ import { SpeciesService } from 'app/services/species.service';
   styleUrls: ['./add-edit.component.scss']
 })
 
-export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
+export class AddEditComponent implements OnInit, OnDestroy {
   @ViewChild('speciesForm') speciesForm: NgForm;
 
-  private scrollToFragment: string = null;
   public isSubmitSaveClicked = false;
   public isSubmitting = false;
   public isSaving = false;
   public species: Species = null;
-  public dateIntroBC: NgbDateStruct = null;
-  public speciesFiles: Array<File> = [];
+  public dateIntroBC: NgbDateStruct = null; // for date picker
+  public tempFiles: Array<File> = []; // for file upload
+  public imagePath: SafeResourceUrl = null; // for display image
   public filterKeys: Array<string> = [];
+  private anyUnsavedItems = false; // for form controls that don't have 'dirty' flag
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public api: ApiService, // also also used in template
+    private domSanitizer: DomSanitizer, // to tell Angular src is safe
+    public api: ApiService,
     private speciesService: SpeciesService,
     private dialogService: DialogService
-  ) {
-    // if we have an URL fragment, save it for future scrolling
-    router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        const url = router.parseUrl(router.url);
-        this.scrollToFragment = (url && url.fragment) || null;
-      }
-    });
-  }
+  ) { }
 
   // check for unsaved changes before closing (or reloading) current tab/window
   @HostListener('window:beforeunload', ['$event'])
@@ -60,7 +54,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // display browser alert if needed
-    if (this.speciesForm.dirty || this.anyUnsavedItems()) {
+    if (this.speciesForm.dirty || this.anyUnsavedItems) {
       event.returnValue = true;
     }
   }
@@ -72,7 +66,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     // allow synchronous navigation if everything is OK
-    if (!this.speciesForm.dirty && !this.anyUnsavedItems()) {
+    if (!this.speciesForm.dirty && !this.anyUnsavedItems) {
       return true;
     }
 
@@ -85,20 +79,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         backdropColor: 'rgba(0, 0, 0, 0.5)'
       })
       .takeUntil(this.ngUnsubscribe);
-  }
-
-  // this is needed because we don't have a form control that is marked as dirty
-  private anyUnsavedItems(): boolean {
-    // look for species documents not yet uploaded to db
-    if (this.species.documents) {
-      for (const doc of this.species.documents) {
-        if (!doc._id) {
-          return true;
-        }
-      }
-    }
-
-    return false; // no unsaved items
   }
 
   public cancelChanges() {
@@ -124,6 +104,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         (data: { species: Species }) => {
           if (data.species) {
             this.species = data.species;
+            this.imagePath = this.domSanitizer.bypassSecurityTrustResourceUrl(this.species.image.data);
             this.dateIntroBC = this.dateToNgbDate(this.species.dateIntroBC);
           } else {
             alert('Error loading species');
@@ -131,17 +112,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
       );
-  }
-
-  ngAfterViewInit() {
-    // if requested, scroll to specified section
-    if (this.scrollToFragment) {
-      // ensure element exists
-      const element = document.getElementById(this.scrollToFragment);
-      if (element) {
-        element.scrollIntoView();
-      }
-    }
   }
 
   ngOnDestroy() {
@@ -170,41 +140,36 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  // add species or decision documents
-  public addDocuments(files: FileList, documents: Document[]) {
-    if (files && documents) { // safety check
-      for (let i = 0; i < files.length; i++) {
-        if (files[i]) {
-          // ensure file is not already in the list
-          if (_.find(documents, doc => (doc.documentFileName === files[i].name))) {
-            continue; // can't add duplicate file
-          }
+  // add/update species image
+  public addImage(files: FileList) {
+    if (files && files.length === 1) { // safety check
+      // convert Blob to base-64 encoded string
+      const reader = new FileReader();
+      reader.readAsDataURL(files[0].slice());
+      reader.onloadend = () => {
+        const base64data = reader.result;
 
-          const formData = new FormData();
-          formData.append('displayName', files[i].name);
-          formData.append('upfile', files[i]);
-
-          const document = new Document();
-          document['formData'] = formData; // temporary
-          document.documentFileName = files[i].name;
-
-          // save document for upload to db when species is added or saved
-          documents.push(document);
-        }
-      }
+        // create new image
+        this.species.image = new Image({
+          name: files[0].name,
+          type: files[0].type,
+          data: base64data,
+          size: files[0].size,
+          md5: Md5.hashStr(base64data.toString())
+        });
+        this.imagePath = this.domSanitizer.bypassSecurityTrustResourceUrl(this.species.image.data);
+        this.anyUnsavedItems = true;
+      };
     }
   }
 
-  // delete species or decision document
-  public deleteDocument(doc: Document, documents: Document[]) {
-    if (doc && documents) { // safety check
-      // remove doc from current list
-      _.remove(documents, item => (item.documentFileName === doc.documentFileName));
-    }
+  public deleteImage() {
+    this.species.image = new Image(); // empty image
+    this.imagePath = this.domSanitizer.bypassSecurityTrustResourceUrl(this.species.image.data);
+    this.anyUnsavedItems = true;
   }
 
-  // this is part 1 of adding a species and all its objects
-  // (multi-part due to dependencies)
+  // add a new species to the library
   public addSpecies() {
     this.isSubmitSaveClicked = true;
 
@@ -223,12 +188,18 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isSubmitting = true;
 
-    // add species
     this.speciesService.add(this.species)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
-        species2 => { // onNext
-          this.addSpecies2(species2);
+        species => { // onNext
+          // we don't need to reload data since we're navigating away below
+          // this.isSubmitting = false; // LOOKS BETTER WITHOUT THIS
+
+          this.speciesForm.form.markAsPristine();
+          this.anyUnsavedItems = false;
+
+          // add succeeded --> navigate to details page
+          this.router.navigate(['/species', species._id]);
         },
         error => {
           this.isSubmitting = false;
@@ -238,47 +209,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
       );
   }
 
-  // this is part 2 of adding a species and all its objects
-  // (multi-part due to dependencies)
-  private addSpecies2(species2: Species) {
-    let observables = of(null);
-
-    // add all species documents
-    // if (this.species.documents) {
-    //   for (const doc of this.species.documents) {
-    //     doc['formData'].append('_species', species2._id); // set back-reference
-    //     observables = observables.concat(this.documentService.add(doc['formData']));
-    //   }
-    // }
-
-    observables
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(
-        () => { // onNext
-          // do nothing here - see onCompleted() function below
-        },
-        error => {
-          this.isSubmitting = false;
-          console.log('error =', error);
-          alert('Error adding species, part 2');
-        },
-        () => { // onCompleted
-          // we don't need to reload data since we're navigating away below
-          // this.isSubmitting = false; // LOOKS BETTER WITHOUT THIS
-
-          this.speciesForm.form.markAsPristine();
-          if (this.species.documents) {
-            this.species.documents = []; // negate unsaved document check
-          }
-
-          // add succeeded --> navigate to details page
-          this.router.navigate(['/species', species2._id]);
-        }
-      );
-  }
-
-  // this is part 1 of saving a species and all its objects
-  // (multi-part due to dependencies)
+  // save an existing species to the library
   public saveSpecies() {
     this.isSubmitSaveClicked = true;
 
@@ -310,79 +241,23 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.isSaving = true;
 
-    let observables = of(null);
-
-    // add any new species documents
-    // if (this.species.documents) {
-    //   for (const doc of this.species.documents) {
-    //     if (!doc._id) {
-    //       doc['formData'].append('_species', this.species._id); // set back-reference
-    //       observables = observables.concat(this.documentService.add(doc['formData']));
-    //     }
-    //   }
-    // }
-
-    observables
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(
-        () => { // onNext
-          // do nothing here - see onCompleted() function below
-        },
-        error => {
-          this.isSaving = false;
-          console.log('error =', error);
-          alert('Error saving species, part 1');
-        },
-        () => { // onCompleted
-          // reload app with documents, current period and decision for next step
-          this.speciesService.getById(this.species._id)
-            .takeUntil(this.ngUnsubscribe)
-            .subscribe(
-              species2 => {
-                this.saveSpecies2(species2);
-              },
-              error => {
-                this.isSaving = false;
-                console.log('error =', error);
-                alert('Error reloading species, part 1');
-              }
-            );
-        }
-      );
-  }
-
-  // this is part 2 of saving a species and all its objects
-  // (multi-part due to dependencies)
-  private saveSpecies2(species2: Species) {
-    // save species
     this.speciesService.save(this.species)
       .takeUntil(this.ngUnsubscribe)
       .subscribe(
-        () => { // onNext
-          // do nothing here - see onCompleted() function below
+        species => { // onNext
+          // we don't need to reload data since we're navigating away below
+          // this.isSaving = false; // LOOKS BETTER WITHOUT THIS
+
+          this.speciesForm.form.markAsPristine();
+          this.anyUnsavedItems = false;
+
+          // save succeeded --> navigate to details page
+          this.router.navigate(['/species', species._id]);
         },
         error => {
           this.isSaving = false;
           console.log('error =', error);
           alert('Error saving species, part 3');
-        },
-        () => { // onCompleted
-          // we don't need to reload data since we're navigating away below
-          // this.isSaving = false; // LOOKS BETTER WITHOUT THIS
-
-          this.speciesForm.form.markAsPristine();
-
-          if (this.species.documents) {
-            for (const doc of this.species.documents) {
-              // assign 'arbitrary' id to docs so that:
-              // 1) unsaved document check passes
-              // 2) page doesn't jump around
-              doc._id = '0';
-            }
-          }
-
-          // save succeeded --> navigate to details page
-          this.router.navigate(['/species', species2._id]);
         }
       );
   }

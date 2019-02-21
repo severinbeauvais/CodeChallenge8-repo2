@@ -1,13 +1,15 @@
  module.exports = require ('../models')('Species', {
     commonName       : { type: String, default: '', trim: true, required: true },
     latinName        : { type: String, default: '', unique: true, trim: true, required: true },
-    category         : { type: String, enum: ['Land Animal', 'Marine Animal', 'Land Plant', 'Marine Plane', 'Fungus'], required: true },
+    category         : { type: String, enum: ['Land Animal', 'Marine Animal', 'Land Plant', 'Marine Plant', 'Fungus'], required: true },
     dateIntroBC      : { type: Date, default: null },
     description      : { type: String, default: '' },
     image            : {
+      name             : { type: String, default: null },
+      type             : { type: String, default: null },
       data             : { type: String, default: null },
-      length           : { type: Number, default: 0 },
-      md5              : { type: String, default: '' }
+      size             : { type: Number, default: 0 },
+      md5              : { type: String, default: null }
     },
     // auditing fields
     createdBy        : { type: String, default: '' },

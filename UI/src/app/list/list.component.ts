@@ -30,7 +30,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
-    public api: ApiService,
+    public api: ApiService, // used in template
     private speciesService: SpeciesService
   ) { }
 

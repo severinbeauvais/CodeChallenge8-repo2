@@ -56,7 +56,15 @@
               </li>
             </ul>
 
-            <!-- TODO: add species image/icon image here -->
+            <label>Species Image</label>
+            <div class="map-thumbnail">
+              <div class="map-thumbnail__no-results" *ngIf="!(species.image.size > 0)">
+                <span class="no-results-msg">No image available</span>
+              </div>
+              <div class="map-container">
+                <img class="map" [src]="speciesImagePath">
+              </div>
+            </div>    
 
         </section>
       </div>

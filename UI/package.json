@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "author": "Quartech Systems",
   "contributors": [
-    "Séverin Beauvais <severin.beauvais@quartech.com>",
+    "SÃ©verin Beauvais <severin.beauvais@quartech.com>",
     "Elizabeth Wolfe <elizabeth.wolfe@quartech.com>",
     "Kirsten Dodd <kirsten@heynova.io>"
   ],
@@ -50,6 +50,7 @@
     "ngx-pagination": "^3.2.0",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.3.2",
+    "ts-md5": "^1.2.4",
     "tslint": "^5.11.0",
     "web-animations-js": "^2.3.1",
     "zone.js": "0.8.29"

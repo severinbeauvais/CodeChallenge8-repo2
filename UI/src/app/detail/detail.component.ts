@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/operator/takeUntil';
@@ -19,12 +20,14 @@ import { SpeciesService } from 'app/services/species.service';
 export class DetailComponent implements OnInit, OnDestroy {
   public isDeleting = false;
   public species: Species = null;
+  public speciesImagePath: SafeResourceUrl = null; // for display image
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public api: ApiService,
+    private domSanitizer: DomSanitizer, // to tell Angular src is safe
+    public api: ApiService, // used in template
     private dialogService: DialogService,
     public speciesService: SpeciesService
   ) { }
@@ -37,6 +40,7 @@ export class DetailComponent implements OnInit, OnDestroy {
         (data: { species: Species }) => {
           if (data.species) {
             this.species = data.species;
+            this.speciesImagePath = this.domSanitizer.bypassSecurityTrustResourceUrl(this.species.image.data);
           } else {
             alert('Error loading species');
             this.router.navigate(['/']); // navigate back to home

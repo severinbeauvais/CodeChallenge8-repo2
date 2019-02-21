@@ -1,16 +1,17 @@
 import * as _ from 'lodash';
-import { Document } from './document';
 
-class Image {
-  _id: string;
+export class Image {
+  name: string;
+  type: string;
   data: string; // array of bytes
-  length: number;
+  size: number;
   md5: string;
 
   constructor(obj?: any) {
-    this._id          = obj && obj._id          || null;
+    this.name         = obj && obj.name         || null;
+    this.type         = obj && obj.type         || null;
     this.data         = obj && obj.data         || null;
-    this.length       = obj && obj.length       || null;
+    this.size         = obj && obj.size         || 0;
     this.md5          = obj && obj.md5          || null;
   }
 }
@@ -24,9 +25,6 @@ export class Species {
   dateIntroBC: Date = null;
   description: string = null;
   image: Image = null;
-
-  // associated data
-  documents: Array<Document> = [];
 
   constructor(obj?: any) {
     this._id          = obj && obj._id          || null;
@@ -44,16 +42,7 @@ export class Species {
       this.description = obj.description.replace(/\\n/g, '\n');
     }
 
-    // copy image
-    if (obj && obj.image) {
-      this.image = new Image(obj.image);
-    }
-
-    // copy documents
-    if (obj && obj.documents) {
-      for (const doc of obj.documents) {
-        this.documents.push(doc);
-      }
-    }
+    // copy image - object must exist
+    this.image = new Image(obj && obj.image || null); 
   }
 }

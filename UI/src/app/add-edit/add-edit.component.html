@@ -55,6 +55,28 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label>Common Name</label>
+          <input class="form-control" type="text" id="commonName" name="commonName"
+            #commonName="ngModel" [(ngModel)]="species.commonName"
+            required aria-required="true">
+          <!-- TODO: make this validation work (needs ngClass as above, etc) -->
+          <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.commonName">
+            Enter a common name
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Latin Name</label>
+          <input class="form-control" type="text" id="latinName" name="latinName"
+            #latinName="ngModel" [(ngModel)]="species.latinName"
+            required aria-required="true">
+          <!-- TODO: make this validation work (needs ngClass as above, etc) -->
+          <div class="invalid-feedback bg-danger" *ngIf="isSubmitSaveClicked && !species.latinName">
+            Enter a latin name
+          </div>
+        </div>
+
         <div class="form-group mb-0">
           <label>Date Introduced in BC</label>
           <div class="input-group" [ngClass]="{'is-invalid': isSubmitSaveClicked && !isValidDate(dateIntroBC)}">
@@ -79,26 +101,26 @@
           </textarea>
         </div>
 
-        <!-- TODO: change this to display/upload image -->
+ 
         <div class="form-group mb-0">
           <label>Species Image</label>
-          <ul class="doc-list mb-3" *ngIf="species.documents?.length > 0">
-              <li *ngFor="let doc of species.documents">
-                <span class="cell icon">
-                  <i class="material-icons">insert_drive_file</i>
-                </span>
-                <span class="cell name" [title]="doc.displayName || ''">
-                  <span class="cell__txt-content">{{doc.documentFileName}}</span>
-                </span>
-                <span class="cell actions">
-                  <button class="btn btn-icon" type="button" title="Delete this document" (click)="deleteDocument(doc, species.documents)">
-                    <i class="material-icons">delete</i>
-                  </button>
-                </span>
-              </li>
-          </ul>
-          <app-file-upload [fileExt]="['jpg', 'jpeg', 'png', 'pdf', 'tiff']" [maxFiles]="0" [maxSize]="10" [showList]="false" [files]="speciesFiles"
-            (filesChange)="addDocuments($event, species.documents); speciesFiles = []"></app-file-upload>
+
+          <div class="map-thumbnail">
+            <div class="map-thumbnail__no-results" *ngIf="!(species.image.size > 0)">
+              <span class="no-results-msg">No image available</span>
+            </div>
+            <div class="map-container">
+              <img class="map" [src]="imagePath">
+            </div>
+          </div>
+
+          <button class="btn btn-icon" type="button" title="Delete image" (click)="deleteImage()">
+            <i class="material-icons">delete</i>
+            Delete Image
+          </button>
+
+          <app-file-upload [fileExt]="['jpg', 'jpeg', 'png', 'gif', 'tiff']" [maxFiles]="1" [maxSize]="4" [showList]="false" [files]="tempFiles"
+            (filesChange)="addImage($event); tempFiles = []"></app-file-upload>
         </div>
 
       </fieldset>

@@ -1,10 +1,10 @@
-var _ = require('lodash');
+var _          = require('lodash');
 var defaultLog = require('winston').loggers.get('default');
-var mongoose = require('mongoose');
-var qs = require('qs'); // query strings
-var Actions = require('../helpers/actions');
-var Utils = require('../helpers/utils');
-var tagList = [
+var mongoose   = require('mongoose');
+var qs         = require('qs'); // for query strings
+var Actions    = require('../helpers/actions');
+var Utils      = require('../helpers/utils');
+var tagList    = [
   'commonName',
   'latinName',
   'category',
@@ -19,12 +19,12 @@ var getSanitizedFields = function (fields) {
   });
 };
 
-exports.protectedOptions = function (args, res) {
+exports.protectedOptions = function (args, res, rest) {
   res.status(200).send();
 };
 
 // returns count of entries in response header
-exports.protectedHead = function (args, res) {
+exports.protectedHead = function (args, res, next) {
   // build match query if on speciesId route
   var query = {};
 
@@ -58,7 +58,7 @@ exports.protectedHead = function (args, res) {
     true
   ) // count
     .then(function (data) {
-      // /api/species/xxx route, return 200 OK with 0 items if necessary
+      // if /api/species/xxx route, return 200 OK with 0 items if necessary
       if (!(args.swagger.params.speciesId && args.swagger.params.speciesId.value) || (data && data.length > 0)) {
         // success
         res.setHeader('x-total-count', data && data.length > 0 ? data[0].total_items : 0);
@@ -67,11 +67,15 @@ exports.protectedHead = function (args, res) {
         // error
         return Actions.sendResponse(res, 404, data);
       }
+    })
+    .catch(function (err) {
+      console.log("Error in runDataQuery():", err);
+      return Actions.sendResponse(res, 400, err);
     });
 };
 
 // gets a single, or list of, species entries
-exports.protectedGet = function (args, res) {
+exports.protectedGet = function (args, res, next) {
   var skip = null;
   var limit = null;
 
@@ -108,13 +112,17 @@ exports.protectedGet = function (args, res) {
   ) // count
     .then(function (data) {
       return Actions.sendResponse(res, 200, data);
+    })
+    .catch(function (err) {
+      console.log("Error in runDataQuery():", err);
+      return Actions.sendResponse(res, 400, err);
     });
 };
 
 // creates a new species entry
-exports.protectedPost = function (args, res) {
+exports.protectedPost = function (args, res, next) {
   var obj = args.swagger.params.species.value;
-  defaultLog.info("Posting new species object:", obj);
+  defaultLog.info("Saving species, object:", obj);
 
   var Species = mongoose.model('Species');
   var species = new Species(obj);
@@ -125,23 +133,22 @@ exports.protectedPost = function (args, res) {
   species.save()
     .then(function (obj) {
       // success
-      // defaultLog.info("Saved new species object:", obj);
       return Actions.sendResponse(res, 200, obj);
     }).catch(function (err) {
       // error
-      console.log("Error in API:", err);
+      console.log("Error in save():", err);
       return Actions.sendResponse(res, 400, err);
     });
 };
 
 // updates an existing species entry
-exports.protectedPut = function (args, res) {
+exports.protectedPut = function (args, res, next) {
   var speciesId = args.swagger.params.speciesId.value;
-  defaultLog.info("Putting species id:", speciesId);
+  defaultLog.info("Updating species, id:", speciesId);
 
   var obj = args.swagger.params.speciesObject.value;
   delete obj.tags; // strip security tags - these will not be updated on this route
-  defaultLog.info("Putting updated species object:", obj);
+  defaultLog.info("Updating species, object:", obj);
 
   // FUTURE: sanitize/update audits
 
@@ -149,7 +156,6 @@ exports.protectedPut = function (args, res) {
   Species.findOneAndUpdate({ _id: speciesId }, obj, { upsert: false, new: true }, function (err, o) {
     if (o) {
       // success
-      defaultLog.info("o:", o);
       return Actions.sendResponse(res, 200, o);
     } else {
       // error
@@ -160,21 +166,20 @@ exports.protectedPut = function (args, res) {
 };
 
 // deletes a species entry
-exports.protectedDelete = function (args, res) {
+exports.protectedDelete = function (args, res, next) {
   var speciesId = args.swagger.params.speciesId.value;
-  defaultLog.info("Deleting species id:", speciesId);
+  defaultLog.info("Deleting species, id:", speciesId);
 
   var Species = mongoose.model('Species');
   Species.findOne({ _id: speciesId }, function (err, o) {
     if (o) {
-      defaultLog.info("Deleting object:", o);
-
       Actions.delete(o)
         .then(function (deleted) {
           // success
           return Actions.sendResponse(res, 200, deleted);
         }, function (err) {
           // error
+          console.log("Error in delete():", err);
           return Actions.sendResponse(res, 400, err);
         });
     } else {
