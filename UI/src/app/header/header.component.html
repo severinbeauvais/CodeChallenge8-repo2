@@ -13,23 +13,17 @@
     </button>
     <div class="navbar-collapse" [@toggleNav]="isNavMenuOpen ? 'navOpen' : 'navClosed'" id="mainNav">
       <ul class="navbar-nav">
-        <li *ngIf="jwt" class="nav-item">
-          <a class="nav-link" routerLink="/species" title="List invasive species" tabindex="0">
+        <li *ngIf="isLoggedIn" class="nav-item">
+          <a class="nav-link" routerLink="/species" tabindex="0">
             <span>List Invasive Species</span>
           </a>
         </li>
 
-        <!-- LOGGED IN -->
-        <li *ngIf="jwt; else loggedOut" class="nav-item" placement="bottom-right">
-          <a class="nav-link" id="welcome" tabindex="0">
-            <span>{{welcomeMsg}}</span>
+        <li *ngIf="isLoggedIn" class="nav-item">
+          <a class="nav-link" (click)="logout()" tabindex="0">
+            <span>Logout</span>
           </a>
         </li>
-
-        <!-- LOGGED OUT -->
-        <ng-template #loggedOut>
-          <!-- Placeholder? -->
-        </ng-template>
       </ul>
     </div>
   </nav>

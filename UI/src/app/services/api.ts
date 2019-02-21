@@ -14,7 +14,6 @@ export class ApiService {
 
   public token: string;
   public isMS: boolean; // IE, Edge, etc
-  // private jwtHelper: JwtHelperService;
   public pathAPI: string;
   public params: Params;
   public env: 'local' | 'dev' | 'test' | 'demo' | 'scale' | 'beta' | 'master' | 'prod';
@@ -22,7 +21,6 @@ export class ApiService {
   constructor(
     private http: HttpClient
   ) {
-    // this.jwtHelper = new JwtHelperService();
     const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
     this.isMS = window.navigator.msSaveOrOpenBlob ? true : false;

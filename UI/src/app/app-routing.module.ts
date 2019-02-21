@@ -18,24 +18,25 @@ const routes: Routes = [
   },
   {
     path: 'species',
+    component: ListComponent,
     canActivate: [AppAuthGuard],
-    data: { roles: ['seism_admin', 'seism_user']},
-    component: ListComponent
+    data: { roles: ['seism_admin', 'seism_user'] },
+    runGuardsAndResolvers: 'always'
   },
   {
     path: 'species/:id',
-    canActivate: [AppAuthGuard],
-    data: { roles: ['seism_admin', 'seism_user']},
     component: DetailComponent,
+    canActivate: [AppAuthGuard],
+    data: { roles: ['seism_admin', 'seism_user'] },
     resolve: {
       species: SpeciesResolver
     }
   },
   {
     path: 'species/:id/edit',
-    canActivate: [AppAuthGuard],
-    data: { roles: ['seism_admin']},
     component: AddEditComponent,
+    canActivate: [AppAuthGuard],
+    data: { roles: ['seism_admin'] },
     resolve: {
       species: SpeciesResolver
     },
@@ -44,9 +45,8 @@ const routes: Routes = [
   {
     // default route
     path: '',
-    canActivate: [AppAuthGuard],
-    data: { roles: ['seism_admin', 'seism_user']},
-    component: ListComponent
+    redirectTo: '/species',
+    pathMatch: 'full'
   },
   {
     // wildcard route
@@ -58,7 +58,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })
   ],
   exports: [
     RouterModule
