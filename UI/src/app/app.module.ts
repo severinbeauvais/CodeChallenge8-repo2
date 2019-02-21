@@ -32,6 +32,7 @@ import { FileUploadComponent } from 'app/file-upload/file-upload.component';
 // services
 import { ApiService } from 'app/services/api';
 import { SpeciesService } from 'app/services/species.service';
+import { UserService } from 'app/services/user.service';
 import { CanDeactivateGuard } from 'app/services/can-deactivate-guard.service';
 import { TokenInterceptor } from './utils/token-interceptor';
 
@@ -86,6 +87,7 @@ export function kcFactory(keycloakService: KeycloakService) {
     },
     CookieService,
     SpeciesService,
+    UserService,
     CanDeactivateGuard
   ],
   entryComponents: [

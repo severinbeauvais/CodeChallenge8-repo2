@@ -34,7 +34,6 @@ export class TokenInterceptor implements HttpInterceptor {
     return tokenObs.pipe(
       switchMap((token) => {
         const authToken = token || '';
-        console.log('Interceptor Token:', authToken);
         request = request.clone({
           setHeaders: {
             'Authorization': 'Bearer ' + authToken

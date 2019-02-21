@@ -10,6 +10,11 @@ tags:
   externalDocs:
     description: "Find out more"
     url: "https://github.com/BCDevExchange-CodeChallenge/CodeChallenge8-repo2.git"
+- name: "user"
+  description: "Operations about Users"
+  externalDocs:
+    description: "Find out more about our API"
+    url: "https://github.com/BCDevExchange-CodeChallenge/CodeChallenge8-repo2.git"
 - name: "species"
   description: "Operations about Species"
   externalDocs:
@@ -65,6 +70,24 @@ definitions:
     properties:
       message:
         type: string
+
+### User Definitions
+  UserObject:
+    type: object
+    properties:
+      _id:
+        type: string
+        example: "54759eb3c090d83494e2d804"
+        ## TODO: Add more fields here.
+  UserFields:
+    type: string
+    description: "Optional fields to return"
+    example: firstName|lastName
+    enum: &userFields
+      - username
+      - firstName
+      - lastName
+      - email
 
 ### Species Definitions
   SpeciesObject:
@@ -140,6 +163,83 @@ paths:
           description: "Success"
           schema:
             $ref: "#/definitions/Token"
+        "403":
+          description: "Access Denied"
+          schema:
+            $ref: "#/definitions/Error"
+### User Routes
+
+  /user:
+    x-swagger-router-controller: user
+    options:
+      tags:
+        - user
+      operationId: protectedOptions
+      summary: "Pre-flight request"
+      description: "Options on User Route"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/UserObject"
+        "403":
+          description: "Access Denied"
+          schema:
+            $ref: "#/definitions/Error"
+    head:
+      tags:
+        - user
+      operationId: protectedHead
+      summary: "Retrieve META associated with user entries"
+      description: "Get META from the request, without returning the payload in question"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - seism_admin
+        - seism_user
+      parameters:
+        - in: query
+          name: isDeleted
+          type: boolean
+          required: false
+          description: "Whether or not to return deleted user entries"
+        - in: query
+          collectionFormat: multi
+          name: category
+          type: string
+          required: false
+          description: "Get user entries that match this category(ies)"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/UserObject"
+        "403":
+          description: "Access Denied"
+          schema:
+            $ref: "#/definitions/Error"
+    put:
+      tags:
+        - user
+      operationId: protectedPut
+      summary: "Update a user entry"
+      description: "Update a user object"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - seism_admin
+        - write:user
+      parameters:
+        - name: userObject
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserObject"
+      responses:
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/UserObject"
         "403":
           description: "Access Denied"
           schema:

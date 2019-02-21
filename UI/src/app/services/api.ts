@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 
 import { Species } from 'app/models/species';
 import { Document } from 'app/models/document';
+import { User } from 'app/models/user';
 
 @Injectable()
 export class ApiService {
@@ -106,6 +107,14 @@ export class ApiService {
   saveSpecies(app: Species): Observable<Species> {
     const queryString = `species/${app._id}`;
     return this.http.put<Species>(`${this.pathAPI}/${queryString}`, app, {});
+  }
+
+  //
+  // Users
+  //
+  putUser(app: User): Observable<User> {
+    const queryString = `user/`;
+    return this.http.put<User>(`${this.pathAPI}/${queryString}`, app, {});
   }
 
   //
