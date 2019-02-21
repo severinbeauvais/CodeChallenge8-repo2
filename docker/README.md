@@ -1,18 +1,21 @@
 
 # Docker Keycloak
 
+## Installing Docker
+See https://www.docker.com/get-started and install the latest version for your machine.
+
 ## Running local keycloak
 
 Starts and seeds a standalone local keycloak instance running on localhost:8888.
-
-Keycloak admin user:
-- username: admin
-- password: admin
 
 Run:
 ```
 docker-compose up
 ```
+
+Keycloak admin user:
+- username: admin
+- password: admin
 
 ## Adding/removing User Roles
 
@@ -31,7 +34,11 @@ With keycloak running, access the admin console at `localhost:8888/auth` and log
 5. Add or remove the `seism_admin` role by selecting the role from the appropriate box, and clicking the corresponding `Add Selected` or `Remove Selected` button.
 
 ## Export new realm config
-From the docker container, run:
+Open a shell in the keycloak docker container:
+```
+docker exec <container_name> sh
+```
+And run:
 ```
 bin/standalone.sh -Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=<FILE_NAME.json> -Djboss.http.port=8888 -Djboss.https.port=9999 -Djboss.management.http.port=7777
 ```
