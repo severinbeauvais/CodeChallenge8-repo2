@@ -142,7 +142,7 @@ export class AddEditComponent implements OnInit, OnDestroy {
 
   // add/update species image
   public addImage(files: FileList) {
-    if (files && files.length === 1) { // safety check
+    if (files && files.length >= 1) { // safety check (NB: we only load first one)
       // convert Blob to base-64 encoded string
       const reader = new FileReader();
       reader.readAsDataURL(files[0].slice());
@@ -226,18 +226,18 @@ export class AddEditComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.species.description) {
-      this.dialogService.addDialog(ConfirmDialogComponent,
-        {
-          title: 'Cannot Save Changes',
-          message: 'A description for this species is required to save.',
-          okOnly: true
-        }, {
-          backdropColor: 'rgba(0, 0, 0, 0.5)'
-        })
-        .takeUntil(this.ngUnsubscribe);
-      return;
-    }
+    // if (!this.species.description) {
+    //   this.dialogService.addDialog(ConfirmDialogComponent,
+    //     {
+    //       title: 'Cannot Save Changes',
+    //       message: 'A description for this species is required to save.',
+    //       okOnly: true
+    //     }, {
+    //       backdropColor: 'rgba(0, 0, 0, 0.5)'
+    //     })
+    //     .takeUntil(this.ngUnsubscribe);
+    //   return;
+    // }
 
     this.isSaving = true;
 

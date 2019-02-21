@@ -43,6 +43,6 @@ export class Species {
     }
 
     // copy image - object must exist
-    this.image = new Image(obj && obj.image || null); 
+    this.image = new Image(obj && obj.image || null);
   }
 }

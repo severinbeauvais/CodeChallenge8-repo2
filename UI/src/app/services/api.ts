@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 import { environment } from '../../environments/environment';
 
 import { Species } from 'app/models/species';
-import { Document } from 'app/models/document';
 import { User } from 'app/models/user';
 
 @Injectable()
@@ -93,7 +92,6 @@ export class ApiService {
     return this.http.get<Species[]>(`${this.pathAPI}/${queryString}`, {});
   }
 
-  // NB: returns array
   addSpecies(app: Species): Observable<Species> {
     const queryString = `species/`;
     return this.http.post<Species>(`${this.pathAPI}/${queryString}`, app, {});
@@ -115,57 +113,6 @@ export class ApiService {
   putUser(app: User): Observable<User> {
     const queryString = `user/`;
     return this.http.put<User>(`${this.pathAPI}/${queryString}`, app, {});
-  }
-
-  //
-  // Documents
-  //
-  uploadDocument(formData: FormData): Observable<Document> {
-    const fields = [
-      'documentFileName',
-      'displayName',
-      'internalURL',
-      'internalMime'
-    ];
-    const queryString = `document/?fields=${this.buildValues(fields)}`;
-    return this.http.post<Document>(`${this.pathAPI}/${queryString}`, formData, {});
-  }
-
-  private downloadResource(id: string): Promise<Blob> {
-    const queryString = `document/${id}/download`;
-    return this.http.get<Blob>(this.pathAPI + '/' + queryString, { responseType: 'blob' as 'json' }).toPromise();
-  }
-
-  public async downloadDocument(document: Document): Promise<void> {
-    const blob = await this.downloadResource(document._id);
-    const filename = document.documentFileName;
-
-    if (this.isMS) {
-      window.navigator.msSaveBlob(blob, filename);
-    } else {
-      const url = window.URL.createObjectURL(blob);
-      const a = window.document.createElement('a');
-      window.document.body.appendChild(a);
-      a.setAttribute('style', 'display: none');
-      a.href = url;
-      a.download = filename;
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-    }
-  }
-
-  public async openDocument(document: Document): Promise<void> {
-    const blob = await this.downloadResource(document._id);
-    const filename = document.documentFileName;
-
-    if (this.isMS) {
-      window.navigator.msSaveBlob(blob, filename);
-    } else {
-      const tab = window.open();
-      const fileURL = URL.createObjectURL(blob);
-      tab.location.href = fileURL;
-    }
   }
 
   //
