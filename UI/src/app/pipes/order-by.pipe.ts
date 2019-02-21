@@ -21,7 +21,12 @@ export class OrderByPipe implements PipeTransform {
       if (!aCompare) { return -args.direction; }
       if (!bCompare) { return +args.direction; }
 
-      if (Array.isArray(aCompare) || Array.isArray(bCompare)) {
+      if (typeof aCompare === 'string' || typeof bCompare === 'string') {
+        // coalesce so that sort is case-insensitive
+        aCompare = self.coalesce(aCompare);
+        bCompare = self.coalesce(bCompare);
+
+      } else if (Array.isArray(aCompare) || Array.isArray(bCompare)) {
         // just compare first elements
         aCompare = self.coalesce(aCompare[0]);
         bCompare = self.coalesce(bCompare[0]);
@@ -33,7 +38,7 @@ export class OrderByPipe implements PipeTransform {
           if (aCompare.name === undefined) { return +args.direction; }
           if (bCompare.name === undefined) { return -args.direction; }
 
-          // TODO: Don't assume name for sub-property -- fix this to be more generic.
+          // FUTURE: don't assume name for sub-property -- fix this to be more generic
           aCompare = self.coalesce(aCompare.name);
           bCompare = self.coalesce(bCompare.name);
         }
