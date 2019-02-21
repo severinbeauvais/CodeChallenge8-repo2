@@ -33,8 +33,8 @@ export class ListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    // load filter keys, including a 'Show All' option to display species entries for all categories
-    this.filterKeys.push('Show All');
+    // load filter keys, including an ALL option to display species entries for all categories
+    this.filterKeys.push('ALL');
     Constants.categories.forEach(key => this.filterKeys.push(key));
     this.filterBy = this.filterKeys[0]; // initial filter
 
@@ -65,13 +65,7 @@ export class ListComponent implements OnInit, OnDestroy {
       );
   }
 
-  public filterChange(event: Event) {
-    console.log('event: ', event);
-    // TODO: filterBy is already updated... anything else to do here???
-    this.saveFilters();
-  }
-
-  private saveFilters() {
+  public saveFilters() {
     const params: Params = {};
 
     if (this.filterBy !== this.filterKeys[0]) {

@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatSnackBarRef, SimpleSnackBar, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { Subject } from 'rxjs/Subject';
@@ -20,13 +19,11 @@ import { SpeciesService } from 'app/services/species.service';
 export class DetailComponent implements OnInit, OnDestroy {
   public isDeleting = false;
   public species: Species = null;
-  private snackBarRef: MatSnackBarRef<SimpleSnackBar> = null;
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public snackBar: MatSnackBar,
     public api: ApiService,
     private dialogService: DialogService,
     public speciesService: SpeciesService
@@ -49,9 +46,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // dismiss any open snackbar
-    if (this.snackBarRef) { this.snackBarRef.dismiss(); }
-
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }

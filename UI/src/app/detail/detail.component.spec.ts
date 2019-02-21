@@ -3,7 +3,6 @@ import { DetailComponent } from './detail.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NewlinesPipe } from 'app/pipes/newlines.pipe';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { MatSnackBar } from '@angular/material';
 import { DialogService } from 'ng2-bootstrap-modal';
 import { ApiService } from 'app/services/api';
 import { SpeciesService } from 'app/services/species.service';
@@ -30,7 +29,6 @@ describe('DetailComponent', () => {
       declarations: [DetailComponent, NewlinesPipe],
       imports: [RouterTestingModule, NgbModule],
       providers: [
-        { provide: MatSnackBar },
         { provide: ApiService },
         { provide: DialogService },
         { provide: SpeciesService, useValue: speciesServiceStub },

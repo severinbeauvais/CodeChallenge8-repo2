@@ -17,7 +17,7 @@
       </button>
 
       <div class="application-list__options">
-        <select class="sort-comments form-control" (change)="filterChange($event.checked)" [(ngModel)]="filterBy">
+        <select class="sort-comments form-control" (change)="saveFilters()" [(ngModel)]="filterBy">
           <option *ngFor="let key of filterKeys" [value]="key" [innerHTML]="key"></option>
         </select>
       </div>
@@ -34,7 +34,7 @@
             <th class="sortable" (click)="sort('dateIntroBC')">Date Introduced in BC
               <i class="sort" [ngClass]="{'sort-asc': (column == 'dateIntroBC' && direction < 0), 'sort-desc': (column == 'dateIntroBC' && direction > 0) }" aria-hidden="true"></i>
             </th>
-            <th class="application-table__name-col sortable" (click)="sort('category')">Category
+            <th class="application-table__name-col sortable" (click)="sort('category')">Species Category
               <i class="sort" [ngClass]="{'sort-asc': (column == 'category' && direction < 0), 'sort-desc': (column == 'category' && direction > 0) }" aria-hidden="true"></i>
             </th>
           </tr>

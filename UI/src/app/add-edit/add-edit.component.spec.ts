@@ -5,7 +5,6 @@ import { DialogService } from 'ng2-bootstrap-modal';
 import { AddEditComponent } from './add-edit.component';
 import { FileUploadComponent } from 'app/file-upload/file-upload.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatSnackBar } from '@angular/material';
 import { ApiService } from 'app/services/api';
 import { SpeciesService } from 'app/services/species.service';
 
@@ -19,7 +18,6 @@ describe('AddEditComponent', () => {
       declarations: [AddEditComponent, FileUploadComponent],
       providers: [
         { provide: DialogService },
-        { provide: MatSnackBar },
         { provide: ApiService },
         { provide: SpeciesService }
       ]

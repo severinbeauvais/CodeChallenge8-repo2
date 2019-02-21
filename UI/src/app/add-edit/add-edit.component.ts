@@ -1,6 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild, HostListener } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatSnackBarRef, SimpleSnackBar, MatSnackBar } from '@angular/material';
 import { ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { DialogService } from 'ng2-bootstrap-modal';
@@ -11,7 +10,7 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/concat';
 import * as _ from 'lodash';
 
-import { Constants } from 'app/utils/constants'; // TODO: use Constants.categories to populate drop-down list
+import { Constants } from 'app/utils/constants';
 import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
 import { Species } from 'app/models/species';
 import { Document } from 'app/models/document';
@@ -33,14 +32,13 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   public isSaving = false;
   public species: Species = null;
   public dateIntroBC: NgbDateStruct = null;
-  private snackBarRef: MatSnackBarRef<SimpleSnackBar> = null;
-  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
   public speciesFiles: Array<File> = [];
+  public filterKeys: Array<string> = [];
+  private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    public snackBar: MatSnackBar,
     public api: ApiService, // also also used in template
     private speciesService: SpeciesService,
     private dialogService: DialogService
@@ -115,6 +113,10 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit() {
+    // load filter keys
+    // NB: no initial filter
+    Constants.categories.forEach(key => this.filterKeys.push(key));
+
     // get data from route resolver
     this.route.data
       .takeUntil(this.ngUnsubscribe)
@@ -143,9 +145,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // dismiss any open snackbar
-    if (this.snackBarRef) { this.snackBarRef.dismiss(); }
-
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
@@ -178,8 +177,7 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         if (files[i]) {
           // ensure file is not already in the list
           if (_.find(documents, doc => (doc.documentFileName === files[i].name))) {
-            this.snackBarRef = this.snackBar.open('Can\'t add duplicate file', null, { duration: 2000 });
-            continue;
+            continue; // can't add duplicate file
           }
 
           const formData = new FormData();
@@ -267,7 +265,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         () => { // onCompleted
           // we don't need to reload data since we're navigating away below
           // this.isSubmitting = false; // LOOKS BETTER WITHOUT THIS
-          // this.snackBarRef = this.snackBar.open('Species created...', null, { duration: 2000 }); // not displayed due to navigate below
 
           this.speciesForm.form.markAsPristine();
           if (this.species.documents) {
@@ -372,7 +369,6 @@ export class AddEditComponent implements OnInit, AfterViewInit, OnDestroy {
         () => { // onCompleted
           // we don't need to reload data since we're navigating away below
           // this.isSaving = false; // LOOKS BETTER WITHOUT THIS
-          // this.snackBarRef = this.snackBar.open('Species saved...', null, { duration: 2000 }); // not displayed due to navigate below
 
           this.speciesForm.form.markAsPristine();
 
