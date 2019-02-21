@@ -24,3 +24,4 @@ In order to run this application, you need to launch the following:
 1. MongoDB (see API documentation for details)
 2. API component
 3. UI component
+4. Docker
