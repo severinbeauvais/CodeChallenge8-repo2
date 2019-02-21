@@ -54,9 +54,6 @@ Note that the API must be running first.
 
     Note: when running without keycloak enabled instead of `npm start` use `npm run start-noauth`.
 
-6. Run `npm run build` to just build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build, like so: `ng serve --prod` to run in production mode.
-7. Run `npm run lint` to just lint your app code using TSLint.
-
 ## Running tests
 
 ### Unit tests

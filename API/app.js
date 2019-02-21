@@ -17,7 +17,7 @@ var dbConnection  = 'mongodb://'
 var db_username = process.env.MONGODB_USERNAME || '';
 var db_password = process.env.MONGODB_PASSWORD || '';
 
-var KeycloakEnabled = process.env.KeycloakEnabled || false;
+var KeycloakEnabled = process.env.KeycloakEnabled || true;
 
 // Logging middleware
 winston.loggers.add('default', {
