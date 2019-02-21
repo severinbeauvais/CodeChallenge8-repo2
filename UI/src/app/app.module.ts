@@ -31,14 +31,13 @@ import { FileUploadComponent } from 'app/file-upload/file-upload.component';
 
 // services
 import { ApiService } from 'app/services/api';
-import { AuthenticationService } from 'app/services/authentication.service';
 import { SpeciesService } from 'app/services/species.service';
 import { CanDeactivateGuard } from 'app/services/can-deactivate-guard.service';
 import { TokenInterceptor } from './utils/token-interceptor';
 
 import { KeycloakService } from 'keycloak-angular';
-// import { AppAuthGUard } from './app.authguard';
 import { environment } from 'environments/environment';
+
 export function kcFactory(keycloakService: KeycloakService) {
   return () => keycloakService.init({ config: environment.keycloak });
 }
@@ -86,7 +85,6 @@ export function kcFactory(keycloakService: KeycloakService) {
       multi: true
     },
     CookieService,
-    AuthenticationService,
     SpeciesService,
     CanDeactivateGuard
   ],
