@@ -1,5 +1,14 @@
 @import "assets/styles/base/base.scss";
 
+.body-container {
+  min-height: 90vh;
+  h1 {
+    font-size: 36px;
+    padding-top: 40px;
+    font-weight: 300;
+  }
+}
+
 .application-list {
   &__options {
     @include flex(0 0 auto);
@@ -10,30 +19,63 @@
   }
 }
 
+.actions-contaienr {
+  display: flex;
+  max-width: 500px;
+  margin: 0 0 0 auto;
+  justify-content: flex-end;
+  .application-list__options {
+    padding: 0;
+    margin-left: 20px;
+    position: relative;
+    select {
+      padding-right: 30px;
+      padding-left: 20px;
+      -webkit-appearance: none;
+    }
+    .arrow.down{
+      border: solid black;
+      border-width: 0 3px 3px 0;
+      display: inline-block;
+      padding: 3px;
+      transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+      position: absolute;
+      right: 12px;
+      top: 15px;
+    }
+  }
+  button.btn.btn-primary {
+    height: 43px;
+  }
+}
+
 .application-table {
-  margin-top: 30px;
+  margin-top: 20px;
   box-shadow: -1px 4px 24px 0 rgba(119, 119, 119, 0.13);
   background: $white;
   border-radius: 4px;
   font-size: 18px;
+  border: 20px solid #fff;
   thead {
-    border-color: transparent;
-    box-shadow: -1px 1px 14px 0 rgba(119, 119, 119, 0.23);
-    border-radius: 4px;
-    background: #ced4e0;
+    border-color: $primary;
     letter-spacing: -0.025em;
     th {
-      font-size: 20px;
+      font-size: 18px;
+      font-weight: 600;
       width: 20%;
       padding: 18px;
       border-top: none;
-      border-color: transparent;
+      border-color: $primary;
+      text-transform: uppercase;
+      border-bottom-width: 2px;
       .sort:before, .sort:after {
         border-color: #007bff #0000;
       }
 
       &:hover {
         border-bottom-color: #007bff;
+        color: #007bff;
       }
     }
   }

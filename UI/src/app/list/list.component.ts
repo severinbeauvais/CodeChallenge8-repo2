@@ -36,7 +36,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // load filter keys, including an ALL option to display species entries for all categories
-    this.filterKeys.push('ALL');
+    this.filterKeys.push('ALL CATEGORIES');
     Constants.categories.forEach(key => this.filterKeys.push(key));
     this.filterBy = this.filterKeys[0]; // initial filter
 

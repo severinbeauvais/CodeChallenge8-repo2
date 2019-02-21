@@ -8,8 +8,9 @@
 
       <div class="title-container__actions" *ngIf="api.isAdmin">
         <div class="btn-container">
-          <button class="btn btn-light" type="button" title="Edit this species"
+          <button class="btn btn-light btn-primary" type="button" title="Edit this species"
             [routerLink]="['/species', species._id, 'edit']">
+            <i class="material-icons">edit</i>
             Edit Item
           </button>
         </div>
@@ -31,8 +32,8 @@
   <div class="container">
     <div class="row">
       <div class="col-md-8">
+        <h2 class="detail-heading">Detailed Species Information</h2>
         <section class="main-card">
-          <h2>Detailed Species Information</h2>
           <ul class="nv-list">
             <li>
               <span class="name">Species Category:</span>
