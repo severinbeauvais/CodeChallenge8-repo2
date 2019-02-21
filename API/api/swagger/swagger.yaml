@@ -173,7 +173,7 @@ paths:
       security:
         - Bearer: []
       parameters:
-        - name: app
+        - name: species
           in: body
           required: true
           schema:
@@ -182,6 +182,7 @@ paths:
               _id:
                 type: string
                 example: "54759eb3c090d83494e2d804"
+                ## TODO: Add more fields here.
       responses:
         "200":
           description: "Success"
@@ -376,7 +377,7 @@ paths:
           description: "ID of species object to update"
           required: true
           type: "string"
-        - name: SpeciesObject
+        - name: speciesObject
           in: body
           required: true
           schema:
@@ -404,7 +405,7 @@ paths:
           description: "ID of species object to delete"
           required: true
           type: "string"
-        - name: SpeciesObject
+        - name: speciesObject
           in: body
           required: true
           schema:

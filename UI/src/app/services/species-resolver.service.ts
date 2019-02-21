@@ -22,7 +22,7 @@ export class SpeciesResolver implements Resolve<Species> {
     }
 
     // view/edit existing application
-    console.log('species =', this.speciesService.getById(id));
     return this.speciesService.getById(id);
   }
 }
+

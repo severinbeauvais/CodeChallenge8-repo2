@@ -1,7 +1,6 @@
-"use strict";
-
 var _ = require('lodash');
 
+// sets the isDeleted flag to "soft delete" the object
 exports.delete = function (o) {
   return new Promise(function (resolve, reject) {
     _.remove(o.tags, function (item) {
