@@ -56,11 +56,4 @@ Note that the API must be running first.
 
 ## Running tests
 
-### Unit tests
-
-1. Run `ng test` to execute the Jasmine unit tests via [Karma](https://karma-runner.github.io).
-
-### End-to-end tests
-
-1. Make sure you are serving the app via `ng serve`.
-2. Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+1. Run `npm run test` to execute the Jasmine unit tests via [Karma](https://karma-runner.github.io).

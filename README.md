@@ -52,19 +52,19 @@ This code challenge solution uses the [MEAN](http://mean.io) software stack, nam
 * Angular (web application)
 * Node.js (to run the API)
 
-In addition, [Keycloak](http://www.keycloak.org/) is used to provide straightforward OAuth functionality and role mapping. (It can be configured to provide IDIR federated login.)
+In addition, [Keycloak](http://www.keycloak.org/) is used to provide straightforward OAuth functionality and role mapping. (It can also be configured to provide IDIR federated login.)
 
 The architecture is based on the Angular tutorial, 'Tour of Heroes'.
 
 The code is based on a previous, open-source government project, PRC (https://github.com/bcgov/nrts-prc-admin and https://github.com/bcgov/nrts-prc-api).
 
-## How everything fits together
+## How everything fits together...
 
 The typical user flow through the system is:
-1. user navigates to the app root URL (UI)
-2. app redirects user to Keycloak
-3. user enters local login username and password, or selects authentication using GitHub credentials
-4. if user has not previously registered, Keycloak add a default user profile (with role=siesm_user)
+1. user navigates to the app root URL
+2. app redirects user to Keycloak site
+3. user selects authentication using GitHub credentials (or user can enter a Keycloak username and password)
+4. if user has not previously registered, Keycloak adds a default user profile (with role=**siesm_user**)
 5. Keycloak redirects user to the app
 6. app front end (UI) displays species list page
     1. UI makes REST call to back end (API) to get data (note: bearer token is automatically added to request)
@@ -73,4 +73,6 @@ The typical user flow through the system is:
     4. API retrieves species data from database
     5. API returns data to UI
     6. UI displays data
-7. UI makes additional REST calls to create/read/update/delete species data (if their permissions allow)
+7. UI makes additional REST calls to create/read/update/delete species data (if user has role=**seism_admin**)
+
+ See [this page](docker/README.md) to configure admin role.

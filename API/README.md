@@ -58,50 +58,7 @@ To run the tests in one file, simply pass the path of the file name eg:
 To run only one test in that file, chain the `.only` command eg:
  - `test.only("Search returns results", () => {})`.
 
-The **_MOST IMPORTANT_** thing to know about this project's test environment is the router setup. At the time of writing this, it wasn't possible to get [swagger-tools](https://github.com/apigee-127/swagger-tools) router working in the test environment. As a result, all tests **_COMPLETELY bypass_ the real life swagger-tools router**. Instead, a middleware router called [supertest](https://github.com/visionmedia/supertest) is used to map routes to controller actions. In each controller test, you will need to add code like the following:
-
-```javascript
-const test_helper = require('./test_helper');
-const app = test_helper.app;
-const featureController = require('../controllers/feature.js');
-const fieldNames = ['tags', 'properties', 'applicationID'];
-
-app.get('/api/feature/:id', function(req, res) {
-  let params = test_helper.buildParams({'featureId': req.params.id});
-  let paramsWithFeatureId = test_helper.createPublicSwaggerParams(fieldNames, params);
-  return featureController.protectedGet(paramsWithFeatureId, res);
-});
-
-test("GET /api/feature/:id  returns 200", done => {
-  request(app)
-    .get('/api/feature/AAABBB')
-    .expect(200)
-    .then(done)
-});
-```
-
-The above code will stand in for the swagger-tools router, and help build the objects that swagger-tools magically generates when HTTP calls go through it's router. The above code will send an object like below to the `api/controllers/feature.js` controller `protectedGet` function as the first parameter (typically called `args`).
-
-```javascript
-{
-  swagger: {
-    params: {
-      auth_payload: {
-        scopes: ['sysadmin', 'public'],
-        userID: null
-      },
-      fields: {
-        value: ['tags', 'properties', 'applicationID']
-      },
-      featureId: {
-        value: 'AAABBB'
-      }
-    }
-  }
-}
-```
-
-Unfortunately, this results in a lot of boilerplate code in each of the controller tests. There are some helpers to reduce the amount you need to write, but you will still need to check the parameter field names sent by your middleware router match what the controller(and swagger router) expect. However, this method results in  pretty effective integration tests as they exercise the controller code and save objects in the database.
+The most important thing to know about this project's test environment is the router setup. At the time of writing this, it wasn't possible to get [swagger-tools](https://github.com/apigee-127/swagger-tools) router working in the test environment. As a result, all tests completely bypass the real-life swagger-tools router. Instead, a middleware router called [supertest](https://github.com/visionmedia/supertest) is used to map routes to controller actions.
 
 ### Test database
 
