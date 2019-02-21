@@ -15,7 +15,7 @@ This repository contains the following documentation:
 * [Database seeding documentation](API/seed/README.md)
 * [Docker documentation](docker/README.md)
 
-Note that, when the API is running, the API documentation is available at http://localhost:3000/api/docs/.
+Note that, when the API is running, its Swagger UI page is at http://localhost:3000/api/docs/.
 
 This repository contains the following components:
 1. [API code project](API) - this is the API (back end server) component of the application
@@ -24,7 +24,7 @@ This repository contains the following components:
 
 ## How to install, build and run
 
-In order to run this application, you need to do the following:
+In order to run this application, you need to perform the following steps:
 1. Run MongoDB - see [API documentation](API/README.md) for details
 2. Run Keycloak (optional) - see [Docker documentation](docker/README.md) for details
 3. Build and run the API component - see [API documentation](API/README.md) for details
