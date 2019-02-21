@@ -17,9 +17,9 @@
       </button>
 
       <div class="application-list__options">
-        <mat-slide-toggle color="primary" [checked]="showOnlyOpenApps" (change)="showOnlyOpenAppsChange($event.checked)">
-          Only show applications with an open or future comment period
-        </mat-slide-toggle>
+        <select class="sort-comments form-control" (change)="filterChange($event.checked)" [(ngModel)]="filterBy">
+          <option *ngFor="let key of filterKeys" [value]="key" [innerHTML]="key"></option>
+        </select>        
       </div>
 
       <table class="table application-table">

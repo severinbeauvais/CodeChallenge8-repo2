@@ -18,10 +18,11 @@ import { SpeciesService } from 'app/services/species.service';
 export class ListComponent implements OnInit, OnDestroy {
   public loading = true;
   private paramMap: ParamMap = null;
-  public showOnlyOpenApps: boolean;
   public species: Array<Species> = [];
   public column: string = null;
   public direction = 0;
+  public filterKeys: Array<string> = [];
+  public filterBy: string = null;
   private ngUnsubscribe: Subject<boolean> = new Subject<boolean>();
 
   constructor(
@@ -32,6 +33,11 @@ export class ListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    // dynamically load filters -- including a 'None' option
+    this.filterKeys.push('None');
+    Constants.categories.forEach(key => this.filterKeys.push(key));
+    this.filterBy = this.filterKeys[0]; // initial filter is 'none'
+
     // get optional query parameters
     this.route.queryParamMap
       .takeUntil(this.ngUnsubscribe)
@@ -59,17 +65,18 @@ export class ListComponent implements OnInit, OnDestroy {
       );
   }
 
-  public showOnlyOpenAppsChange(checked: boolean) {
-    this.showOnlyOpenApps = checked;
+  public filterChange(event: Event) {
+    console.log('event: ', event);
+    // this.showOnlyOpenApps = checked;
     this.saveFilters();
   }
 
   private saveFilters() {
     const params: Params = {};
 
-    if (this.showOnlyOpenApps) {
-      params['showOnlyOpenApps'] = true;
-    }
+    // if (this.showOnlyOpenApps) {
+    //   params['showOnlyOpenApps'] = true;
+    // }
 
     if (this.column && this.direction) {
       params['col'] = this.column;
@@ -81,7 +88,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   private resetFilters() {
-    this.showOnlyOpenApps = (this.paramMap.get('showOnlyOpenApps') === 'true');
+    // this.showOnlyOpenApps = (this.paramMap.get('showOnlyOpenApps') === 'true');
     this.column = this.paramMap.get('col'); // == null if col isn't present
     this.direction = +this.paramMap.get('dir'); // == 0 if dir isn't present
   }
@@ -98,6 +105,6 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   public showThisApp(item: Species) {
-    return !this.showOnlyOpenApps;
+    // return !this.showOnlyOpenApps;
   }
 }

@@ -8,7 +8,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BootstrapModalModule } from 'ng2-bootstrap-modal';
 import { CookieService } from 'ngx-cookie-service';
-import { MatSlideToggleModule } from '@angular/material';
+// import { MatSlideToggleModule } from '@angular/material';
 import { MatSnackBarModule } from '@angular/material';
 
 // modules
@@ -64,7 +64,7 @@ export function kcFactory(keycloakService: KeycloakService) {
     FormsModule,
     CommonModule,
     HttpClientModule,
-    MatSlideToggleModule,
+    // MatSlideToggleModule,
     MatSnackBarModule,
     AppRoutingModule, // <-- module import order matters - https://angular.io/guide/router#module-import-order-matters
     NgbModule.forRoot(),
