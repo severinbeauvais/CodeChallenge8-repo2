@@ -10,8 +10,6 @@
 ``cd /c/Users/severin/Desktop/``
 1. Export the 'species' collection:
 ``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoexport -h localhost:27017 -d seism --collection species --out species.json``
-1. Export the 'users' collection:
-``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoexport -h localhost:27017 -d seism --collection users --out users.json``
 
 ## How to Mongo Import
 
@@ -20,5 +18,3 @@
 ``cd /c/Users/severin/Desktop/``
 1. Run the following command to import the 'species' collection:
 ``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d seism --drop --collection species species.json``
-1. Run the following command to import the 'users' collection:
-``/c/Program\ Files/MongoDB/Server/3.4/bin/mongoimport.exe -h localhost:27017 -d seism --drop --collection users users.json``

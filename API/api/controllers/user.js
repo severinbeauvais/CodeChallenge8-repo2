@@ -1,8 +1,8 @@
-var _ = require('lodash');
+var _          = require('lodash');
 var defaultLog = require('winston').loggers.get('default');
-var mongoose = require('mongoose');
-var Actions = require('../helpers/actions');
-var tagList = [
+var mongoose   = require('mongoose');
+var Actions    = require('../helpers/actions');
+var tagList    = [
   'username',
   'firstName',
   'lastName',
