@@ -11,7 +11,7 @@
       </p>
 
       <!-- TODO: add ngIf for admin only -->
-      <button class="btn btn-primary" [routerLink]="['/species/0/edit']">
+      <button class="btn btn-primary" [routerLink]="['/a/0/edit']">
         <i class="material-icons">add</i>
         <span>Create New Library Item</span>
       </button>
@@ -25,17 +25,17 @@
       <table class="table application-table">
         <thead class="application-table__sort-header">
           <tr>
-            <th class="application-table__name-col sortable" (click)="sort('category')">Category
-              <i class="sort" [ngClass]="{'sort-asc': (column == 'category' && direction < 0), 'sort-desc': (column == 'category' && direction > 0) }" aria-hidden="true"></i>
-            </th>
             <th class="application-table__cl_file-col sortable" (click)="sort('commonName')">Common Name
               <i class="sort" [ngClass]="{'sort-asc': (column == 'commonName' && direction < 0), 'sort-desc': (column == 'commonName' && direction > 0) }" aria-hidden="true"></i>
             </th>
             <th class="application-table__purpose-col sortable" (click)="sort('latinName')">Latin Name
               <i class="sort" [ngClass]="{'sort-asc': (column == 'latinName' && direction < 0), 'sort-desc': (column == 'latinName' && direction > 0) }" aria-hidden="true"></i>
             </th>
-            <th class="application-table__region-col sortable" (click)="sort('dateIntroBC')">Date Introduced in BC
+            <th class="sortable" (click)="sort('dateIntroBC')">Date Introduced in BC
               <i class="sort" [ngClass]="{'sort-asc': (column == 'dateIntroBC' && direction < 0), 'sort-desc': (column == 'dateIntroBC' && direction > 0) }" aria-hidden="true"></i>
+            </th>
+            <th class="application-table__name-col sortable" (click)="sort('category')">Category
+              <i class="sort" [ngClass]="{'sort-asc': (column == 'category' && direction < 0), 'sort-desc': (column == 'category' && direction > 0) }" aria-hidden="true"></i>
             </th>
           </tr>
         </thead>
@@ -43,13 +43,17 @@
         <tbody class="application-table__content">
           <ng-template ngFor let-item [ngForOf]="species | orderBy: {property: column, direction: direction}">
             <tr *ngIf="showThisApp(item)">
-              <td colspan="6">
+              <td class="accordion__collapse-header--column application-table__cl_file-col">
                 <a [routerLink]="['/species', item._id]">
-                  <span class="accordion__collapse-header--column application-table__name-col">{{item.category || '-'}}</span>
-                  <span class="accordion__collapse-header--column application-table__cl_file-col">{{item.commonName || '-'}}</span>
-                  <span class="accordion__collapse-header--column application-table__purpose-col">{{item.latinName || '-'}}</span>
-                  <span class="accordion__collapse-header--column application-table__region-col">{{(item.dateIntroBC | date:'longDate') || '-'}}</span>
+                  {{item.commonName || '-'}}
                 </a>
+              </td>
+              <td class="accordion__collapse-header--column application-table__cl_file-col">
+                {{item.latinName || '-'}}
+              </td>
+              <td class="accordion__collapse-header--column application-table__cl_file-col">{{(item.dateIntroBC | date:'longDate') || '-'}}</td>
+              <td class="accordion__collapse-header--column application-table__cl_file-col">
+                {{item.category || '-'}}
               </td>
             </tr>
           </ng-template>

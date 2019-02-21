@@ -22,8 +22,4 @@ export class NotAuthorizedComponent implements OnInit {
         this.loggedout = paramMap.get('loggedout') === 'true';
       });
   }
-
-  login() {
-    window.location.href = window.location.origin;
-  }
 }

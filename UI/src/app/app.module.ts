@@ -16,7 +16,6 @@ import { AppRoutingModule } from 'app/app-routing.module';
 
 // components
 import { AppComponent } from 'app/app.component';
-import { LoginComponent } from 'app/login/login.component';
 import { ConfirmDialogComponent } from 'app/confirm-dialog/confirm-dialog.component';
 import { HeaderComponent } from 'app/header/header.component';
 import { FooterComponent } from 'app/footer/footer.component';
@@ -35,17 +34,18 @@ import { ApiService } from 'app/services/api';
 import { AuthenticationService } from 'app/services/authentication.service';
 import { SpeciesService } from 'app/services/species.service';
 import { CanDeactivateGuard } from 'app/services/can-deactivate-guard.service';
-import { KeycloakService } from 'app/services/keycloak.service';
 import { TokenInterceptor } from './utils/token-interceptor';
 
+import { KeycloakService } from 'keycloak-angular';
+// import { AppAuthGUard } from './app.authguard';
+import { environment } from 'environments/environment';
 export function kcFactory(keycloakService: KeycloakService) {
-  return () => keycloakService.init();
+  return () => keycloakService.init({ config: environment.keycloak });
 }
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
     ConfirmDialogComponent,
     HeaderComponent,
     FooterComponent,

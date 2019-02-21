@@ -20,7 +20,7 @@ app-header {
   @include flex-box();
   @include flex(1 1 auto);
   @include flex-direction(column);
+  background: #f3f5f9;
   position: relative;
-  margin-top: 68px;
   overflow-y: auto;
 }
