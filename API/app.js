@@ -103,8 +103,6 @@ swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
       // Load database models
       defaultLog.info("loading db models.");
       require('./api/helpers/models/species');
-      require('./api/helpers/models/document');
-      require('./api/helpers/models/user');
       defaultLog.info("db model loading done.");
 
       app.listen(3000, '0.0.0.0', function() {
