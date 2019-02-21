@@ -250,7 +250,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - seism_admin
-        - write:application
+        - write:species
       parameters:
         - name: species
           in: body
@@ -464,7 +464,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - seism_admin
-        - write:application
+        - write:species
       parameters:
         - name: speciesId
           in: path

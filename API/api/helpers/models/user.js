@@ -6,6 +6,7 @@ module.exports = require ('../models')('User', {
   // auditing fields
   createdBy   : { type: String,  default: '' },
   createdDate : { type: Date,    default: Date.now },
+  lastLoggedIn: { type: Date,    default: Date.now },
   // soft-delete flag
   isDeleted   : { type: Boolean, default: false }
 });

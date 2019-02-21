@@ -30,24 +30,39 @@ In order to run this application, you need to do the following:
 3. Build and run the API component - see [API documentation](API/README.md) for details
 4. Build and run the UI component - see [UI documentation](UI/README.md) for details
 
-This application can run in 3 modes:
+### This application can be run in 3 modes:
 
-### Default environment
+#### 1. Default environment
 
-Not production and Keycloak not enabled. This is basically a local 'develop' environment (and is 'admin' user).
+- Mode: Dev
+- Keycloak: Disabled
 
-### 'Keycloak' environment
+Not production and Keycloak not enabled.
 
-Not production but uses Keycloak. This can be used locally when the Keycloak Docker image is loaded.
+This is basically a local 'develop' environment and all users are treated as __admin__ users.
 
-Before starting the API project, set a system environment variable `KeycloakEnabled` to `false`.
+To run the application in Keycloak environment:
+1.  Run `npm start`
 
-Before starting the UI project, set environment.ts variable `KeycloakEnabled: false`.
+#### 2. Keycloak environment
 
-### 'Prod' environment
+- Mode: Dev
+- Keycloak: Enabled
 
-Production code (fewer and smaller bundles) and uses Keycloak. This is for deployment to a cloud host and requires access to a Keycloak service (eg, provided by DevExchange group).
+Not production but uses Keycloak.
 
-Before starting the API project, set a system environment variable `KeycloakEnabled` to `false`.
+This can be used locally when the Keycloak Docker container is running.
 
-Before starting the UI project, set environment.ts variable `KeycloakEnabled: false`.
+To run the application in Keycloak environment:
+1. Set a system environment variable `KeycloakEnabled` to `false`.
+
+2. Either set the `environment.ts` variable `KeycloakEnabled` to `false` __OR__ run `npm run start-keycloak`.
+
+#### 3. Prod environment
+
+- Mode: Prod
+- Keycloak: Enabled
+
+Production code (fewer and smaller bundles) and uses Keycloak.
+
+__This is for deployment to a cloud host and requires access to a Keycloak service (eg, provided by DevExchange group).__
