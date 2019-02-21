@@ -8,6 +8,8 @@ var JWKSURI         = process.env.SSO_JWKSURI || "http://localhost:8888/auth/rea
 var winston         = require('winston');
 var defaultLog      = winston.loggers.get('default');
 
+var User = require('./models/user')
+
 exports.verifyToken = function(req, authOrSecDef, token, callback) {
   defaultLog.info("verifying token", token);
   // scopes/roles defined for the current endpoint
@@ -29,7 +31,30 @@ exports.verifyToken = function(req, authOrSecDef, token, callback) {
       jwksUri: JWKSURI
     });
 
-    const kid = jwt.decode(tokenString, { complete: true }).header.kid;
+    const decodedJWT = jwt.decode(tokenString, { complete: true });
+
+    console.log(decodedJWT);
+    User.findOneAndUpdate(
+      {
+        email: decodedJWT.payload.email
+      },
+      {
+        username: decodedJWT.payload.preferred_username,
+        firstName: decodedJWT.payload.given_name,
+        lastName: decodedJWT.payload.family_name,
+        email: decodedJWT.payload.email
+      },
+      {
+        upsert: true,
+        new: true
+      },
+      function (err) {
+        if(err) {
+          console.log('user.put err: ', err);
+        }
+      });
+
+    const kid = decodedJWT.header.kid;
 
     client.getSigningKey(kid, (err, key) => {
       if (err) {

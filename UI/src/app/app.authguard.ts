@@ -38,24 +38,7 @@ export class AppAuthGuard extends KeycloakAuthGuard {
           }
         }
 
-        return this.keycloakAngular
-          .loadUserProfile()
-          .then(profile => {
-            const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
-            if (!currentUser || ( currentUser.username === profile.username && !currentUser.added) )  {
-              // Add/Update the user to the database
-              return this.userService.put(profile).toPromise().then(() => {
-                return this.keycloakAngular.getToken().then(token => {
-                  window.localStorage.setItem('currentUser', JSON.stringify({ username: profile.username, token: token, added: true }));
-                });
-              })
-              .catch(err => {
-                console.log('addUser error: ', err);
-                throw err;
-              });
-            }
-          })
-          .then(() => resolve(granted));
+        resolve(granted);
       }
     });
   }
