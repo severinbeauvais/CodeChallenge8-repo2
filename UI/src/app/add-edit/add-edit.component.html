@@ -114,7 +114,7 @@
               Delete Image
             </button>
 
-            <app-file-upload [fileExt]="['jpg', 'jpeg', 'png', 'gif', 'tiff']" [maxFiles]="1" [maxSize]="4" [showList]="false" [files]="tempFiles"
+            <app-file-upload [fileExt]="['jpg', 'jpeg', 'png', 'gif', 'tiff']" [maxFiles]="1" [maxSize]="1" [showList]="false" [files]="tempFiles"
               (filesChange)="addImage($event); tempFiles = []"></app-file-upload>
           </div>
 
