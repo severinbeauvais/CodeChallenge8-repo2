@@ -11,10 +11,6 @@
 
 @media (min-width: 768px) {
   .app-header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     border-bottom-style: solid;
     border-bottom-width: 0;
     border-bottom-color: rgba(#5475a7, 0.4);
@@ -32,9 +28,9 @@
   }
 
   .app-header--solid {
-    border-bottom: 4px solid $gold;
     background: $header-bg;
     color: $header-font-color;
+    padding: 10px 0;
   }
 }
 
@@ -48,7 +44,7 @@
   font-size: medium;
   font-weight: 600;
   outline: none; // override user agent stylesheet default
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -126,23 +122,23 @@
         font-size: $mn-dropdown-menu-size;
         white-space: normal;
         cursor: pointer;
-        
+
         strong {
           font-weight: 600;
           transition: color 0.2s ease-out;
         }
-        
+
         .dd-item-desc {
           display: block;
           font-size: small;
           opacity: 0.5;
           transition: opacity 0.2s ease-out;
         }
-        
+
         &:focus,
         &:hover {
           background: transparent;
-          
+
           strong {
             color: $mn-hover-color;
           }
@@ -163,10 +159,10 @@
 @media (min-width: 768px) {
   .navbar {
     background: transparent;
-    
+
     .navbar-nav {
       margin-top: 0;
-      
+
       .nav-link {
         height: 4.2rem; // 60px to match the branding height
         padding: 0.5rem 0.75rem !important;

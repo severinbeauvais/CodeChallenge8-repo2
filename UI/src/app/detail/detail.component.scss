@@ -13,12 +13,14 @@ $card-shadow: 0.02rem 0 0.2rem rgba(#000, 0.15);
 
 .main-card {
   background: $card-bg;
-  box-shadow: $card-shadow;
+  box-shadow: -1px 4px 24px 0 rgba(119, 119, 119, 0.13);
+  padding: 30px;
+  border-radius: 4px;
 }
 
 .aside-card {
   background: $card-bg;
-  box-shadow: $card-shadow;
+  box-shadow: -1px 4px 24px 0 rgba(119, 119, 119, 0.13);
 
   + .aside-card {
     margin-top: 1.5rem;
