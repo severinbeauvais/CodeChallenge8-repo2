@@ -36,7 +36,7 @@ With keycloak running, access the admin console at `localhost:8888/auth` and log
 ## Export new realm config
 Open a shell in the keycloak docker container:
 ```
-docker exec <container_name> sh
+docker exec -it docker_keycloak_1 sh
 ```
 And run:
 ```
