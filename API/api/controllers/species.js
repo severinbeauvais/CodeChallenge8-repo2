@@ -30,7 +30,6 @@ exports.protectedHead = function (args, res, next) {
 
   // add in the default fields to the projection so that the incoming query will work for any selected fields
   tagList.push('_id');
-  tagList.push('tags');
 
   // if specified, add ID query parameter
   if (args.swagger.params.speciesId) {
@@ -147,10 +146,10 @@ exports.protectedPut = function (args, res, next) {
   defaultLog.info("Updating species, id:", speciesId);
 
   var obj = args.swagger.params.speciesObject.value;
-  delete obj.tags; // strip security tags - these will not be updated on this route
   defaultLog.info("Updating species, object:", obj);
 
-  // FUTURE: sanitize/update audits
+  // FUTURE: add more sanitize/update audits
+  obj.latinName = obj.latinName.toLowerCase();
 
   var Species = mongoose.model('Species');
   Species.findOneAndUpdate({ _id: speciesId }, obj, { upsert: false, new: true }, function (err, o) {
