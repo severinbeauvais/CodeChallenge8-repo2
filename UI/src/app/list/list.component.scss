@@ -18,6 +18,14 @@
     }
   }
 }
+.common {
+  text-transform: capitalize;
+}
+.latin {
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
 
 .actions-contaienr {
   display: flex;

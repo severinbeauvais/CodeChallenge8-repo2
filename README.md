@@ -10,9 +10,13 @@ This repository contains the following documentation:
 * Kirsten's user flow diagram (docs/TBD)
 * An architecture diagram and explanation (docs/TBD)
 * A test scripts file (docs/TBD)
-* TBD...
+* UI documentation (UI/README.md)
+* API documentation (API/README.md)
+* Database seedind documentation (API/seed/README.md)
+* Docker documentation (docker/README.md)
+* OTHERS ???
 
-Also, when the API is running, the API documentation is available at http://localhost:3000/api/docs/.
+Note that, when the API is running, the API documentation is available at http://localhost:3000/api/docs/.
 
 This repository contains the following components:
 1. [API](API) code project - this is the API (back end server) component of the application.
@@ -22,12 +26,12 @@ This repository contains the following components:
 ## How to install, build and run
 
 In order to run this application, you need to launch the following:
-1. MongoDB (see API documentation for details)
-1. API component
-1. UI component
-1. Keycloak (optional)
+1. Run MongoDB - see API documentation for details
+1. Run Keycloak (optional) - see [Docker documentation](docker/README.md) for details
+1. Build and run the API component - see [API documentation](API/README.md) for details
+1. Build and run the UI component - see [UI documentation](UI/README.md) for details
 
-There are 3 modes that this web application can be run:
+This application can run in 3 modes:
 
 ### Default environment
 
@@ -43,7 +47,7 @@ Before starting the UI project, set environment.ts variable `KeycloakEnabled: fa
 
 ### 'Prod' environment
 
-Production code and uses Keycloak. This is for deployment to a cloud host and requires access to a Keycloak service (eg, provided by DevExchange group).
+Production code (fewer and smaller bundles) and uses Keycloak. This is for deployment to a cloud host and requires access to a Keycloak service (eg, provided by DevExchange group).
 
 Before starting the API project, set a system environment variable `KeycloakEnabled` to `false`.
 
