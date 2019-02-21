@@ -1,7 +1,7 @@
  module.exports = require ('../models')('Species', {
-    commonName       : { type: String, default: '', trim: true },
-    latinName        : { type: String, default: '', trim: true },
-    category         : { type: String, default: '' },
+    commonName       : { type: String, default: '', trim: true, required: true },
+    latinName        : { type: String, default: '', unique: true, trim: true, required: true },
+    category         : { type: String, enum: ['Land Animal', 'Marine Animal', 'Land Plant', 'Marine Plane', 'Fungus'], required: true },
     dateIntroBC      : { type: Date, default: null },
     description      : { type: String, default: '' },
     image            : {
@@ -10,8 +10,8 @@
       md5              : { type: String, default: '' }
     },
     // auditing fields
-    createdDate      : { type: Date, default: Date.now },
     createdBy        : { type: String, default: '' },
+    createdDate      : { type: Date, default: Date.now },
     // soft-delete flag
     isDeleted        : { type: Boolean, default: false }
 });
