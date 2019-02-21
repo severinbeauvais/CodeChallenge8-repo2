@@ -5,7 +5,8 @@
         <h1>{{species.commonName}}</h1>
         <span class="title-container__sub text-muted">{{species.latinName}}</span>
       </div>
-      <div class="title-container__actions">
+
+      <div class="title-container__actions" *ngIf="api.isAdmin">
         <div class="btn-container">
           <button class="btn btn-light" type="button" title="Edit this species"
             [routerLink]="['/species', species._id, 'edit']">

@@ -6,15 +6,17 @@
   <main *ngIf="!loading">
     <section>
       <h2>Invasive Species in British Columbia</h2>
-      <p class="tab-intro">
+      <!-- <p class="tab-intro">
         Click on any row to go to its detailed view.
-      </p>
+      </p> -->
 
       <!-- TODO: add ngIf for admin only -->
-      <button class="btn btn-primary" [routerLink]="['/species/0/edit']">
-        <i class="material-icons">add</i>
-        <span>Create New Library Item</span>
-      </button>
+      <div *ngIf="api.isAdmin">
+        <button class="btn btn-primary" [routerLink]="['/species/0/edit']">
+          <i class="material-icons">add</i>
+          <span>Create New Library Item</span>
+        </button>
+      </div>
 
       <div class="application-list__options">
         <select class="sort-comments form-control" (change)="saveFilters()" [(ngModel)]="filterBy">

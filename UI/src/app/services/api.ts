@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Params } from '@angular/router';
+import { KeycloakService } from 'keycloak-angular';
 import { Observable } from 'rxjs/Observable';
 import { throwError } from 'rxjs';
 import { map } from 'rxjs/operators';
 import * as _ from 'lodash';
+import { environment } from '../../environments/environment';
 
 import { Species } from 'app/models/species';
 import { Document } from 'app/models/document';
@@ -14,16 +16,19 @@ export class ApiService {
 
   public token: string;
   public isMS: boolean; // IE, Edge, etc
+  public isAdmin: boolean;
   public pathAPI: string;
   public params: Params;
   public env: 'local' | 'dev' | 'test' | 'demo' | 'scale' | 'beta' | 'master' | 'prod';
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private keycloakService: KeycloakService,
   ) {
     const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
     this.token = currentUser && currentUser.token;
     this.isMS = window.navigator.msSaveOrOpenBlob ? true : false;
+    this.isAdmin = this.keycloakService.getUserRoles().includes('seism_admin') || !environment.KeycloakEnabled;
     this.pathAPI = 'http://localhost:3000/api';
     this.env = 'local';
   }

@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 
 import { Constants } from 'app/utils/constants';
 import { Species } from 'app/models/species';
+import { ApiService } from 'app/services/api';
 import { SpeciesService } from 'app/services/species.service';
 
 @Component({
@@ -29,6 +30,7 @@ export class ListComponent implements OnInit, OnDestroy {
     private location: Location,
     private router: Router,
     private route: ActivatedRoute,
+    public api: ApiService,
     private speciesService: SpeciesService
   ) { }
 
