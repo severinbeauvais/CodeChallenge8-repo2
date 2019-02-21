@@ -9,7 +9,7 @@ This repository contains the following documentation:
 * The original Code Challenge Notice, Instructions & Rules [file](docs/CODE_CHALLENGE.md)
 * Kirsten's user flow diagram (docs/TBD)
 * An architecture diagram and explanation (docs/TBD)
-* A test scripts file (docs/TBD)
+* A test scripts file [file](docs/SEISM_test_scripts.xlsx)
 * [UI documentation](UI/README.md)
 * [API documentation](API/README.md)
 * [Database seeding documentation](API/seed/README.md)
