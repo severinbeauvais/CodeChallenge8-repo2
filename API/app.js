@@ -17,7 +17,7 @@ var dbConnection  = 'mongodb://'
 var db_username = process.env.MONGODB_USERNAME || '';
 var db_password = process.env.MONGODB_PASSWORD || '';
 
-var KeycloakEnabled = process.env.KeycloakEnabled || true;
+var KeycloakEnabled = process.env.KeycloakEnabled;
 
 // Logging middleware
 winston.loggers.add('default', {
@@ -57,7 +57,7 @@ if (hostname !== 'localhost:3000') {
   swaggerConfig.schemes = ['https'];
 }
 
-swaggerTools.initializeMiddleware(swaggerConfig, function(middleware) {
+swaggerTools.initializeMiddleware(swaggerConfig, function(middleware, KeycloakEnabled) {
   app.use(middleware.swaggerMetadata());
 
   // FUTURE: fix this
