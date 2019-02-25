@@ -12,11 +12,14 @@ This project is the API (back end server) component of the SEISM web application
 
 ### How to set up the database component
 
-1. Download MongoDB 3.4
-2. Download Robo3T 1.2 (optional - to manage the db)
-4. Open a command window or shell.
-5. Change directories to the MongoDB bin folder. The default installation folder is `c:\Program Files\MongoDB\Server\3.4\bin\mongod.exe`.
-6. Run MongoDB from the shell by executing **mongod.exe**
+1. Install MongoDB 3.4
+2. Install Robo3T 1.2 (optional - to manage the db)
+4. Open a BASH shell.
+5. Create the following folders if they don't already exist:
+    1. `/c/data/db/`
+    1. `/c/data/log/`
+6. Change directories to the MongoDB bin folder. The default installation folder is `/c/Program Files/MongoDB/Server/3.4/bin`.
+7. Run MongoDB by executing **mongod.exe**
 
 The default connection is `localhost:20717`.
 
