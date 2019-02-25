@@ -8,8 +8,8 @@ This project is the UI (front end) component of the SEISM web application.
 * npm 6.4.1 (run `npm -v` to verify)
 * Angular CLI 6.2.1 (run `npm ls -g @angular/cli --depth=0` to verify)
 * Yarn 1.10.1 or greater (run `yarn -v` to verify)
-* TSLint 5.11.0 or greater  (run `tslint -v` to verify)
 * TypeScript 2.3.4 (for webpack) (run `npm ls -g typescript --depth=0` to verify)
+* TSLint 5.11.0 or greater  (run `tslint -v` to verify)
 
 ### Uninstall older node (if needed)
 
@@ -28,8 +28,8 @@ Includes npm... Just use default settings.
 
 1. Install [Angular CLI](https://angular.io/): `npm i -g @angular/cli@6.2.1`
 2. Install [Yarn](https://yarnpkg.com/): `npm i -g yarn`
-3. Install [TSLint](https://palantir.github.io/tslint/): `npm i -g tslint`
-4. Install [TypeScript](https://www.npmjs.com/package/typescript) (needed for Webpack): `npm i -g typescript@2.3.4`
+3. Install [TypeScript](https://www.npmjs.com/package/typescript) (needed for Webpack): `npm i -g typescript@2.3.4`
+4. Install [TSLint](https://palantir.github.io/tslint/): `npm i -g tslint`
 
 
 ### Verify the installation
