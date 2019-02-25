@@ -23,9 +23,10 @@ export class SpeciesService {
   }
 
   // get all species entries
-  getAll(): Observable<Species[]> {
-    // FUTURE: implement paging; for now, max 1000 records
-    return this.api.getSpeciesEntries(0, 1000)
+  getAll(pageSize?:number, pageNum?:number): Observable<Species[]> {
+    
+    // FUTURE: implement paging; for now, max 1000 
+    return this.api.getSpeciesEntries(pageNum||0 , pageSize||1000)
       .map(res => {
         if (res && res.length > 0) {
           const species: Array<Species> = [];
