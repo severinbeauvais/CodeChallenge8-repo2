@@ -40,6 +40,9 @@ docker exec -it docker_keycloak_1 sh
 ```
 And run:
 ```
-bin/standalone.sh -Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=<FILE_NAME.json> -Djboss.http.port=8888 -Djboss.https.port=9999 -Djboss.management.http.port=7777
+./keycloak/bin/standalone.sh -Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=KEYCLOCK-MIGRATION-FILE.json -Djboss.http.port=8888 -Djboss.https.port=9999 -Djboss.management.http.port=7777
 ```
-Finally, if desired, copy the _<FILE_NAME>.json_ to your local machine, replacing the existing _realm.json_.
+Finally, if desired, copy the _KEYCLOCK-MIGRATION-FILE.json_ to your local machine, replacing the existing _realm.json_:
+```
+docker cp docker_keycloak_1:/opt/jboss/KEYCLOAK-MIGRATION-FILE.json realm.json
+```
